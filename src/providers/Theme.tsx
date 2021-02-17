@@ -1,10 +1,11 @@
 import React, { createContext, useContext, useState } from 'react';
-import { ImageStyle, StyleSheet, TextStyle, ViewStyle } from 'react-native';
-import initialTheme, { ThemeType } from '../constants/theme';
+import { Dimensions, ImageStyle, TextStyle, ViewStyle } from 'react-native';
+import initialTheme, { InitialThemeType } from '../constants/theme';
 import { PaletteType } from '../constants/palette';
 import { ChildrenType } from '../constants/globalTypes';
+import { FillProps } from 'react-native-svg';
 //TODO: Improve types.
-type StylePropertyType = ViewStyle | TextStyle | ImageStyle;
+type StylePropertyType = ViewStyle | TextStyle | ImageStyle | FillProps;
 
 type StyleObjectType = {
 	[key: string]: StylePropertyType | { [key: string]: any };
@@ -13,6 +14,12 @@ type StyleFunctionType = (theme: ThemeType) => StyleObjectType;
 
 type CreateStylePropsType = StyleObjectType | StyleFunctionType;
 
+interface ThemeType extends InitialThemeType {
+	dimensions: {
+		screenWidth: number;
+		screenHeight: number;
+	};
+}
 const StyleContext = createContext<(params1?: any, params2?: any) => any>(() => {});
 
 const ThemeContext = createContext({
@@ -22,9 +29,12 @@ const ThemeContext = createContext({
 
 const ThemeProvider = ({ children }: ChildrenType) => {
 	const [paletteType, setPaletteType] = useState<PaletteType>('light');
+	const { width: screenWidth, height: screenHeight } = Dimensions.get('screen');
+
 	const theme: ThemeType = {
 		...initialTheme,
 		palette: { ...initialTheme.palette, type: paletteType },
+		dimensions: { screenWidth, screenHeight },
 	};
 
 	const createStyle = (style: CreateStylePropsType, props: object) => {
@@ -33,7 +43,7 @@ const ThemeProvider = ({ children }: ChildrenType) => {
 			props
 		);
 
-		return StyleSheet.create(styleObj);
+		return styleObj;
 	};
 
 	return (

@@ -1,6 +1,6 @@
 import { ColorValue } from 'react-native';
 
-export type PaletteType = 'light' | 'dark';
+export type PaletteType = 'light';
 
 export type PaletteColor = {
 	[key in PaletteType]: ColorValue;
@@ -8,16 +8,16 @@ export type PaletteColor = {
 
 export interface PaletteObjectType {
 	type: PaletteType;
-	primary: PaletteColor;
-	secondary: PaletteColor;
+	color0: PaletteColor;
 	color1: PaletteColor;
+	color2: PaletteColor;
 }
 
 const palette: PaletteObjectType = {
 	type: 'light',
-	primary: { light: '#5194A4', dark: '#1F84D3' },
-	secondary: { light: '#F3F3F3', dark: '#171728' },
-	color1: { light: '#202040', dark: '#FFFFFF' },
+	color0: { light: '#000000' },
+	color1: { light: '#ffffff' },
+	color2: { light: '#7CD0DF' },
 };
 
 export default palette;

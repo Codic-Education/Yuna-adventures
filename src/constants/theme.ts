@@ -1,6 +1,6 @@
 import palette, { PaletteObjectType } from './palette';
 
-export interface ThemeType {
+export interface InitialThemeType {
 	palette: PaletteObjectType;
 }
 
