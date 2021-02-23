@@ -1,17 +1,14 @@
 import React from 'react';
 import Svg, { Rect } from 'react-native-svg';
-import { createStyle } from '../../providers/Theme';
-import { getSvgHeightByCustomWidth, getViewBox } from '../../utilities/svg';
+import { createStyle } from '../providers/Theme';
+import { getViewBox } from '../utilities/svg';
 
-interface PropsType {
-	variant: 'farm' | 'desert';
-}
+const viewBox = {
+	width: 667,
+	height: 143,
+};
 
 const Ground = ({ variant }: PropsType) => {
-	const viewBox = {
-		width: 667,
-		height: 143,
-	};
 	const styles = useStyle({ groundColor: getGroundColor(variant), viewBox });
 
 	return (
@@ -26,8 +23,8 @@ export default Ground;
 const useStyle = createStyle(({ dimensions: { screenWidth } }) => ({
 	Ground: {
 		width: screenWidth,
-		height: ({ viewBox }) => getSvgHeightByCustomWidth(viewBox, screenWidth),
 		position: 'absolute',
+		aspectRatio: viewBox.width / viewBox.height,
 		bottom: 0,
 		left: 0,
 	},
@@ -48,3 +45,7 @@ const getGroundColor = (variant) => {
 			return '#99CC66';
 	}
 };
+
+interface PropsType {
+	variant: 'farm' | 'desert';
+}
