@@ -10,7 +10,6 @@ const Clouds = () => {
 			source={def}
 			style={styles.Clouds}
 			loop
-			autoSize
 			autoPlay
 			resizeMode="cover"
 			speed={0.02}
