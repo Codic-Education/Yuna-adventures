@@ -3,32 +3,36 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const MainScreen = () => {
+const AnimalSelectorScreen = () => {
 	const navigation = useNavigation();
+
+	//Should return either Tame animals or Wild animals
+
 	return (
 		<View>
-				<Text style={{ fontSize: 18, textAlignVertical: "auto", alignSelf: 'center' }}>
-				ANIMALS OR CARS
+			<Text style={{ fontSize: 18, textAlignVertical: "auto", alignSelf: 'center' }}>
+				Here you choose between animals of choosen category etc. wild | tame
 			</Text>
 			<TouchableOpacity
 				style={styles.loadingScreen}
-				onPress={() => navigation.navigate('AnimalNavigator')}
+				onPress={() => {
+					navigation.navigate('AnimalActionScreen');
+				}}
 			>
-				<Text>MainScreen</Text>
+				<Text>Push to go forward</Text>
 			</TouchableOpacity>
 		</View>
 	);
 };
 
-export default MainScreen;
+export default AnimalSelectorScreen;
 
 const styles = StyleSheet.create({
 	loadingScreen: {
-		borderColor:"red",
-		borderWidth:2,
-		marginTop: 50,
-		height:48,
+        margin:20,
 		justifyContent: 'center',
 		alignItems: 'center',
+		borderColor:"red",
+		borderWidth:2
 	},
 });

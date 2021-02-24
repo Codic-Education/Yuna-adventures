@@ -8,7 +8,7 @@ const LoadingScreen = () => {
 		<View>
 			<TouchableOpacity
 				style={styles.loadingScreen}
-				onPress={() => navigation.navigate('Home')}
+				onPress={() => navigation.navigate('HomeStackNavigator')}
 			>
 				<Text style={{fontSize:48}} >LoadingScreen</Text>
 				{/* <Text style={{ flex:1, color: 'red' }}>Click here</Text> */}
