@@ -1,9 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Dimensions, Text } from 'react-native';
+import Clouds from '../components/Clouds';
+import Ground from '../components/Ground';
 import Button from '../components/inputs/Button';
-import Cloud from '../components/svgs/Cloud';
-import Ground from '../components/svgs/Ground';
 import ViewBackground from '../components/ViewBackground';
 import { createStyle } from '../providers/Theme';
 const { width, height } = Dimensions.get('screen');
@@ -14,7 +14,7 @@ const HomeScreen = () => {
 
 	return (
 		<ViewBackground>
-			<Cloud width={150} opacity={0.8} />
+			<Clouds />
 			<Ground variant="farm" />
 
 			<Button onPress={() => navigation.navigate('AnimalNavigator')} style={styles.button}>

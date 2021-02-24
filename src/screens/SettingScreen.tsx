@@ -1,7 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { StyleSheet, Text, View,TouchableOpacity } from 'react-native';
 
 const SettingScreen = () => {
 	const navigation = useNavigation();
