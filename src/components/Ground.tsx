@@ -2,7 +2,7 @@ import React from 'react';
 import Svg, { Rect } from 'react-native-svg';
 import { createStyle } from '../providers/Theme';
 import { getViewBox } from '../utilities/svg';
-
+//TODO: delete this file.
 const viewBox = {
 	width: 667,
 	height: 143,

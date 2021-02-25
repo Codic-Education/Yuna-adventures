@@ -17,7 +17,7 @@ const palette: PaletteObjectType = {
 	type: 'light',
 	color0: { light: '#000000' },
 	color1: { light: '#ffffff' },
-	color2: { light: '#7CD0DF' },
+	color2: { light: '#ADE5EF' },
 };
 
 export default palette;
