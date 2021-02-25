@@ -1,13 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import Providers from './src/providers';
-import Views from './src/views';
+import Screens from './src/Screens';
 
 const App = () => {
 	return (
 		<Providers>
-			<StatusBar style="auto" />
-			<Views />
+			<StatusBar style="light" />
+			<Screens />
 		</Providers>
 	);
 };
