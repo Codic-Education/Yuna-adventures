@@ -18,9 +18,9 @@ const NavigationHeader = () => {
 
 export default NavigationHeader;
 
-const useStyles = createStyle({
+const useStyles = createStyle(({ dimensions: { screenWidth } }) => ({
 	navigationContainer: {
-		width: width,
+		width: screenWidth,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
@@ -31,4 +31,4 @@ const useStyles = createStyle({
 		left: 0,
 		zIndex: 10,
 	},
-});
+}));

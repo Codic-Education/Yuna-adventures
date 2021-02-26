@@ -19,7 +19,7 @@ const useStyles = createStyle(({ palette: { color3, type } }) => ({
 	btn: {
 		backgroundColor: color3[type],
 		padding: 18,
-		borderRadius: '100%',
+		borderRadius: 60,
 		borderStyle: 'solid',
 		borderWidth: 7,
 		borderColor: '#eee',
