@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import LottieView from 'lottie-react-native';
 import def from './def.json';
 import { createStyle } from '../../providers/Theme';
