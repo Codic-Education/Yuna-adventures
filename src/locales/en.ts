@@ -1,3 +1,10 @@
 export default {
-	Greeting: { label: 'Hello world!' },
+	Category: {
+		animals: {
+			title: 'Animals',
+		},
+		vehicles: {
+			title: 'Vehicles',
+		},
+	},
 };

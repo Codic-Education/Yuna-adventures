@@ -11,10 +11,11 @@ const ViewBackground = ({ children }: ChildrenType) => {
 
 export default ViewBackground;
 
-const useStyle = createStyle(({ palette: { color2, type } }) => ({
+const useStyle = createStyle(({ palette: { color2, type },dimensions: {screenHeight,screenWidth} } ) => ({
 	ViewBackground: {
 		backgroundColor: color2[type],
-		width: '100%',
-		height: '100%',
+		width: "100%",
+		height:"100%",
+		// flex:1
 	},
 }));

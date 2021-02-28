@@ -1,11 +1,10 @@
 import React, { createContext, useContext, useState } from 'react';
-import { Dimensions, ImageStyle, TextStyle, ViewStyle } from 'react-native';
+import { Dimensions } from 'react-native';
 import initialTheme, { InitialThemeType } from '../constants/theme';
 import { PaletteType } from '../constants/palette';
 import { ChildrenType } from '../constants/globalTypes';
-import { FillProps } from 'react-native-svg';
+import {StylePropertyType}from '../constants/globalTypes'
 //TODO: Improve types.
-type StylePropertyType = ViewStyle | TextStyle | ImageStyle | FillProps;
 
 type StyleObjectType = {
 	[key: string]: StylePropertyType | { [key: string]: any };
