@@ -1,19 +1,17 @@
-// import 'react-native-gesture-handler';
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import LoadingScreen from './LoadingScreen';
+import LandingScreen from './LandingScreen';
 import HomeScreen from './HomeScreen';
-import SettingScreen from './SettingScreen';
-import AnimalNavigator from './AnimalNavigator';
+import SettingsScreen from './SettingsScreen';
+import ItemNavigator from './ItemNavigator';
 
 const Stack = createStackNavigator();
 
-//To Add more screens to HomeStackNavigator (global screens) add name and component in homeStackScreens
 const homeStackScreens = {
-	Home: HomeScreen,
-	SettingScreen,
-	AnimalNavigator,
+	HomeScreen,
+	SettingsScreen,
+	ItemNavigator,
 };
 
 const HomeStackNavigator = () => {
@@ -30,7 +28,7 @@ const AppNavigation = () => {
 	return (
 		<NavigationContainer>
 			<Stack.Navigator mode="card" screenOptions={{ headerShown: false }}>
-				<Stack.Screen name="LoadingScreen" component={LoadingScreen} />
+				<Stack.Screen name="LoadingScreen" component={LandingScreen} />
 				<Stack.Screen name="HomeStackNavigator" component={HomeStackNavigator} />
 			</Stack.Navigator>
 		</NavigationContainer>
@@ -38,15 +36,3 @@ const AppNavigation = () => {
 };
 
 export default AppNavigation;
-
-
-
-//Activate after release 0.3
-// const VehiclesNavigator = () => {
-// 	return (
-// 		<Stack.Navigator>
-// 			<Stack.Screen name="CarScreen" component={MainScreen}></Stack.Screen>
-// 		</Stack.Navigator>
-// 	);
-// };
-

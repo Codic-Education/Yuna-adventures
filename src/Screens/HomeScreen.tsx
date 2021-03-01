@@ -1,30 +1,35 @@
 import React from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { Alert, View } from 'react-native';
-import ViewBackground from '../components/ViewBackground';
+import { View } from 'react-native';
+import ScreenBase from '../components/ScreenBase';
 import { createStyle } from '../providers/Theme';
 import Category from '../components/Category';
 import NavigationHeader from '../components/NavigationHeader';
+//TODO: create & use data provide instead.
+import categories from '../data/categories';
+import { ScreenProps } from '../constants/globalTypes';
 
-const HomeScreen = () => {
-	const navigation = useNavigation();
+const HomeScreen = ({ navigation }: ScreenProps) => {
 	const styles = useStyles();
 
 	return (
-		<ViewBackground>
+		<ScreenBase>
 			<NavigationHeader />
 			<View style={styles.container}>
-				<Category
-					variant="animals"
-					onPress={() => navigation.navigate('AnimalNavigator')}
-				/>
-				<Category
-					variant="vehicles"
-					style={styles.rightSideCategory}
-					onPress={() => Alert.alert('Get driving license first')}
-				/>
+				{Object.entries(categories).map(([name, props], i) => (
+					<Category
+						key={name}
+						{...props}
+						onPress={() =>
+							navigation.navigate('ItemNavigator', {
+								screen: 'ItemSelectorScreen',
+								params: { category: name },
+							})
+						}
+						style={i % 2 === 1 ? styles.rightSideCategory : {}}
+					/>
+				))}
 			</View>
-		</ViewBackground>
+		</ScreenBase>
 	);
 };
 

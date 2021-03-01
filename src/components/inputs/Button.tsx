@@ -4,40 +4,40 @@ import { ChildrenType } from '../../constants/globalTypes';
 import { createStyle } from '../../providers/Theme';
 
 const Button = ({ children, style, ...props }: Props) => {
-    const styles = useStyles();
+	const styles = useStyles();
 
-    return (
-        <TouchableOpacity style={[styles.Button, style]} {...props}>
-            {typeof children === 'string' ? (
-                <Text
-                    style={{
-                        color: style.color ? style.color : '#000000',
-                    }}
-                >
-                    {children}
-                </Text>
-            ) : (
-                children
-            )}
-        </TouchableOpacity>
-    );
+	return (
+		<TouchableOpacity style={[styles.Button, style]} {...props}>
+			{typeof children === 'string' ? (
+				<Text
+					style={{
+						color: style.color ? style.color : '#000000',
+					}}
+				>
+					{children}
+				</Text>
+			) : (
+				children
+			)}
+		</TouchableOpacity>
+	);
 };
 
 export default Button;
 
 const useStyles = createStyle({
-    Button: {
-        // padding: 8,
-        // paddingRight: 16,
-        // paddingLeft: 16,
-        // borderRadius: 5,
-    },
+	Button: {
+		// padding: 8,
+		// paddingRight: 16,
+		// paddingLeft: 16,
+		// borderRadius: 5,
+	},
 });
 
 interface Props extends TouchableOpacityProps, ChildrenType {
-    style?: any;
+	style?: any;
 }
 
 Button.defaultProps = {
-    style: {},
+	style: {},
 };

@@ -3,7 +3,7 @@ import { Dimensions } from 'react-native';
 import initialTheme, { InitialThemeType } from '../constants/theme';
 import { PaletteType } from '../constants/palette';
 import { ChildrenType } from '../constants/globalTypes';
-import {StylePropertyType}from '../constants/globalTypes'
+import { StylePropertyType } from '../constants/globalTypes';
 //TODO: Improve types.
 
 type StyleObjectType = {

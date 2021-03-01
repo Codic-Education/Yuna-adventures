@@ -1,19 +1,16 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import AnimalActionScreen from './Animals/AnimalActionScreen';
-import AnimalScreen from './Animals/AnimalScreen';
-import AnimalSelectorScreen from './Animals/AnimalSelectorScreen';
+import ItemScreen from './ItemScreen';
+import ItemSelectorScreen from './ItemSelectorScreen';
 
 const Stack = createStackNavigator();
 
-//Add name and component to animalScreen Object to add new screens.
 const animalScreens = {
-	AnimalScreen,
-	AnimalSelectorScreen,
-	AnimalActionScreen,
+	ItemSelectorScreen,
+	ItemScreen,
 };
 
-const AnimalNavigator = () => {
+const ItemNavigator = () => {
 	return (
 		<Stack.Navigator mode="card" screenOptions={{ headerShown: false }}>
 			{Object.entries({ ...animalScreens }).map(([name, component]) => (
@@ -23,6 +20,4 @@ const AnimalNavigator = () => {
 	);
 };
 
-export default AnimalNavigator;
-
-
+export default ItemNavigator;
