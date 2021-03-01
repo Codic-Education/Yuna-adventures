@@ -9,21 +9,20 @@ const categories = {
 	animals,
 	vehicles,
 };
-
-const ItemSelectorScreen = ({ route: { params }, navigation }: ScreenProps) => {
-	const items = Object.keys(categories[params.category]);
+const ItemSelectorScreen = ({ route: { params }, navigation }: ScreenProps<object>) => {
+	const items = Object.entries(categories[params.category]);
 
 	return (
 		<>
 			<Text style={{ fontSize: 18, textAlignVertical: 'auto', alignSelf: 'center' }}>
 				{`${params.category} item selector`}
 			</Text>
-			{items.map((name) => (
+			{items.map(([name, data]) => (
 				<Button
 					key={name}
 					style={{ padding: 20, marginBottom: 10, borderWidth: 3, borderColor: 'red' }}
 					onPress={() => {
-						navigation.navigate('ItemScreen', { itemName: name });
+						navigation.navigate('ItemScreen', data);
 					}}
 				>
 					{name}

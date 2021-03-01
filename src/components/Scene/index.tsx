@@ -3,6 +3,7 @@ import LottieView from 'lottie-react-native';
 import farm from './farm.json';
 import forest from './forest.json';
 import { createStyle } from '../../providers/Theme';
+import { SceneVariantType } from '../../constants/globalTypes';
 
 const Scene = ({ variant }: PropsType) => {
 	const styles = useStyle();
@@ -22,7 +23,7 @@ const useStyle = createStyle({
 	},
 });
 
-const getScene = (variant: VariantType) => {
+const getScene = (variant: SceneVariantType) => {
 	switch (variant) {
 		case 'farm':
 			return farm;
@@ -33,8 +34,6 @@ const getScene = (variant: VariantType) => {
 	}
 };
 
-type VariantType = 'farm' | 'forest';
-
 interface PropsType {
-	variant: VariantType;
+	variant: SceneVariantType;
 }

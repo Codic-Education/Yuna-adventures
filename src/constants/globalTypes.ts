@@ -1,6 +1,7 @@
 import { NavigationProp } from '@react-navigation/native';
 import { ReactElement } from 'react';
 import { ImageStyle, TextStyle, ViewStyle } from 'react-native';
+import { AVPlaybackSource } from 'expo-av/build/AV';
 
 export interface ChildrenType {
 	children: string | ReactElement | Array<ReactElement>;
@@ -14,7 +15,26 @@ export interface CategoryType {
 	thumbnailSrc: {};
 }
 
-export type ScreenProps = {
+export type ScreenProps<T> = {
 	navigation: NavigationProp<Record<string, object | undefined>>;
-	route: { params: object; name: 'string'; key: 'string' };
+	route: { params: T; name: 'string'; key: 'string' };
 };
+
+export interface LottieAnimationObjectType {
+	v: string;
+	fr: number;
+	ip: number;
+	op: number;
+	w: number;
+	h: number;
+	nm: string;
+	ddd: number;
+	assets: any[];
+	layers: any[];
+}
+
+export type LottieSourceType = LottieAnimationObjectType;
+
+export type SceneVariantType = 'farm' | 'forest';
+
+export type AnimationObjectType = { animationSrc: LottieSourceType; soundSrc?: AVPlaybackSource };
