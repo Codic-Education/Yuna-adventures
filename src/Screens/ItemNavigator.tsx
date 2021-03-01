@@ -10,7 +10,7 @@ const animalScreens = {
 	ItemScreen,
 };
 
-const AnimalNavigator = () => {
+const ItemNavigator = () => {
 	return (
 		<Stack.Navigator mode="card" screenOptions={{ headerShown: false }}>
 			{Object.entries({ ...animalScreens }).map(([name, component]) => (
@@ -20,4 +20,4 @@ const AnimalNavigator = () => {
 	);
 };
 
-export default AnimalNavigator;
+export default ItemNavigator;

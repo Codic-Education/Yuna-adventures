@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { ScreenProps } from '../constants/globalTypes';
 
-const AnimalActionScreen = ({ route: { params }, navigation }: ScreenProps) => {
+const ItemScreen = ({ route: { params }, navigation }: ScreenProps) => {
 	return (
 		<View>
 			<Text
@@ -31,7 +31,7 @@ const AnimalActionScreen = ({ route: { params }, navigation }: ScreenProps) => {
 	);
 };
 
-export default AnimalActionScreen;
+export default ItemScreen;
 
 const styles = StyleSheet.create({
 	loadingScreen: {

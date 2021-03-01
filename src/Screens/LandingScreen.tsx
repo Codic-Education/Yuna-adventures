@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 import { ScreenProps } from '../constants/globalTypes';
 
-const LoadingScreen = ({ navigation }: ScreenProps) => {
+const LandingScreen = ({ navigation }: ScreenProps) => {
 	return (
 		<View>
 			<TouchableOpacity
@@ -16,7 +16,7 @@ const LoadingScreen = ({ navigation }: ScreenProps) => {
 	);
 };
 
-export default LoadingScreen;
+export default LandingScreen;
 
 const styles = StyleSheet.create({
 	loadingScreen: {
