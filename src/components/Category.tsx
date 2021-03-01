@@ -1,36 +1,25 @@
 import React from 'react';
 import { GestureResponderEvent, View } from 'react-native';
 import LottieView from 'lottie-react-native';
-import Button from '../inputs/Button';
-import animals from './animals.json';
-import vehicles from './vehicles.json';
-import { createStyle } from '../../providers/Theme';
-import TranslatedText from '../TranslatedText';
+import Button from './inputs/Button';
+import { createStyle } from '../providers/Theme';
+import TranslatedText from './TranslatedText';
+import { CategoryType } from '../constants/globalTypes';
 
-const Category = ({ style, variant, onPress }: Props) => {
+const Category = ({ style, titleId, thumbnailSrc, onPress }: Props) => {
 	const styles = useStyles();
-	const data = getCategoryData(variant);
 
 	return (
 		<View style={[styles.Category, style]}>
-			<TranslatedText id={data.textId} style={styles.title} />
+			<TranslatedText id={titleId} style={styles.title} />
 			<Button style={styles.button} onPress={onPress}>
-				<LottieView resizeMode="cover" source={data.source} />
+				<LottieView resizeMode="cover" source={thumbnailSrc} />
 			</Button>
 		</View>
 	);
 };
 
 export default Category;
-
-const getCategoryData = (variant: VariantType) => {
-	switch (variant) {
-		case 'animals':
-			return { textId: 'Category.animals.title', source: animals };
-		case 'vehicles':
-			return { textId: 'Category.vehicles.title', source: vehicles };
-	}
-};
 
 const useStyles = createStyle(({ palette: { color3, type }, dimensions: { screenWidth } }) => ({
 	Category: {
@@ -57,10 +46,7 @@ const useStyles = createStyle(({ palette: { color3, type }, dimensions: { screen
 	},
 }));
 
-interface Props {
-	variant: VariantType;
+interface Props extends CategoryType {
 	style?: {};
 	onPress: (event: GestureResponderEvent) => void;
 }
-
-type VariantType = 'animals' | 'vehicles';

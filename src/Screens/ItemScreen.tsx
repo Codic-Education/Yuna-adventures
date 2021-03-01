@@ -1,16 +1,20 @@
-import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { StyleSheet, Text, View,TouchableOpacity } from 'react-native';
-const AnimalActionScreen = () => {
-	const navigation = useNavigation();
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { ScreenProps } from '../constants/globalTypes';
 
+const AnimalActionScreen = ({ route: { params }, navigation }: ScreenProps) => {
 	return (
 		<View>
-			<Text style={{alignSelf:"center", fontSize:18}}>HERE IS THE LAST SCENE WHERE ITEMS WILL RENDER</Text>
+			<Text
+				style={{
+					marginTop: 20,
+					textAlign: 'center',
+				}}
+			>{`${params.itemName} item`}</Text>
 			<TouchableOpacity
 				style={styles.loadingScreen}
 				onPress={() => {
-					navigation.navigate('AnimalSelectorScreen');
+					navigation.navigate('ItemSelectorScreen');
 				}}
 			>
 				<Text>AnimalSelectorScreen</Text>
@@ -18,7 +22,7 @@ const AnimalActionScreen = () => {
 			<TouchableOpacity
 				style={styles.loadingScreen}
 				onPress={() => {
-					navigation.navigate('Home');
+					navigation.navigate('HomeScreen');
 				}}
 			>
 				<Text>HomeScreen</Text>
@@ -31,10 +35,10 @@ export default AnimalActionScreen;
 
 const styles = StyleSheet.create({
 	loadingScreen: {
-        margin:20,
+		margin: 20,
 		justifyContent: 'center',
 		alignItems: 'center',
-		borderWidth:2,
-		borderColor:"red"
+		borderWidth: 2,
+		borderColor: 'red',
 	},
 });
