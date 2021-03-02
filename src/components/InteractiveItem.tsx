@@ -5,10 +5,15 @@ import { createStyle } from '../providers/Theme';
 import { Audio } from 'expo-av';
 import { Sound } from 'expo-av/build/Audio';
 import { AnimationObjectType, StylePropertyType } from '../constants/globalTypes';
-import { getScaledWidth } from '../utilities';
+import { getScaledHeight, getScaledWidth } from '../utilities';
 const firstAutoClickDelay = 2000;
 
-const InteractiveItem = ({ animationObject, onClickAnimationObject, style }: PropsType) => {
+const InteractiveItem = ({
+	animationObject,
+	onClickAnimationObject,
+	position,
+	style,
+}: PropsType) => {
 	const [isClicked, setIsClicked] = useState(false);
 	const [sound, setSound] = useState<Sound | null>(null);
 	const [duration, setDuration] = useState(0);
@@ -20,6 +25,7 @@ const InteractiveItem = ({ animationObject, onClickAnimationObject, style }: Pro
 	const styles = useStyles({
 		width: activeLottieSrc.w,
 		height: activeLottieSrc.h,
+		position,
 	});
 
 	const handleAnimationFinish = !isClicked
@@ -61,7 +67,7 @@ const InteractiveItem = ({ animationObject, onClickAnimationObject, style }: Pro
 
 	return (
 		<Button
-			style={[styles.InteractiveItem, style]}
+			style={[styles.InteractiveItem, style, position ? styles.specificPosition : {}]}
 			onPress={() => {
 				setIsClicked(true);
 			}}
@@ -91,10 +97,20 @@ const useStyles = createStyle({
 		width: '100%',
 		height: '100%',
 	},
+	specificPosition: {
+		position: 'absolute',
+		marginLeft: ({ width }) => -getScaledWidth(width) / 2,
+		left: ({ position: { left } }) => getScaledWidth(left),
+		bottom: ({ position: { bottom } }) => getScaledHeight(bottom),
+	},
 });
 
 interface PropsType {
 	animationObject: AnimationObjectType;
 	onClickAnimationObject: AnimationObjectType;
-	style: StylePropertyType;
+	style?: StylePropertyType;
+	position?: {
+		left: number;
+		bottom: number;
+	};
 }

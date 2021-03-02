@@ -4,24 +4,20 @@ import InteractiveItem from '../components/InteractiveItem';
 import Scene from '../components/Scene';
 import ScreenBase from '../components/ScreenBase';
 import { AnimationObjectType, LottieSourceType, ScreenProps } from '../constants/globalTypes';
-import { createStyle } from '../providers/Theme';
-import { getScaledWidth, getScaledHeight } from '../utilities';
 
 const ItemScreen = ({
 	route: {
 		params: { scene, animationObject, onClickAnimationObject },
 	},
 }: ScreenProps<ParamsType>) => {
-	const styles = useStyles({ interactiveItemPosition: scene.itemPosition });
-
 	return (
 		<ScreenBase>
 			<Clouds />
 			<Scene lottieFileSrc={scene.source} />
 			<InteractiveItem
+				position={scene.itemPosition}
 				animationObject={animationObject}
 				onClickAnimationObject={onClickAnimationObject}
-				style={styles.interactiveItem}
 			/>
 		</ScreenBase>
 	);
@@ -29,19 +25,12 @@ const ItemScreen = ({
 
 export default ItemScreen;
 
-const useStyles = createStyle({
-	interactiveItem: {
-		top: ({ interactiveItemPosition: { top } }) => getScaledHeight(top),
-		left: ({ interactiveItemPosition: { left } }) => getScaledWidth(left),
-	},
-});
-
 type ParamsType = {
 	scene: {
 		source: LottieSourceType;
 		itemPosition: {
-			top: number;
 			left: number;
+			bottom: number;
 		};
 	};
 	animationObject: AnimationObjectType;
