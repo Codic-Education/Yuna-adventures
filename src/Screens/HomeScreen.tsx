@@ -8,7 +8,7 @@ import NavigationHeader from '../components/NavigationHeader';
 import categories from '../data/categories';
 import { ScreenProps } from '../constants/globalTypes';
 
-const HomeScreen = ({ navigation }: ScreenProps) => {
+const HomeScreen = ({ navigation }: ScreenProps<object>) => {
 	const styles = useStyles();
 
 	return (
