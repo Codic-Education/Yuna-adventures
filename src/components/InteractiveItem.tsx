@@ -53,9 +53,12 @@ const InteractiveItem = ({
 	};
 
 	useEffect(() => {
-		setTimeout(() => {
+		const timeOut = setTimeout(() => {
 			setIsClicked(true);
 		}, firstAutoClickDelay);
+		return () => {
+			clearTimeout(timeOut);
+		};
 	}, []);
 
 	useEffect(() => {

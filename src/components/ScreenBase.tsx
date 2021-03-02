@@ -1,12 +1,12 @@
 import React from 'react';
-import { SafeAreaView } from 'react-native';
+import { View } from 'react-native';
 import { ChildrenType } from '../constants/globalTypes';
 import { createStyle } from '../providers/Theme';
 
 const ScreenBase = ({ children }: ChildrenType) => {
 	const styles = useStyle();
 
-	return <SafeAreaView style={styles.ViewBackground}>{children}</SafeAreaView>;
+	return <View style={styles.ViewBackground}>{children}</View>;
 };
 
 export default ScreenBase;
