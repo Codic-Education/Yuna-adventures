@@ -2,16 +2,18 @@ import React from 'react';
 import { View, Text, Dimensions, Alert } from 'react-native';
 import IconButton from './inputs/IconButton';
 import { createStyle } from '../providers/Theme';
+import { useNavigation } from '@react-navigation/native';
 
 const width = Dimensions.get('screen').width;
 
 const NavigationHeader = () => {
 	const styles = useStyles();
+	const { navigate, goBack } = useNavigation();
 
 	return (
 		<View style={styles.navigationContainer}>
-			<IconButton iconName="home" onPress={() => Alert.alert('You clicked')} />
-			<IconButton iconName="arrow-left" onPress={() => Alert.alert('You clicked')} />
+			<IconButton iconName="home" onPress={() => navigate('HomeScreen')} />
+			<IconButton iconName="arrow-left" onPress={() => goBack()} />
 		</View>
 	);
 };
