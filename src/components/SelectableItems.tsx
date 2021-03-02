@@ -3,9 +3,9 @@ import { GestureResponderEvent, View } from 'react-native';
 import LottieView from 'lottie-react-native';
 import Button from './inputs/Button';
 import { createStyle } from '../providers/Theme';
-import { CategoryType } from '../constants/globalTypes';
+import { CategoryType, LottieSourceType } from '../constants/globalTypes';
 
-const SelectableItems = ({ thumbnailSrc, onPress }: Props) => {
+const SelectableItems = ({ thumbnailSrc, onPress }: PropsType) => {
 	const styles = useStyles();
 
 	return (
@@ -37,7 +37,6 @@ const useStyles = createStyle(({ palette: { color3, type }, dimensions: { screen
 		alignItems: 'center',
 		justifyContent: 'center',
 		margin: 15,
-		zIndex: -1,
 	},
 	LottieView: {
 		width: screenWidth * 0.17,
@@ -50,7 +49,8 @@ const useStyles = createStyle(({ palette: { color3, type }, dimensions: { screen
 	},
 }));
 
-interface Props extends CategoryType {
+interface PropsType  {
 	style?: {};
+	thumbnailSrc: LottieSourceType;
 	onPress: (event: GestureResponderEvent) => void;
 }
