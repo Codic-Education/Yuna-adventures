@@ -7,6 +7,7 @@ import { Sound } from 'expo-av/build/Audio';
 import { AnimationObjectType, StylePropertyType } from '../constants/globalTypes';
 import { getScaledHeight, getScaledWidth } from '../utilities';
 const firstAutoClickDelay = 2000;
+//TODO:Fix animation switching flicker bug "on Android".
 
 const InteractiveItem = ({
 	animationObject,

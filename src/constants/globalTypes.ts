@@ -11,8 +11,7 @@ export type StylePropertyType = ViewStyle | TextStyle | ImageStyle;
 
 export interface CategoryType {
 	titleId: string;
-	//TODO: improve thumbnailSrc type
-	thumbnailSrc: {};
+	thumbnailSrc: LottieSourceType;
 }
 
 export type ScreenProps<T> = {
