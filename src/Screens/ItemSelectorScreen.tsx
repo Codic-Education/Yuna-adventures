@@ -3,12 +3,14 @@ import { Text } from 'react-native';
 import Button from '../components/inputs/Button';
 import { ScreenProps } from '../constants/globalTypes';
 //TODO: create & use data provide instead.
+import scenes from '../data/scenes';
 import animals from '../data/categories/animals';
 import vehicles from '../data/categories/vehicles';
 const categories = {
 	animals,
 	vehicles,
 };
+
 const ItemSelectorScreen = ({ route: { params }, navigation }: ScreenProps<object>) => {
 	const items = Object.entries(categories[params.category]);
 
@@ -22,7 +24,7 @@ const ItemSelectorScreen = ({ route: { params }, navigation }: ScreenProps<objec
 					key={name}
 					style={{ padding: 20, marginBottom: 10, borderWidth: 3, borderColor: 'red' }}
 					onPress={() => {
-						navigation.navigate('ItemScreen', data);
+						navigation.navigate('ItemScreen', { ...data, scene: scenes[data.scene] });
 					}}
 				>
 					{name}

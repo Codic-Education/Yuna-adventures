@@ -9,3 +9,7 @@ const preDimensions = {
 export const getScaledWidth = (initialWidth: number) => {
 	return (Dimensions.get('screen').width * initialWidth) / preDimensions.width;
 };
+
+export const getScaledHeight = (initialHeight: number) => {
+	return (Dimensions.get('screen').height * initialHeight) / preDimensions.height;
+};

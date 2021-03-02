@@ -20,7 +20,7 @@ export type ScreenProps<T> = {
 	route: { params: T; name: 'string'; key: 'string' };
 };
 
-export interface LottieAnimationObjectType {
+interface LottieAnimationObjectType {
 	v: string;
 	fr: number;
 	ip: number;
@@ -34,7 +34,5 @@ export interface LottieAnimationObjectType {
 }
 
 export type LottieSourceType = LottieAnimationObjectType;
-
-export type SceneVariantType = 'farm' | 'forest';
 
 export type AnimationObjectType = { animationSrc: LottieSourceType; soundSrc?: AVPlaybackSource };

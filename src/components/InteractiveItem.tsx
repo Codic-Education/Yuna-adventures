@@ -4,11 +4,12 @@ import Button from './inputs/Button';
 import { createStyle } from '../providers/Theme';
 import { Audio } from 'expo-av';
 import { Sound } from 'expo-av/build/Audio';
-import { AnimationObjectType } from '../constants/globalTypes';
+import { AnimationObjectType, StylePropertyType } from '../constants/globalTypes';
 import { getScaledWidth } from '../utilities';
+const firstAutoClickDelay = 2000;
 
-const InteractiveItem = ({ animationObject, onClickAnimationObject }: PropsType) => {
-	const [isClicked, setIsClicked] = useState(true);
+const InteractiveItem = ({ animationObject, onClickAnimationObject, style }: PropsType) => {
+	const [isClicked, setIsClicked] = useState(false);
 	const [sound, setSound] = useState<Sound | null>(null);
 	const [duration, setDuration] = useState(0);
 
@@ -45,6 +46,12 @@ const InteractiveItem = ({ animationObject, onClickAnimationObject }: PropsType)
 	};
 
 	useEffect(() => {
+		setTimeout(() => {
+			setIsClicked(true);
+		}, firstAutoClickDelay);
+	}, []);
+
+	useEffect(() => {
 		playSound();
 		return () => {
 			sound?.stopAsync();
@@ -54,7 +61,7 @@ const InteractiveItem = ({ animationObject, onClickAnimationObject }: PropsType)
 
 	return (
 		<Button
-			style={styles.InteractiveItem}
+			style={[styles.InteractiveItem, style]}
 			onPress={() => {
 				setIsClicked(true);
 			}}
@@ -89,4 +96,5 @@ const useStyles = createStyle({
 interface PropsType {
 	animationObject: AnimationObjectType;
 	onClickAnimationObject: AnimationObjectType;
+	style: StylePropertyType;
 }

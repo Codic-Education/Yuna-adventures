@@ -1,6 +1,6 @@
 const animals = {
 	pig: {
-		sceneVariant: 'farm',
+		scene: 'farm',
 		animationObject: {
 			animationSrc: require('./pig/default.json'),
 		},
