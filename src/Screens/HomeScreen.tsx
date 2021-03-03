@@ -4,12 +4,12 @@ import ScreenBase from '../components/ScreenBase';
 import { createStyle } from '../providers/Theme';
 import Category from '../components/Category';
 import NavigationHeader from '../components/NavigationHeader';
-//TODO: create & use data provide instead.
-import categories from '../data/categories';
 import { ScreenProps } from '../constants/globalTypes';
+import { useData } from '../providers/Data';
 
 const HomeScreen = ({ navigation }: ScreenProps<object>) => {
 	const styles = useStyles();
+	const { categories } = useData();
 
 	return (
 		<ScreenBase>
