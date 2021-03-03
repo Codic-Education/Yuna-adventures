@@ -13,4 +13,7 @@ export default {
 			bottom: 248,
 		},
 	},
+	settings: {
+		source: require('./settings.json'),
+	},
 };
