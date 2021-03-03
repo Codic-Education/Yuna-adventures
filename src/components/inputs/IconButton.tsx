@@ -1,32 +1,47 @@
 import React from 'react';
-import { GestureResponderEvent, TouchableOpacity } from 'react-native';
+import { TouchableOpacity, TouchableOpacityProps } from 'react-native';
 import { createStyle } from '../../providers/Theme';
-import { Entypo } from '@expo/vector-icons';
+import * as iconPackages from '@expo/vector-icons';
 
-const IconButton = ({ iconName, onPress }: PropsType) => {
+const IconButton = ({ iconName, packageName, ...props }: PropsType) => {
 	const styles = useStyles();
+	const IconComponent = iconPackages[packageName];
 
 	return (
-		<TouchableOpacity style={styles.btn} onPress={onPress}>
-			<Entypo name={iconName} size={24} color="white" />
+		<TouchableOpacity activeOpacity={0.8} {...props} style={[styles.btn, props.style]}>
+			<IconComponent name={iconName} size={24} color={props.style?.color || 'white'} />
 		</TouchableOpacity>
 	);
 };
 
 export default IconButton;
 
-const useStyles = createStyle(({ palette: { color3, type } }) => ({
+const useStyles = createStyle(({ palette: { color1, color3, type } }) => ({
 	btn: {
 		backgroundColor: color3[type],
 		padding: 18,
 		borderRadius: 60,
 		borderStyle: 'solid',
 		borderWidth: 7,
-		borderColor: '#eee',
+		borderColor: color1[type],
 	},
 }));
 
-interface PropsType {
+interface PropsType extends TouchableOpacityProps {
+	packageName:
+		| 'AntDesign'
+		| 'Entypo'
+		| 'EvilIcons'
+		| 'Feather'
+		| 'FontAwesome'
+		| 'FontAwesome5'
+		| 'Fontisto'
+		| 'Foundation'
+		| 'Ionicons'
+		| 'MaterialCommunityIcons'
+		| 'MaterialIcons'
+		| 'Octicons'
+		| 'SimpleLineIcons'
+		| 'Zocial';
 	iconName: string;
-	onPress: (event: GestureResponderEvent) => void;
 }

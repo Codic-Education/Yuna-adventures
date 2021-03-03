@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
-import { Dimensions } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import initialTheme, { InitialThemeType } from '../constants/theme';
 import { PaletteType } from '../constants/palette';
 import { ChildrenType } from '../constants/globalTypes';
@@ -42,7 +42,7 @@ const ThemeProvider = ({ children }: ChildrenType) => {
 			props
 		);
 
-		return styleObj;
+		return StyleSheet.create(styleObj);
 	};
 
 	return (

@@ -12,12 +12,20 @@ const NavigationHeader = ({ variant }: PropsType) => {
 
 	return variant == 'settings' ? (
 		<View style={styles.navigationSettingsContainer}>
-			<IconButton iconName="cog" onPress={() => navigate('SettingsScreen')} />
+			<IconButton
+				packageName="Entypo"
+				iconName="cog"
+				onPress={() => navigate('SettingsScreen')}
+			/>
 		</View>
 	) : (
 		<View style={styles.navigationContainer}>
-			<IconButton iconName="home" onPress={() => navigate('HomeScreen')} />
-			<IconButton iconName="arrow-left" onPress={() => goBack()} />
+			<IconButton
+				packageName="Entypo"
+				iconName="home"
+				onPress={() => navigate('HomeScreen')}
+			/>
+			<IconButton packageName="Entypo" iconName="arrow-left" onPress={() => goBack()} />
 		</View>
 	);
 };
