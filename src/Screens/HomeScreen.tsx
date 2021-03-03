@@ -13,7 +13,7 @@ const HomeScreen = ({ navigation }: ScreenProps<object>) => {
 
 	return (
 		<ScreenBase>
-			<NavigationHeader />
+			<NavigationHeader variant="settings" />
 			<View style={styles.container}>
 				{Object.entries(categories).map(([name, props], i) => (
 					<Category

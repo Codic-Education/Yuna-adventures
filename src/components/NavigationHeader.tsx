@@ -2,16 +2,26 @@ import React from 'react';
 import { View, Text, Dimensions, Alert } from 'react-native';
 import IconButton from './inputs/IconButton';
 import { createStyle } from '../providers/Theme';
+import { useNavigation } from '@react-navigation/native';
 
 const width = Dimensions.get('screen').width;
 
-const NavigationHeader = () => {
-	const styles = useStyles();
+interface PropsType {
+	variant: string;
+}
 
-	return (
+const NavigationHeader = ({ variant }: PropsType) => {
+	const styles = useStyles();
+	const { navigate, goBack } = useNavigation();
+
+	return variant == 'settings' ? (
+		<View style={styles.navigationSettingsContainer}>
+			<IconButton iconName="cog" onPress={() => navigate('SettingsScreen')} />
+		</View>
+	) : (
 		<View style={styles.navigationContainer}>
-			<IconButton iconName="home" onPress={() => Alert.alert('You clicked')} />
-			<IconButton iconName="arrow-left" onPress={() => Alert.alert('You clicked')} />
+			<IconButton iconName="home" onPress={() => navigate('HomeScreen')} />
+			<IconButton iconName="arrow-left" onPress={() => goBack()} />
 		</View>
 	);
 };
@@ -28,7 +38,19 @@ const useStyles = createStyle(({ dimensions: { screenWidth } }) => ({
 		paddingHorizontal: 5,
 		position: 'absolute',
 		top: 0,
-		left: 0,
+		right: 0,
+		zIndex: 10,
+	},
+	navigationSettingsContainer: {
+		width: screenWidth,
+		flexDirection: 'row-reverse',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		paddingVertical: 5,
+		paddingHorizontal: 5,
+		position: 'absolute',
+		top: 0,
+		right: 0,
 		zIndex: 10,
 	},
 }));
