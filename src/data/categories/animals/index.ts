@@ -16,26 +16,26 @@ const animals = {
 	monkey: {
 		scene: 'farm',
 		animationObject: {
-			animationSrc: require('./pig/default.json'),
+			animationSrc: require('./monkey/default.json'),
 		},
 		onClickAnimationObject: {
-			animationSrc: require('./pig/sounding.json'),
-			soundSrc: require('./pig/sounding.wav'),
+			animationSrc: require('./monkey/sounding.json'),
+			soundSrc: require('./monkey/sounding.wav'),
 		},
 
-		thumbnailSrc: require('./pig/default.json'),
+		thumbnailSrc: require('./monkey/default.json'),
 	},
-	pig3: {
+	horse: {
 		scene: 'farm',
 		animationObject: {
-			animationSrc: require('./pig/default.json'),
+			animationSrc: require('./horse/default.json'),
 		},
 		onClickAnimationObject: {
-			animationSrc: require('./pig/sounding.json'),
-			soundSrc: require('./pig/sounding.wav'),
+			animationSrc: require('./horse/sounding.json'),
+			// soundSrc: require('./pig/sounding.wav'),
 		},
 
-		thumbnailSrc: require('./pig/default.json'),
+		thumbnailSrc: require('./horse/default.json'),
 	},
 	pig4: {
 		scene: 'farm',
