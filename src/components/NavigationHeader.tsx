@@ -6,10 +6,6 @@ import { useNavigation } from '@react-navigation/native';
 
 const width = Dimensions.get('screen').width;
 
-interface PropsType {
-	variant: string;
-}
-
 const NavigationHeader = ({ variant }: PropsType) => {
 	const styles = useStyles();
 	const { navigate, goBack } = useNavigation();
@@ -54,3 +50,7 @@ const useStyles = createStyle(({ dimensions: { screenWidth } }) => ({
 		zIndex: 10,
 	},
 }));
+
+interface PropsType {
+	variant?: 'settings';
+}

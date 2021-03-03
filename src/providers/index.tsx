@@ -2,12 +2,15 @@ import React from 'react';
 import { ChildrenType } from '../constants/globalTypes';
 import I18n from './Intl';
 import Theme from './Theme';
+import DataProvider from './Data';
 
 const Index = ({ children }: ChildrenType) => {
 	return (
-		<Theme>
-			<I18n>{children}</I18n>
-		</Theme>
+		<DataProvider>
+			<Theme>
+				<I18n>{children}</I18n>
+			</Theme>
+		</DataProvider>
 	);
 };
 

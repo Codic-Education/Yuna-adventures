@@ -73,8 +73,6 @@ const animals = {
 
 		thumbnailSrc: require('./pig/default.json'),
 	},
-	
-	
 };
 
 export default animals;

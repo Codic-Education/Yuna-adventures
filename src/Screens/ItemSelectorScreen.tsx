@@ -5,21 +5,13 @@ import NavigationHeader from '../components/NavigationHeader';
 import { LottieSourceType, ScreenProps } from '../constants/globalTypes';
 import { createStyle } from '../providers/Theme';
 import Clouds from '../components/Clouds';
-//TODO: create & use data provide instead.
-import scenes from '../data/scenes';
-import animals from '../data/categories/animals';
-import vehicles from '../data/categories/vehicles';
 import ScreenBase from '../components/ScreenBase';
+import { useData } from '../providers/Data';
 
-const categories = {
-	animals,
-	vehicles,
-};
 const ItemSelectorScreen = ({ route: { params }, navigation }: ScreenProps<ParamsType>) => {
 	const styles = useStyles();
-
-	 const items = Object.values(categories[params.category]);
-
+	const { categories, scenes } = useData();
+	const items = Object.values(categories[params.category].items);
 
 	const _renderItem = ({ item }: PropsType) => {
 		return (
@@ -35,7 +27,6 @@ const ItemSelectorScreen = ({ route: { params }, navigation }: ScreenProps<Param
 	return (
 		<ScreenBase style={styles.ItemSelectorScreen}>
 			<NavigationHeader />
-
 			<View style={styles.FlatList}>
 				<Clouds />
 				<FlatList
@@ -64,7 +55,7 @@ const useStyles = createStyle({
 });
 
 interface PropsType {
-	item: {thumbnailSrc: LottieSourceType, scene: string};
+	item: { thumbnailSrc: LottieSourceType; scene: string };
 }
 
 type ParamsType = {
