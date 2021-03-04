@@ -3,6 +3,7 @@ import { View, Text, Dimensions, Alert } from 'react-native';
 import IconButton from './inputs/IconButton';
 import { createStyle } from '../providers/Theme';
 import { useNavigation } from '@react-navigation/native';
+import {sendTest} from '../firebase/Utils'
 
 const width = Dimensions.get('screen').width;
 
@@ -12,7 +13,7 @@ const NavigationHeader = ({ variant }: PropsType) => {
 
 	return variant == 'settings' ? (
 		<View style={styles.navigationSettingsContainer}>
-			<IconButton iconName="cog" onPress={() => navigate('SettingsScreen')} />
+			<IconButton iconName="cog" onPress={() => {navigate('SettingsScreen'); sendTest()} } />
 		</View>
 	) : (
 		<View style={styles.navigationContainer}>
