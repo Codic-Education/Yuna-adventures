@@ -1,26 +1,13 @@
-import React, { createContext, useContext, useState } from 'react';
-import { Dimensions, StyleSheet } from 'react-native';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { Dimensions, StyleSheet, ScaledSize } from 'react-native';
 import initialTheme, { InitialThemeType } from '../constants/theme';
 import { PaletteType } from '../constants/palette';
 import { ChildrenType } from '../constants/globalTypes';
 import { StylePropertyType } from '../constants/globalTypes';
-//TODO: Improve types.
 
-type StyleObjectType = {
-	[key: string]: StylePropertyType | { [key: string]: any };
-};
-type StyleFunctionType = (theme: ThemeType) => StyleObjectType;
+const { width: screenWidth, height: screenHeight } = Dimensions.get('screen');
 
-type CreateStylePropsType = StyleObjectType | StyleFunctionType;
-
-interface ThemeType extends InitialThemeType {
-	dimensions: {
-		screenWidth: number;
-		screenHeight: number;
-	};
-}
 const StyleContext = createContext<(params1?: any, params2?: any) => any>(() => {});
-
 const ThemeContext = createContext({
 	setPaletteType: () => {},
 	paletteType: '',
@@ -28,12 +15,22 @@ const ThemeContext = createContext({
 
 const ThemeProvider = ({ children }: ChildrenType) => {
 	const [paletteType, setPaletteType] = useState<PaletteType>('light');
-	const { width: screenWidth, height: screenHeight } = Dimensions.get('screen');
-
+	const [dimensions, setDimensions] = useState({ screenWidth, screenHeight });
 	const theme: ThemeType = {
 		...initialTheme,
 		palette: { ...initialTheme.palette, type: paletteType },
-		dimensions: { screenWidth, screenHeight },
+		dimensions,
+	};
+
+	useEffect(() => {
+		Dimensions.addEventListener('change', handleScreenChange);
+		return () => {
+			Dimensions.removeEventListener('change', handleScreenChange);
+		};
+	}, []);
+
+	const handleScreenChange = ({ screen: { width, height } }: { screen: ScaledSize }) => {
+		setDimensions({ screenWidth: width, screenHeight: height });
 	};
 
 	const createStyle = (style: CreateStylePropsType, props: object) => {
@@ -41,7 +38,6 @@ const ThemeProvider = ({ children }: ChildrenType) => {
 			typeof style === 'function' ? style(theme) : style,
 			props
 		);
-
 		return StyleSheet.create(styleObj);
 	};
 
@@ -80,3 +76,19 @@ const supplyStyleWithProps = (
 		return styleObj;
 	}
 };
+
+//TODO: Improve types.
+
+type StyleObjectType = {
+	[key: string]: StylePropertyType | { [key: string]: any };
+};
+type StyleFunctionType = (theme: ThemeType) => StyleObjectType;
+
+type CreateStylePropsType = StyleObjectType | StyleFunctionType;
+
+interface ThemeType extends InitialThemeType {
+	dimensions: {
+		screenWidth: number;
+		screenHeight: number;
+	};
+}

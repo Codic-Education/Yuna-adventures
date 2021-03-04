@@ -2,6 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import Clouds from '../components/Clouds';
 import IconButton from '../components/inputs/IconButton';
+import NavigationHeader from '../components/NavigationHeader';
 import Scene from '../components/Scene';
 import ScreenBase from '../components/ScreenBase';
 import TranslatedText from '../components/TranslatedText';
@@ -30,6 +31,7 @@ const SettingScreen = ({ navigation }: ScreenProps<undefined>) => {
 
 	return (
 		<ScreenBase style={styles.SettingsScreen}>
+			<NavigationHeader variant="back" />
 			<Clouds />
 			<Scene lottieFileSrc={scenes.settings.source} filter={styles.sceneFilter} />
 			<TranslatedText id="SettingsScreen.title" style={styles.title} />

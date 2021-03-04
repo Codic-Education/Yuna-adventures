@@ -1,6 +1,7 @@
 import React from 'react';
 import Clouds from '../components/Clouds';
 import InteractiveItem from '../components/InteractiveItem';
+import NavigationHeader from '../components/NavigationHeader';
 import Scene from '../components/Scene';
 import ScreenBase from '../components/ScreenBase';
 import { AnimationObjectType, LottieSourceType, ScreenProps } from '../constants/globalTypes';
@@ -12,6 +13,7 @@ const ItemScreen = ({
 }: ScreenProps<ParamsType>) => {
 	return (
 		<ScreenBase>
+			<NavigationHeader />
 			<Clouds />
 			<Scene lottieFileSrc={scene.source} />
 			<InteractiveItem

@@ -26,7 +26,7 @@ const ItemSelectorScreen = ({ route: { params }, navigation }: ScreenProps<Param
 
 	return (
 		<ScreenBase style={styles.ItemSelectorScreen}>
-			<NavigationHeader />
+			<NavigationHeader variant="back" />
 			<View style={styles.FlatList}>
 				<Clouds />
 				<FlatList

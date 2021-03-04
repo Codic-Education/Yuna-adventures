@@ -1,31 +1,37 @@
 import React from 'react';
-import { View, Text, Dimensions, Alert } from 'react-native';
+import { View } from 'react-native';
 import IconButton from './inputs/IconButton';
 import { createStyle } from '../providers/Theme';
 import { useNavigation } from '@react-navigation/native';
 
-const width = Dimensions.get('screen').width;
-
-const NavigationHeader = ({ variant }: PropsType) => {
+const NavigationHeader = ({ variant = 'backAndHome' }: PropsType) => {
 	const styles = useStyles();
 	const { navigate, goBack } = useNavigation();
 
-	return variant == 'settings' ? (
-		<View style={styles.navigationSettingsContainer}>
-			<IconButton
-				packageName="Entypo"
-				iconName="cog"
-				onPress={() => navigate('SettingsScreen')}
-			/>
-		</View>
-	) : (
-		<View style={styles.navigationContainer}>
-			<IconButton
-				packageName="Entypo"
-				iconName="home"
-				onPress={() => navigate('HomeScreen')}
-			/>
-			<IconButton packageName="Entypo" iconName="arrow-left" onPress={() => goBack()} />
+	return (
+		<View style={styles.NavigationHeader}>
+			{variant === 'settings' ? (
+				<IconButton
+					packageName="Entypo"
+					iconName="cog"
+					onPress={() => navigate('SettingsScreen')}
+				/>
+			) : (
+				<>
+					<IconButton
+						packageName="Entypo"
+						iconName="arrow-right"
+						onPress={() => goBack()}
+					/>
+					{variant === 'backAndHome' && (
+						<IconButton
+							packageName="Entypo"
+							iconName="home"
+							onPress={() => navigate('HomeScreen')}
+						/>
+					)}
+				</>
+			)}
 		</View>
 	);
 };
@@ -33,19 +39,7 @@ const NavigationHeader = ({ variant }: PropsType) => {
 export default NavigationHeader;
 
 const useStyles = createStyle(({ dimensions: { screenWidth } }) => ({
-	navigationContainer: {
-		width: screenWidth,
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		paddingVertical: 5,
-		paddingHorizontal: 5,
-		position: 'absolute',
-		top: 0,
-		right: 0,
-		zIndex: 10,
-	},
-	navigationSettingsContainer: {
+	NavigationHeader: {
 		width: screenWidth,
 		flexDirection: 'row-reverse',
 		justifyContent: 'space-between',
@@ -60,5 +54,5 @@ const useStyles = createStyle(({ dimensions: { screenWidth } }) => ({
 }));
 
 interface PropsType {
-	variant?: 'settings';
+	variant?: 'settings' | 'backAndHome' | 'back';
 }
