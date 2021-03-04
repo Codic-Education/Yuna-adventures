@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Dimensions, Alert } from 'react-native';
+import { View, Dimensions } from 'react-native';
 import IconButton from './inputs/IconButton';
 import { createStyle } from '../providers/Theme';
 import { useNavigation } from '@react-navigation/native';

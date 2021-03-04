@@ -1,9 +1,11 @@
+ import {API_KEY, AUTH_DOMAIN, PROJECT_ID, STORAGE_BUCKET, MESSAGING_SENDER_ID, APP_ID} from "@env"
 
-export const firebaseConfig = {
-    apiKey: "AIzaSyA9OHvncdzqWiYV6iIEQAPDZ7FHw-Zu1f8",
-    authDomain: "yunas-adventures.firebaseapp.com",
-    projectId: "yunas-adventures",
-    storageBucket: "yunas-adventures.appspot.com",
-    messagingSenderId: "728965832317",
-    appId: "1:728965832317:web:92ce4902543945866f5b14"
-  };
+export const firebaseConfig={
+    apiKey: API_KEY,
+    authDomain: AUTH_DOMAIN,
+    projectId:PROJECT_ID,
+    storageBucket:STORAGE_BUCKET,
+    messagingSenderId:MESSAGING_SENDER_ID,
+    appId:APP_ID,
+}
+
