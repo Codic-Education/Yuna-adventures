@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image } from 'react-native';
+import { View } from 'react-native';
 import Clouds from '../components/Clouds';
 import IconButton from '../components/inputs/IconButton';
 import Scene from '../components/Scene';
@@ -7,8 +7,15 @@ import ScreenBase from '../components/ScreenBase';
 import TranslatedText from '../components/TranslatedText';
 import { ScreenProps } from '../constants/globalTypes';
 import { useData } from '../providers/Data';
+import { useIntl } from '../providers/Intl';
+import { useSound } from '../providers/Sound';
 import { createStyle } from '../providers/Theme';
 import { getScaledHeight, getScaledWidth } from '../utilities';
+
+const languagesFlags = {
+	en: 'united-kingdom',
+	sv: 'sweden',
+};
 
 const dimensions = {
 	width: 1247,
@@ -18,6 +25,8 @@ const dimensions = {
 const SettingScreen = ({ navigation }: ScreenProps<undefined>) => {
 	const styles = useStyles();
 	const { scenes } = useData();
+	const { resumeBackgroundSound, pauseBackgroundSound, isBackgroundSoundActive } = useSound();
+	const { lang, setLang } = useIntl();
 
 	return (
 		<ScreenBase style={styles.SettingsScreen}>
@@ -29,10 +38,23 @@ const SettingScreen = ({ navigation }: ScreenProps<undefined>) => {
 					style={styles.iconButton}
 					packageName="MaterialIcons"
 					iconName="audiotrack"
-					onPress={() => {}}
+					inactive={!isBackgroundSoundActive}
+					redStroke={!isBackgroundSoundActive}
+					onPress={() => {
+						isBackgroundSoundActive ? pauseBackgroundSound() : resumeBackgroundSound();
+					}}
 				/>
-				<IconButton style={styles.iconButton} flag="united-kingdom" onPress={() => {}} />
-				<IconButton style={styles.iconButton} flag="sweden" onPress={() => {}} />
+				{Object.entries(languagesFlags).map(([code, flag]) => (
+					<IconButton
+						key={code}
+						style={styles.iconButton}
+						flag={flag}
+						inactive={code !== lang}
+						onPress={() => {
+							setLang(code);
+						}}
+					/>
+				))}
 			</View>
 		</ScreenBase>
 	);
@@ -78,5 +100,9 @@ const useStyles = createStyle(({ palette: { color0, color1, color3, type } }) =>
 		color: color3[type],
 		borderWidth: 0,
 		transform: [{ scale: 1.2 }],
+		shadowOffset: { height: 10, width: 10 },
+		shadowColor: color0[type],
+		shadowOpacity: 0.5,
+		elevation: 10,
 	},
 }));

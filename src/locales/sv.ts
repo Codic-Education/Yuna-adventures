@@ -8,6 +8,6 @@ export default {
 		},
 	},
 	SettingsScreen: {
-		title: 'inställningar',
+		title: 'Inställningar',
 	},
 };

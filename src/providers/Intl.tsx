@@ -5,18 +5,6 @@ import en from '../locales/en';
 import sv from '../locales/sv';
 import { ChildrenType } from '../constants/globalTypes';
 
-type languageKeyType = 'en' | 'sv';
-
-type languagesType = {
-	[key in 'en' | 'sv']: object;
-};
-
-type ContextProps = {
-	lang: 'en' | 'sv';
-	setLang: Dispatch<SetStateAction<languageKeyType>>;
-	langDir: 'rtl' | 'ltr';
-};
-
 const languages: languagesType = { en, sv };
 i18n.translations = languages;
 
@@ -44,4 +32,16 @@ export default I18nProvider;
 
 const getLangDir = (langCode: string): 'rtl' | 'ltr' => {
 	return ['ar', 'arc', '	az', 'he', 'ku', 'fa', 'ur'].includes(langCode) ? 'rtl' : 'ltr';
+};
+
+type languageKeyType = 'en' | 'sv';
+
+type languagesType = {
+	[key in 'en' | 'sv']: object;
+};
+
+type ContextProps = {
+	lang: 'en' | 'sv';
+	setLang: Dispatch<SetStateAction<languageKeyType>>;
+	langDir: 'rtl' | 'ltr';
 };

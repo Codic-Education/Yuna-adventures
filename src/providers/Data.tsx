@@ -2,18 +2,22 @@ import React, { createContext, useContext, useState } from 'react';
 import { ChildrenType } from '../constants/globalTypes';
 import categoriesObj from '../data/categories';
 import scenesObj from '../data/scenes';
+import yunaObj from '../data/Yuna';
 
-const DataContext = createContext<DataPropsType>({ categories: {}, scenes: {} });
+const DataContext = createContext<DataPropsType>({ categories: {}, scenes: {}, yuna: {} });
 
 const DataProvider = ({ children }: ChildrenType) => {
 	const [categories, setCategories] = useState(categoriesObj);
 	const [scenes, setScenes] = useState(scenesObj);
+	const [yuna, setYuna] = useState(yunaObj);
 
-	return <DataContext.Provider value={{ categories, scenes }}>{children}</DataContext.Provider>;
+	return (
+		<DataContext.Provider value={{ categories, scenes, yuna }}>{children}</DataContext.Provider>
+	);
 };
 
 export default DataProvider;
 
 export const useData = () => useContext<DataPropsType>(DataContext);
 
-type DataPropsType = { categories: object; scenes: object };
+type DataPropsType = { categories: object; scenes: object; yuna: object };

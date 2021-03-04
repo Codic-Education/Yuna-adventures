@@ -13,6 +13,7 @@ export interface PaletteObjectType {
 	color2: PaletteColor;
 	color3: PaletteColor;
 	color4: PaletteColor;
+	color5: PaletteColor;
 }
 
 const palette: PaletteObjectType = {
@@ -22,6 +23,7 @@ const palette: PaletteObjectType = {
 	color2: { light: '#ADE5EF' },
 	color3: { light: '#4E184B' },
 	color4: { light: '#5F95B3' },
+	color5: { light: '#CC5252' },
 };
 
 export default palette;
