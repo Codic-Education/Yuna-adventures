@@ -66,7 +66,9 @@ const supplyStyleWithProps = (
 					case 'function':
 						return [key, value(props)];
 					case 'object':
-						return [key, supplyStyleWithProps(value, props)];
+						return Array.isArray(value)
+							? [key, value]
+							: [key, supplyStyleWithProps(value, props)];
 					default:
 						return [key, value];
 				}

@@ -25,7 +25,6 @@ const InteractiveItem = ({
 
 	const styles = useStyles({
 		width: activeLottieSrc.w,
-		height: activeLottieSrc.h,
 		position,
 	});
 
@@ -95,7 +94,6 @@ export default InteractiveItem;
 const useStyles = createStyle({
 	InteractiveItem: {
 		width: ({ width }) => getScaledWidth(width),
-		aspectRatio: ({ width, height }) => width / height,
 	},
 	lottieView: {
 		width: '100%',

@@ -1,3 +1,3 @@
 export default {
-	//settings: require('./settings.json'),
+	settings: require('./settings.json'),
 };

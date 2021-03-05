@@ -12,6 +12,7 @@ import { useIntl } from '../providers/Intl';
 import { useSound } from '../providers/Sound';
 import { createStyle } from '../providers/Theme';
 import { getScaledHeight, getScaledWidth } from '../utilities';
+import LottieView from 'lottie-react-native';
 
 const languagesFlags = {
 	en: 'united-kingdom',
@@ -24,10 +25,10 @@ const dimensions = {
 };
 
 const SettingScreen = ({ navigation }: ScreenProps<undefined>) => {
-	const styles = useStyles();
-	const { scenes } = useData();
+	const { scenes, yuna } = useData();
 	const { resumeBackgroundSound, pauseBackgroundSound, isBackgroundSoundActive } = useSound();
 	const { lang, setLang } = useIntl();
+	const styles = useStyles({ yunaWidth: yuna?.settings.w });
 
 	return (
 		<ScreenBase style={styles.SettingsScreen}>
@@ -58,6 +59,15 @@ const SettingScreen = ({ navigation }: ScreenProps<undefined>) => {
 					/>
 				))}
 			</View>
+			{yuna?.settings && (
+				<LottieView
+					source={yuna.settings}
+					autoPlay
+					loop
+					style={styles.yuna}
+					resizeMode="contain"
+				/>
+			)}
 		</ScreenBase>
 	);
 };
@@ -106,5 +116,11 @@ const useStyles = createStyle(({ palette: { color0, color1, color3, type } }) =>
 		shadowColor: color0[type],
 		shadowOpacity: 0.5,
 		elevation: 10,
+	},
+	yuna: {
+		width: ({ yunaWidth }) => getScaledWidth(yunaWidth),
+		position: 'absolute',
+		bottom: 0,
+		left: ({ yunaWidth }) => -getScaledWidth(yunaWidth * 0.03),
 	},
 }));
