@@ -21,5 +21,5 @@ const useStyle = createStyle(({ palette: { color2, type } }) => ({
 }));
 
 interface PropsType extends ChildrenType {
-	style: StylePropertyType;
+	style?: StylePropertyType;
 }

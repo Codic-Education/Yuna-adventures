@@ -7,4 +7,7 @@ export default {
 			title: 'Vehicles',
 		},
 	},
+	SettingsScreen: {
+		title: 'Settings',
+	},
 };

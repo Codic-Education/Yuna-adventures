@@ -6,7 +6,7 @@ import Screens from './src/Screens';
 const App = () => {
 	return (
 		<Providers>
-			<StatusBar style="light" />
+			<StatusBar style="light" hidden />
 			<Screens />
 		</Providers>
 	);

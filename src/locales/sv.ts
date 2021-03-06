@@ -7,4 +7,7 @@ export default {
 			title: 'Fordon',
 		},
 	},
+	SettingsScreen: {
+		title: 'Inställningar',
+	},
 };
