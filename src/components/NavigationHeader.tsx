@@ -15,12 +15,13 @@ const NavigationHeader = ({ variant = 'backAndHome' }: PropsType) => {
 					packageName="Entypo"
 					iconName="cog"
 					onPress={() => navigate('SettingsScreen')}
+					style={styles.settingsButton}
 				/>
 			) : (
 				<>
 					<IconButton
 						packageName="Entypo"
-						iconName="arrow-right"
+						iconName="arrow-left"
 						onPress={() => goBack()}
 					/>
 					{variant === 'backAndHome' && (
@@ -41,7 +42,7 @@ export default NavigationHeader;
 const useStyles = createStyle(({ dimensions: { screenWidth } }) => ({
 	NavigationHeader: {
 		width: screenWidth,
-		flexDirection: 'row-reverse',
+		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
 		paddingVertical: 5,
@@ -50,6 +51,10 @@ const useStyles = createStyle(({ dimensions: { screenWidth } }) => ({
 		top: 0,
 		right: 0,
 		zIndex: 10,
+	},
+	settingsButton: {
+		alignSelf: 'flex-end',
+		//opacity: 0,
 	},
 }));
 

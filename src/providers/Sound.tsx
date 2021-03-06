@@ -2,12 +2,17 @@ import { Audio } from 'expo-av';
 import { Sound } from 'expo-av/build/Audio';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import backgroundSoundSrc from '../assets/sounds/background.wav';
+import { ChildrenType } from '../constants/globalTypes';
 
 const backgroundSoundPlayDelay = 3000;
 
-const SoundContext = createContext({});
+const SoundContext = createContext<ContextPropsType>({
+	resumeBackgroundSound: () => {},
+	pauseBackgroundSound: () => {},
+	isBackgroundSoundActive: true,
+});
 
-const SoundProvide = ({ children }) => {
+const SoundProvide = ({ children }: ChildrenType) => {
 	const [backgroundSound, setBackgroundSound] = useState<Sound | null>(null);
 	const [isBackgroundSoundActive, setIsBackgroundSoundActive] = useState(true);
 
@@ -51,3 +56,9 @@ const SoundProvide = ({ children }) => {
 export default SoundProvide;
 
 export const useSound = () => useContext(SoundContext);
+
+interface ContextPropsType {
+	resumeBackgroundSound: () => void;
+	pauseBackgroundSound: () => void;
+	isBackgroundSoundActive: boolean;
+}

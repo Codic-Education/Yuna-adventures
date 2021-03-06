@@ -13,6 +13,7 @@ import { useSound } from '../providers/Sound';
 import { createStyle } from '../providers/Theme';
 import { getScaledHeight, getScaledWidth } from '../utilities';
 import LottieView from 'lottie-react-native';
+//FIXME: Changing language doesn't not update unless visiting LandingScreen
 
 const languagesFlags = {
 	en: 'united-kingdom',
@@ -28,7 +29,7 @@ const SettingScreen = ({ navigation }: ScreenProps<undefined>) => {
 	const { scenes, yuna } = useData();
 	const { resumeBackgroundSound, pauseBackgroundSound, isBackgroundSoundActive } = useSound();
 	const { lang, setLang } = useIntl();
-	const styles = useStyles({ yunaWidth: yuna?.settings.w });
+	const styles = useStyles({ yunaWidth: yuna?.settings.w, yunaHeight: yuna?.settings.h });
 
 	return (
 		<ScreenBase style={styles.SettingsScreen}>
@@ -100,9 +101,9 @@ const useStyles = createStyle(({ palette: { color0, color1, color3, type } }) =>
 		borderWidth: 8,
 		borderRadius: getScaledWidth(dimensions.width) / 10,
 		borderColor: color1[type],
-		shadowOffset: { height: 10, width: 10 },
+		shadowOffset: { height: 5, width: 5 },
 		shadowColor: color0[type],
-		shadowOpacity: 0.5,
+		shadowOpacity: 0.2,
 		elevation: 10,
 	},
 	iconButton: {
@@ -112,15 +113,12 @@ const useStyles = createStyle(({ palette: { color0, color1, color3, type } }) =>
 		color: color3[type],
 		borderWidth: 0,
 		transform: [{ scale: 1.2 }],
-		shadowOffset: { height: 10, width: 10 },
-		shadowColor: color0[type],
-		shadowOpacity: 0.5,
-		elevation: 10,
 	},
 	yuna: {
 		width: ({ yunaWidth }) => getScaledWidth(yunaWidth),
 		position: 'absolute',
 		bottom: 0,
 		left: ({ yunaWidth }) => -getScaledWidth(yunaWidth * 0.03),
+		bottom: ({ yunaHeight }) => -getScaledHeight(yunaHeight * 0.1),
 	},
 }));

@@ -2,13 +2,14 @@ import React from 'react';
 import LottieView from 'lottie-react-native';
 import def from './default.json';
 import { createStyle } from '../../providers/Theme';
+import { StylePropertyType } from '../../constants/globalTypes';
 
-const Clouds = () => {
+const Clouds = ({ style }: PropsType) => {
 	const styles = useStyle();
 	return (
 		<LottieView
 			source={def}
-			style={styles.Clouds}
+			style={[styles.Clouds, style]}
 			loop
 			autoPlay
 			resizeMode="cover"
@@ -27,3 +28,7 @@ const useStyle = createStyle({
 		left: 0,
 	},
 });
+
+type PropsType = {
+	style?: StylePropertyType;
+};
