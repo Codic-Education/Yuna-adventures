@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useState } from 'react';
 import { ChildrenType } from '../constants/globalTypes';
-import categoriesObj from '../data/categories';
-import scenesObj from '../data/scenes';
-import yunaObj from '../data/Yuna';
+import categoriesObj from '../assets/data/categories';
+import scenesObj from '../assets//data/scenes';
+import yunaObj from '../assets//data/Yuna';
 
 const DataContext = createContext<DataPropsType>({ categories: {}, scenes: {}, yuna: {} });
 
