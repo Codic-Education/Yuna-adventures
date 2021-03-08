@@ -3,7 +3,7 @@ import { GestureResponderEvent, View } from 'react-native';
 import LottieView from 'lottie-react-native';
 import Button from './inputs/Button';
 import { createStyle } from '../providers/Theme';
-import { CategoryType, LottieSourceType } from '../constants/globalTypes';
+import { LottieSourceType } from '../constants/globalTypes';
 
 const SelectableItems = ({ thumbnailSrc, onPress }: PropsType) => {
 	const styles = useStyles();
@@ -49,7 +49,7 @@ const useStyles = createStyle(({ palette: { color3, type }, dimensions: { screen
 	},
 }));
 
-interface PropsType  {
+interface PropsType {
 	style?: {};
 	thumbnailSrc: LottieSourceType;
 	onPress: (event: GestureResponderEvent) => void;

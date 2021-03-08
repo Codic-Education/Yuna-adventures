@@ -1,5 +1,3 @@
-//TODO change to correct object on all animals (not pig)
-
 const animals = {
 	pig: {
 		scene: 'farm',
@@ -32,46 +30,46 @@ const animals = {
 		},
 		onClickAnimationObject: {
 			animationSrc: require('./horse/sounding.json'),
-			// soundSrc: require('./pig/sounding.wav'),
+			soundSrc: require('./horse/sounding.wav'),
 		},
 
 		thumbnailSrc: require('./horse/default.json'),
 	},
-	pig4: {
+	cow: {
 		scene: 'farm',
 		animationObject: {
-			animationSrc: require('./pig/default.json'),
+			animationSrc: require('./cow/default.json'),
 		},
 		onClickAnimationObject: {
-			animationSrc: require('./pig/sounding.json'),
-			soundSrc: require('./pig/sounding.wav'),
+			animationSrc: require('./cow/sounding.json'),
+			soundSrc: require('./cow/sounding.wav'),
 		},
 
-		thumbnailSrc: require('./pig/default.json'),
+		thumbnailSrc: require('./cow/default.json'),
 	},
-	pig5: {
+	dog: {
 		scene: 'farm',
 		animationObject: {
-			animationSrc: require('./pig/default.json'),
+			animationSrc: require('./dog/default.json'),
 		},
 		onClickAnimationObject: {
-			animationSrc: require('./pig/sounding.json'),
-			soundSrc: require('./pig/sounding.wav'),
+			animationSrc: require('./dog/sounding.json'),
+			soundSrc: require('./dog/sounding.wav'),
 		},
 
-		thumbnailSrc: require('./pig/default.json'),
+		thumbnailSrc: require('./dog/default.json'),
 	},
-	pig6: {
+	duck: {
 		scene: 'farm',
 		animationObject: {
-			animationSrc: require('./pig/default.json'),
+			animationSrc: require('./duck/default.json'),
 		},
 		onClickAnimationObject: {
-			animationSrc: require('./pig/sounding.json'),
-			soundSrc: require('./pig/sounding.wav'),
+			animationSrc: require('./duck/sounding.json'),
+			soundSrc: require('./duck/sounding.wav'),
 		},
 
-		thumbnailSrc: require('./pig/default.json'),
+		thumbnailSrc: require('./duck/default.json'),
 	},
 };
 
