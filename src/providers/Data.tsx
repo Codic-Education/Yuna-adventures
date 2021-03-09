@@ -20,4 +20,8 @@ export default DataProvider;
 
 export const useData = () => useContext<DataPropsType>(DataContext);
 
-type DataPropsType = { categories: object; scenes: object; yuna: object };
+type DataPropsType = {
+	categories: { [key: string]: any };
+	scenes: { [key: string]: any };
+	yuna: { [key: string]: any };
+};

@@ -26,6 +26,7 @@ const HomeScreen = ({ navigation }: ScreenProps<object>) => {
 							})
 						}
 						style={i % 2 === 1 ? styles.rightSideCategory : {}}
+						disabled={name === 'animals' ? false : true}
 					/>
 				))}
 			</View>

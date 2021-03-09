@@ -1,56 +1,58 @@
 import React from 'react';
-import { GestureResponderEvent, View } from 'react-native';
+import { GestureResponderEvent } from 'react-native';
 import LottieView from 'lottie-react-native';
 import Button from './inputs/Button';
 import { createStyle } from '../providers/Theme';
-import { LottieSourceType } from '../constants/globalTypes';
+import { LottieSourceType, StylePropertyType } from '../constants/globalTypes';
+import { getScaledHeight, getScaledWidth } from '../utilities';
 
-const SelectableItems = ({ thumbnailSrc, onPress }: PropsType) => {
-	const styles = useStyles();
+const SelectableItemsWidth = 425.84;
+
+const SelectableItems = ({ thumbnailSrc, onPress, lottieViewStyle }: PropsType) => {
+	const styles = useStyles({
+		thumbnailWidth: getScaledWidth(thumbnailSrc?.w),
+	});
 
 	return (
-		<Button style={styles.button} onPress={onPress}>
-			<LottieView style={styles.LottieView} autoPlay source={thumbnailSrc} />
+		<Button style={styles.SelectableItems} onPress={onPress}>
+			<LottieView
+				style={[styles.lottieView, lottieViewStyle]}
+				autoPlay
+				source={thumbnailSrc}
+				resizeMode="contain"
+			/>
 		</Button>
 	);
 };
 
 export default SelectableItems;
 
-const useStyles = createStyle(({ palette: { color3, type }, dimensions: { screenWidth } }) => ({
+const useStyles = createStyle(({ palette: { color1, color3, type } }) => ({
 	SelectableItems: {
-		alignItems: 'center',
-		justifyContent: 'center',
-		margin: 15,
-		zIndex: -1,
+		width: getScaledWidth(SelectableItemsWidth),
+		height: getScaledHeight(SelectableItemsWidth),
+		borderWidth: 10,
+		borderColor: color1[type],
+		backgroundColor: color3[type],
+		borderRadius: 15,
+		shadowOffset: { height: 5, width: 5 },
+		shadowColor: color3[type],
+		shadowOpacity: 0.3,
+		elevation: 5,
+		margin: 6,
 	},
-
-	button: {
-		width: screenWidth * 0.2,
-		height: screenWidth * 0.2,
-		borderWidth: 8,
-		borderColor: '#fff',
-		backgroundColor: '#4E184B',
-		borderRadius: 10,
-		position: 'relative',
-		zIndex: -1,
-		alignItems: 'center',
-		justifyContent: 'center',
-		margin: 15,
-	},
-	LottieView: {
-		width: screenWidth * 0.17,
-		height: screenWidth * 0.17,
+	lottieView: {
+		width: ({ thumbnailWidth }) => thumbnailWidth * 0.7,
 		marginLeft: 0,
 		position: 'absolute',
-		bottom: -3,
-		right: -5,
-		zIndex: 10,
+		bottom: 0,
+		right: '-5%',
 	},
 }));
 
 interface PropsType {
-	style?: {};
+	style?: StylePropertyType;
 	thumbnailSrc: LottieSourceType;
 	onPress: (event: GestureResponderEvent) => void;
+	lottieViewStyle?: StylePropertyType;
 }

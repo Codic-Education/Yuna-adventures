@@ -1,10 +1,10 @@
-const vehicles = {
-	car: {
+const vehicles = [
+	{
 		title: 'car screen',
 	},
-	bus: {
+	{
 		title: 'bus screen',
 	},
-};
+];
 
 export default vehicles;
