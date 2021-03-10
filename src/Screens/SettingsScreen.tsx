@@ -13,7 +13,6 @@ import { useSound } from '../providers/Sound';
 import { createStyle } from '../providers/Theme';
 import { getScaledHeight, getScaledWidth } from '../utilities';
 import LottieView from 'lottie-react-native';
-//FIXME: Changing language doesn't not update unless visiting LandingScreen
 
 const languagesFlags = {
 	en: 'united-kingdom',
@@ -29,7 +28,7 @@ const SettingScreen = ({ navigation }: ScreenProps<undefined>) => {
 	const { scenes, yuna } = useData();
 	const { resumeBackgroundSound, pauseBackgroundSound, isBackgroundSoundActive } = useSound();
 	const { lang, setLang } = useIntl();
-	const styles = useStyles({ yunaWidth: yuna?.settings.w, yunaHeight: yuna?.settings.h });
+	const styles = useStyles({ yunaWidth: yuna?.settings.w });
 
 	return (
 		<ScreenBase style={styles.SettingsScreen}>
@@ -118,7 +117,6 @@ const useStyles = createStyle(({ palette: { color0, color1, color3, type } }) =>
 		width: ({ yunaWidth }) => getScaledWidth(yunaWidth),
 		position: 'absolute',
 		bottom: 0,
-		left: ({ yunaWidth }) => -getScaledWidth(yunaWidth * 0.03),
-		bottom: ({ yunaHeight }) => -getScaledHeight(yunaHeight * 0.1),
+		left: ({ yunaWidth }) => -getScaledWidth(yunaWidth * 0.01),
 	},
 }));

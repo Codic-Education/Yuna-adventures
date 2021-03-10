@@ -1,5 +1,5 @@
 import React from 'react';
-import { GestureResponderEvent, View } from 'react-native';
+import { GestureResponderEvent, TouchableOpacityProps, View } from 'react-native';
 import LottieView from 'lottie-react-native';
 import Button from './inputs/Button';
 import { createStyle } from '../providers/Theme';
@@ -8,24 +8,24 @@ import { CategoryType } from '../constants/globalTypes';
 import Clouds from './Clouds';
 import { getScaledWidth } from '../utilities';
 
-const Category = ({ style, titleId, thumbnailSrc, onPress }: Props) => {
+const Category = ({ style, titleId, thumbnailSrc, onPress, ...props }: Props) => {
 	const styles = useStyles({ buttonWidth: thumbnailSrc.w, buttonHeight: thumbnailSrc.h });
 
 	return (
-		<View style={[styles.Category, style]}>
+		<Button style={[styles.Category, style]} onPress={onPress} {...props}>
 			<TranslatedText id={titleId} style={styles.title} />
-			<Button style={styles.button} onPress={onPress}>
+			<View style={styles.button}>
 				<Clouds style={{ top: 10 }} />
 				<LottieView resizeMode="cover" source={thumbnailSrc} autoPlay loop />
-			</Button>
-		</View>
+			</View>
+		</Button>
 	);
 };
 
 export default Category;
 
 const useStyles = createStyle(
-	({ palette: { color2, color3, color6, type }, dimensions: { screenWidth } }) => ({
+	({ palette: { color0, color2, color3, color6, type }, dimensions: { screenWidth } }) => ({
 		Category: {
 			height: '100%',
 			flex: 1,
@@ -50,11 +50,15 @@ const useStyles = createStyle(
 			overflow: 'hidden',
 			position: 'relative',
 			aspectRatio: ({ buttonWidth, buttonHeight }) => buttonWidth / buttonHeight,
+			shadowOffset: { height: 5, width: 5 },
+			shadowColor: color0[type],
+			shadowOpacity: 0.3,
+			elevation: 5,
 		},
 	})
 );
 
-interface Props extends CategoryType {
+interface Props extends CategoryType, TouchableOpacityProps {
 	style?: {};
 	onPress: (event: GestureResponderEvent) => void;
 }
