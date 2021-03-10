@@ -8,6 +8,7 @@ import Clouds from '../components/Clouds';
 import ScreenBase from '../components/ScreenBase';
 import { useData } from '../providers/Data';
 import { getScaledHeight, getScaledWidth } from '../utilities';
+import Paginator from '../components/Paginator';
 
 const flatListDimensions = {
 	width: 1069,
@@ -34,7 +35,7 @@ const ItemSelectorScreen = ({
 				screen: 'QuizScreen',
 			},
 		]);
-	}, []);
+	}, [levelIndexState]);
 
 	const _renderItem = ({ item }: RenderItemPropsType) => {
 		return (
@@ -53,8 +54,12 @@ const ItemSelectorScreen = ({
 
 	return (
 		<ScreenBase>
-			<NavigationHeader variant="back" />
+			<NavigationHeader variant="home" />
 			<Clouds />
+			<Paginator
+				state={[levelIndexState, setLevelIndexState]}
+				lastIndex={categories[category].items.length - 1}
+			/>
 			<FlatList
 				style={styles.flatList}
 				contentContainerStyle={styles.contentContainerStyle}
