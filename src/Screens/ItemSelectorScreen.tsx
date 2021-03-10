@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
-import SelectableItems from '../components/SelectableItems';
+import SelectableItem, { SelectableItemWidth } from '../components/SelectableItem';
 import NavigationHeader from '../components/NavigationHeader';
 import { LottieSourceType, ScreenProps } from '../constants/globalTypes';
 import { createStyle } from '../providers/Theme';
@@ -38,7 +38,7 @@ const ItemSelectorScreen = ({
 
 	const _renderItem = ({ item }: RenderItemPropsType) => {
 		return (
-			<SelectableItems
+			<SelectableItem
 				thumbnailSrc={item.thumbnailSrc}
 				onPress={() => {
 					navigation.navigate(item.screen ? 'QuizScreen' : 'ItemScreen', {
@@ -83,6 +83,8 @@ const useStyles = createStyle({
 		alignSelf: 'center',
 		width: getScaledWidth(flatListDimensions.width),
 		height: getScaledHeight(flatListDimensions.height),
+		maxWidth: 2.5 * getScaledWidth(SelectableItemWidth),
+		maxHeight: 2.5 * getScaledWidth(SelectableItemWidth),
 	},
 	columnWrapperStyle: {
 		justifyContent: 'space-between',

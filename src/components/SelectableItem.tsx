@@ -6,9 +6,9 @@ import { createStyle } from '../providers/Theme';
 import { LottieSourceType, StylePropertyType } from '../constants/globalTypes';
 import { getScaledHeight, getScaledWidth } from '../utilities';
 
-const SelectableItemsWidth = 425.84;
+export const SelectableItemWidth: number = 425.84;
 
-const SelectableItems = ({ thumbnailSrc, onPress, lottieViewStyle }: PropsType) => {
+const SelectableItem = ({ thumbnailSrc, onPress, lottieViewStyle }: PropsType) => {
 	const styles = useStyles({
 		thumbnailWidth: getScaledWidth(thumbnailSrc?.w),
 	});
@@ -25,12 +25,13 @@ const SelectableItems = ({ thumbnailSrc, onPress, lottieViewStyle }: PropsType) 
 	);
 };
 
-export default SelectableItems;
+export default SelectableItem;
 
 const useStyles = createStyle(({ palette: { color1, color3, type } }) => ({
 	SelectableItems: {
-		width: getScaledWidth(SelectableItemsWidth),
-		height: getScaledHeight(SelectableItemsWidth),
+		width: getScaledWidth(SelectableItemWidth),
+		height: getScaledHeight(SelectableItemWidth),
+		maxHeight: getScaledWidth(SelectableItemWidth),
 		borderWidth: 10,
 		borderColor: color1[type],
 		backgroundColor: color3[type],
