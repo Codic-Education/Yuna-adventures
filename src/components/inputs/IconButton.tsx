@@ -3,24 +3,34 @@ import { TouchableOpacity, TouchableOpacityProps, View } from 'react-native';
 import { createStyle } from '../../providers/Theme';
 import * as iconPackages from '@expo/vector-icons';
 import FlagIcon from 'react-native-ico-flags';
+import { StylePropertyType } from '../../constants/globalTypes';
 
 const IconButton = ({
 	iconName,
 	packageName,
 	flag,
-	style,
+	touchableOpacityStyle,
 	inactive,
 	redStroke,
+	style,
 	...props
 }: PropsType) => {
 	const styles = useStyles();
 	const IconComponent = packageName ? iconPackages[packageName] : undefined;
 
 	return (
-		<View style={inactive && styles.inactive}>
-			<TouchableOpacity style={[styles.btn, style]} activeOpacity={0.8} {...props}>
+		<View style={[style, inactive && styles.inactive]}>
+			<TouchableOpacity
+				style={[styles.btn, touchableOpacityStyle]}
+				activeOpacity={0.8}
+				{...props}
+			>
 				{packageName && iconName && (
-					<IconComponent name={iconName} size={30} color={style?.color || 'white'} />
+					<IconComponent
+						name={iconName}
+						size={30}
+						color={touchableOpacityStyle?.color || 'white'}
+					/>
 				)}
 				{flag && <FlagIcon name={flag} width={30} height={30} />}
 				{redStroke && <View style={styles.redStroke} />}
@@ -86,4 +96,6 @@ type PropsType =
 interface PropsBaseType extends TouchableOpacityProps {
 	inactive?: boolean;
 	redStroke?: boolean;
+	touchableOpacityStyle?: StylePropertyType;
+	style?: StylePropertyType;
 }

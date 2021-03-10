@@ -38,7 +38,7 @@ const SettingScreen = ({ navigation }: ScreenProps<undefined>) => {
 			<TranslatedText id="SettingsScreen.title" style={styles.title} />
 			<View style={styles.settingsBox}>
 				<IconButton
-					style={styles.iconButton}
+					touchableOpacityStyle={styles.iconButton}
 					packageName="MaterialIcons"
 					iconName="audiotrack"
 					inactive={!isBackgroundSoundActive}
@@ -50,7 +50,7 @@ const SettingScreen = ({ navigation }: ScreenProps<undefined>) => {
 				{Object.entries(languagesFlags).map(([code, flag]) => (
 					<IconButton
 						key={code}
-						style={styles.iconButton}
+						touchableOpacityStyle={styles.iconButton}
 						flag={flag}
 						inactive={code !== lang}
 						onPress={() => {
