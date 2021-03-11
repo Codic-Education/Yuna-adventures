@@ -1,26 +1,34 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useState } from 'react';
+import { View } from 'react-native';
 import Clouds from '../components/Clouds';
+import IconButton from '../components/inputs/IconButton';
 import InteractiveItem, {
 	PropsType as InteractiveItemPropsType,
 } from '../components/InteractiveItem';
 import NavigationHeader from '../components/NavigationHeader';
 import Scene from '../components/Scene';
 import ScreenBase from '../components/ScreenBase';
+import StarsProgressIndicator, { ProgressValueType } from '../components/StarsProgressIndicator';
 import { LottieSourceType, ScreenProps } from '../constants/globalTypes';
 import { createStyle } from '../providers/Theme';
+import nextLevelArrow from '../assets/animations/next-level-arrow.json';
+import { StackActions } from '@react-navigation/native';
 
 const QuizScreen = ({
 	route: {
-		params: { scene, items },
+		params: { scene, items, nextLevelData },
 	},
+	navigation: { dispatch },
 }: ScreenProps<ParamsType>) => {
 	const styles = useStyles();
+	const [progress, setProgress] = useState<ProgressValueType>(3);
+
 	return (
 		<ScreenBase>
 			<NavigationHeader />
 			<Clouds />
 			<Scene lottieFileSrc={scene.source} />
+			<StarsProgressIndicator progressValue={progress} />
 			<View style={styles.itemsContainer}>
 				{items.map((item, i) => (
 					<View key={i} style={styles.itemWrapper}>
@@ -33,6 +41,18 @@ const QuizScreen = ({
 					</View>
 				))}
 			</View>
+			<>
+				{progress === 3 && nextLevelData && (
+					<IconButton
+						onPress={() =>
+							dispatch(StackActions.replace(nextLevelData[0], nextLevelData[1]))
+						}
+						lottieFileSrc={nextLevelArrow}
+						style={styles.nextLevelButton}
+						lottieViewStyle={styles.nextLevelArrow}
+					/>
+				)}
+			</>
 		</ScreenBase>
 	);
 };
@@ -48,6 +68,12 @@ const useStyles = createStyle({
 		flex: 1,
 		alignItems: 'center',
 	},
+	nextLevelButton: {
+		position: 'absolute',
+		right: 10,
+		bottom: 10,
+	},
+	nextLevelArrow: { width: 70 },
 });
 
 type ParamsType = {
@@ -55,4 +81,11 @@ type ParamsType = {
 		source: LottieSourceType;
 	};
 	items: [InteractiveItemPropsType];
+	nextLevelData: [
+		string,
+		{
+			category: string;
+			levelIndex: number;
+		}
+	];
 };

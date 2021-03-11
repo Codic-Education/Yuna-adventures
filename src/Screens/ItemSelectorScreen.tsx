@@ -19,7 +19,7 @@ const ItemSelectorScreen = ({
 	route: {
 		params: { category, levelIndex },
 	},
-	navigation,
+	navigation: { navigate, dispatch },
 }: ScreenProps<ParamsType>) => {
 	const styles = useStyles();
 	const [levelIndexState, setLevelIndexState] = useState(levelIndex ? levelIndex - 1 : 0);
@@ -43,9 +43,19 @@ const ItemSelectorScreen = ({
 			<SelectableItem
 				thumbnailSrc={item.thumbnailSrc}
 				onPress={() => {
-					navigation.navigate(item.isQuiz ? 'QuizScreen' : 'ItemScreen', {
+					navigate(item.isQuiz ? 'QuizScreen' : 'ItemScreen', {
 						...item,
 						scene: scenes[item.scene],
+						nextLevelData:
+							item.isQuiz && levelIndexState + 1 < categories[category].items.length
+								? [
+										'ItemSelectorScreen',
+										{
+											category,
+											levelIndex: levelIndexState + 2,
+										},
+								  ]
+								: undefined,
 						items: item.isQuiz
 							? categories[category].items[levelIndexState].items
 							: undefined,
