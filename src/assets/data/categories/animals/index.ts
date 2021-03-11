@@ -13,18 +13,6 @@ const animalsLevels = [
 				thumbnailSrc: require('./pig/default.json'),
 			},
 			{
-				scene: 'forest',
-				animationObject: {
-					animationSrc: require('./monkey/default.json'),
-				},
-				onClickAnimationObject: {
-					animationSrc: require('./monkey/sounding.json'),
-					soundSrc: require('./monkey/sounding.wav'),
-				},
-
-				thumbnailSrc: require('./monkey/default.json'),
-			},
-			{
 				scene: 'farm',
 				animationObject: {
 					animationSrc: require('./horse/default.json'),
@@ -35,6 +23,18 @@ const animalsLevels = [
 				},
 
 				thumbnailSrc: require('./horse/default.json'),
+			},
+			{
+				scene: 'forest',
+				animationObject: {
+					animationSrc: require('./monkey/default.json'),
+				},
+				onClickAnimationObject: {
+					animationSrc: require('./monkey/sounding.json'),
+					soundSrc: require('./monkey/sounding.wav'),
+				},
+
+				thumbnailSrc: require('./monkey/default.json'),
 			},
 		],
 		quiz: {
@@ -47,18 +47,6 @@ const animalsLevels = [
 			{
 				scene: 'farm',
 				animationObject: {
-					animationSrc: require('./cow/default.json'),
-				},
-				onClickAnimationObject: {
-					animationSrc: require('./cow/sounding.json'),
-					soundSrc: require('./cow/sounding.wav'),
-				},
-
-				thumbnailSrc: require('./cow/default.json'),
-			},
-			{
-				scene: 'farm',
-				animationObject: {
 					animationSrc: require('./dog/default.json'),
 				},
 				onClickAnimationObject: {
@@ -67,6 +55,18 @@ const animalsLevels = [
 				},
 
 				thumbnailSrc: require('./dog/default.json'),
+			},
+			{
+				scene: 'farm',
+				animationObject: {
+					animationSrc: require('./cow/default.json'),
+				},
+				onClickAnimationObject: {
+					animationSrc: require('./cow/sounding.json'),
+					soundSrc: require('./cow/sounding.wav'),
+				},
+
+				thumbnailSrc: require('./cow/default.json'),
 			},
 			{
 				scene: 'forest',

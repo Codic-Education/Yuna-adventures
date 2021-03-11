@@ -6,13 +6,14 @@ import { Audio } from 'expo-av';
 import { Sound } from 'expo-av/build/Audio';
 import { AnimationObjectType, StylePropertyType } from '../constants/globalTypes';
 import { getScaledHeight, getScaledWidth } from '../utilities';
-const firstAutoClickDelay = 2000;
+
 //TODO:Fix animation switching flicker bug "on Android".
 
 const InteractiveItem = ({
 	animationObject,
 	onClickAnimationObject,
-	position = { left: 1320, bottom: 248 },
+	position,
+	autoPlay,
 	style,
 }: PropsType) => {
 	const [isClicked, setIsClicked] = useState(false);
@@ -20,11 +21,14 @@ const InteractiveItem = ({
 	const [duration, setDuration] = useState(0);
 
 	const activeLottieSrc = isClicked
-		? onClickAnimationObject.animationSrc
+		? onClickAnimationObject?.animationSrc
+			? onClickAnimationObject.animationSrc
+			: animationObject.animationSrc
 		: animationObject.animationSrc;
 
 	const styles = useStyles({
-		width: activeLottieSrc.w,
+		width: activeLottieSrc?.w,
+		height: activeLottieSrc?.h,
 		position,
 	});
 
@@ -36,7 +40,7 @@ const InteractiveItem = ({
 
 	const playSound = async () => {
 		const activeSoundSrc = isClicked
-			? onClickAnimationObject.soundSrc
+			? onClickAnimationObject?.soundSrc
 			: animationObject.soundSrc;
 
 		if (activeSoundSrc) {
@@ -52,11 +56,14 @@ const InteractiveItem = ({
 	};
 
 	useEffect(() => {
-		const timeOut = setTimeout(() => {
-			setIsClicked(true);
-		}, firstAutoClickDelay);
+		const timeOut =
+			autoPlay && typeof autoPlay === 'number'
+				? setTimeout(() => {
+						setIsClicked(true);
+				  }, autoPlay)
+				: null;
 		return () => {
-			clearTimeout(timeOut);
+			timeOut && clearTimeout(timeOut);
 		};
 	}, []);
 
@@ -72,13 +79,13 @@ const InteractiveItem = ({
 		<Button
 			style={[styles.InteractiveItem, style, position ? styles.specificPosition : {}]}
 			onPress={() => {
-				setIsClicked(true);
+				onClickAnimationObject && setIsClicked(true);
 			}}
 			activeOpacity={1}
 		>
 			<LottieView
 				source={activeLottieSrc}
-				autoPlay
+				autoPlay={isClicked || autoPlay ? true : false}
 				loop={!isClicked}
 				style={styles.lottieView}
 				onAnimationFinish={handleAnimationFinish}
@@ -94,6 +101,7 @@ export default InteractiveItem;
 const useStyles = createStyle({
 	InteractiveItem: {
 		width: ({ width }) => getScaledWidth(width),
+		aspectRatio: ({ width, height }) => width / height,
 	},
 	lottieView: {
 		width: '100%',
@@ -102,17 +110,18 @@ const useStyles = createStyle({
 	specificPosition: {
 		position: 'absolute',
 		marginLeft: ({ width }) => -getScaledWidth(width) / 2,
-		left: ({ position: { left } }) => getScaledWidth(left),
-		bottom: ({ position: { bottom } }) => getScaledHeight(bottom),
+		left: ({ position }) => (position?.left ? getScaledWidth(position.left) : 'auto'),
+		bottom: ({ position }) => (position?.bottom ? getScaledHeight(position.bottom) : 'auto'),
 	},
 });
 
 export interface PropsType {
 	animationObject: AnimationObjectType;
-	onClickAnimationObject: AnimationObjectType;
+	onClickAnimationObject?: AnimationObjectType | undefined;
 	style?: StylePropertyType;
 	position?: {
-		left: number;
-		bottom: number;
+		left?: number;
+		bottom?: number;
 	};
+	autoPlay?: boolean | number;
 }

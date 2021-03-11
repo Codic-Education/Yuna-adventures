@@ -4,12 +4,17 @@ import { createStyle } from '../providers/Theme';
 import { LottieSourceType, StylePropertyType } from '../constants/globalTypes';
 import { View } from 'react-native';
 
-const Scene = ({ lottieFileSrc, filter }: PropsType) => {
+const Scene = ({ lottieFileSrc, filter, autoPlay }: PropsType) => {
 	const styles = useStyle();
 
 	return (
 		<>
-			<LottieView source={lottieFileSrc} style={styles.Scene} resizeMode="cover" autoPlay />
+			<LottieView
+				source={lottieFileSrc}
+				style={styles.Scene}
+				resizeMode="cover"
+				autoPlay={autoPlay}
+			/>
 			{filter && <View style={[styles.Scene, filter]} />}
 		</>
 	);
@@ -30,4 +35,5 @@ const useStyle = createStyle({
 interface PropsType {
 	lottieFileSrc: LottieSourceType;
 	filter?: StylePropertyType;
+	autoPlay?: boolean;
 }
