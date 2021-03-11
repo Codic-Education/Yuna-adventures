@@ -30,9 +30,10 @@ const ItemSelectorScreen = ({
 		setItems([
 			...categories[category].items[levelIndexState].items,
 			{
+				...categories[category].items[levelIndexState].quiz,
 				thumbnailSrc:
 					yuna[categories[category].items[levelIndexState].quiz.thumbnailYunaVariant],
-				screen: 'QuizScreen',
+				isQuiz: true,
 			},
 		]);
 	}, [levelIndexState]);
@@ -42,12 +43,15 @@ const ItemSelectorScreen = ({
 			<SelectableItem
 				thumbnailSrc={item.thumbnailSrc}
 				onPress={() => {
-					navigation.navigate(item.screen ? 'QuizScreen' : 'ItemScreen', {
+					navigation.navigate(item.isQuiz ? 'QuizScreen' : 'ItemScreen', {
 						...item,
 						scene: scenes[item.scene],
+						items: item.isQuiz
+							? categories[category].items[levelIndexState].items
+							: undefined,
 					});
 				}}
-				lottieViewStyle={item.screen ? styles.yunaStyle : {}}
+				lottieViewStyle={item.isQuiz ? styles.yunaStyle : {}}
 			/>
 		);
 	};
@@ -107,7 +111,7 @@ interface RenderItemPropsType {
 	item: {
 		thumbnailSrc: LottieSourceType;
 		scene: string;
-		screen?: string;
+		isQuiz?: boolean;
 	};
 }
 

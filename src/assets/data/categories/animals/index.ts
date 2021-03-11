@@ -38,6 +38,7 @@ const animalsLevels = [
 			},
 		],
 		quiz: {
+			scene: 'nature1',
 			thumbnailYunaVariant: 'cup',
 		},
 	},
@@ -81,6 +82,7 @@ const animalsLevels = [
 			},
 		],
 		quiz: {
+			scene: 'nature1',
 			thumbnailYunaVariant: 'cup',
 		},
 	},

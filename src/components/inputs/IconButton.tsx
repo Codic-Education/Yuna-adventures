@@ -53,6 +53,9 @@ const useStyles = createStyle(({ palette: { color1, color3, color5, type } }) =>
 		alignItems: 'center',
 		justifyContent: 'center',
 		position: 'relative',
+		elevation: 4,
+		shadowOffset: { width: 4, height: 4 },
+		shadowOpacity: 0.5,
 	},
 	inactive: {
 		opacity: 0.8,

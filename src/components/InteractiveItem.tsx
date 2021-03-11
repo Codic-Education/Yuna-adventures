@@ -12,7 +12,7 @@ const firstAutoClickDelay = 2000;
 const InteractiveItem = ({
 	animationObject,
 	onClickAnimationObject,
-	position,
+	position = { left: 1320, bottom: 248 },
 	style,
 }: PropsType) => {
 	const [isClicked, setIsClicked] = useState(false);
@@ -107,7 +107,7 @@ const useStyles = createStyle({
 	},
 });
 
-interface PropsType {
+export interface PropsType {
 	animationObject: AnimationObjectType;
 	onClickAnimationObject: AnimationObjectType;
 	style?: StylePropertyType;
