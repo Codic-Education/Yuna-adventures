@@ -5,6 +5,7 @@ import SplashScreen from './SplashScreen';
 import HomeScreen from './HomeScreen';
 import SettingsScreen from './SettingsScreen';
 import ItemNavigator from './ItemNavigator';
+//TODO activate backAbility false
 
 const Stack = createStackNavigator();
 
