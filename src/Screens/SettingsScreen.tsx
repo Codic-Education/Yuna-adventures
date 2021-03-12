@@ -117,6 +117,6 @@ const useStyles = createStyle(({ palette: { color0, color1, color3, type } }) =>
 		width: ({ yunaWidth }) => getScaledWidth(yunaWidth),
 		position: 'absolute',
 		bottom: 0,
-		left: ({ yunaWidth }) => -getScaledWidth(yunaWidth * 0.01),
+		left: 0,
 	},
 }));

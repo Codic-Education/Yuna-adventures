@@ -14,13 +14,15 @@ const InteractiveItem = ({
 	onClickAnimationObject,
 	position,
 	autoPlay,
+	onPress,
 	style,
+	disabled,
 }: PropsType) => {
-	const [isClicked, setIsClicked] = useState(false);
+	const [isOnClickAnimationActive, setIsOnClickAnimationActive] = useState(false);
 	const [sound, setSound] = useState<Sound | null>(null);
 	const [duration, setDuration] = useState(0);
 
-	const activeLottieSrc = isClicked
+	const activeLottieSrc = isOnClickAnimationActive
 		? onClickAnimationObject?.animationSrc
 			? onClickAnimationObject.animationSrc
 			: animationObject.animationSrc
@@ -32,14 +34,15 @@ const InteractiveItem = ({
 		position,
 	});
 
-	const handleAnimationFinish = !isClicked
-		? () => {}
-		: (isCancelled: boolean) => {
-				!isCancelled && setIsClicked(false);
-		  };
+	const handleAnimationFinish = (isCancelled: boolean) => {
+		if (!isCancelled && isOnClickAnimationActive) {
+			onPress && onPress();
+			setIsOnClickAnimationActive(false);
+		}
+	};
 
 	const playSound = async () => {
-		const activeSoundSrc = isClicked
+		const activeSoundSrc = isOnClickAnimationActive
 			? onClickAnimationObject?.soundSrc
 			: animationObject.soundSrc;
 
@@ -47,7 +50,7 @@ const InteractiveItem = ({
 			const { sound } = await Audio.Sound.createAsync(activeSoundSrc);
 			setDuration((await sound.getStatusAsync()).durationMillis);
 			sound.playAsync();
-			!isClicked && sound.setIsLoopingAsync(true);
+			!isOnClickAnimationActive && sound.setIsLoopingAsync(true);
 			setSound(sound);
 		} else {
 			setSound(null);
@@ -59,7 +62,7 @@ const InteractiveItem = ({
 		const timeOut =
 			autoPlay && typeof autoPlay === 'number'
 				? setTimeout(() => {
-						setIsClicked(true);
+						setIsOnClickAnimationActive(true);
 				  }, autoPlay)
 				: null;
 		return () => {
@@ -73,20 +76,23 @@ const InteractiveItem = ({
 			sound?.stopAsync();
 			sound?.unloadAsync();
 		};
-	}, [isClicked]);
+	}, [isOnClickAnimationActive]);
 
 	return (
 		<Button
 			style={[styles.InteractiveItem, style, position ? styles.specificPosition : {}]}
 			onPress={() => {
-				onClickAnimationObject && setIsClicked(true);
+				if (!disabled) {
+					onClickAnimationObject && setIsOnClickAnimationActive(true);
+					onPress && !onClickAnimationObject && onPress();
+				}
 			}}
 			activeOpacity={1}
 		>
 			<LottieView
 				source={activeLottieSrc}
-				autoPlay={isClicked || autoPlay ? true : false}
-				loop={!isClicked}
+				autoPlay={isOnClickAnimationActive || autoPlay ? true : false}
+				loop={!isOnClickAnimationActive}
 				style={styles.lottieView}
 				onAnimationFinish={handleAnimationFinish}
 				resizeMode="contain"
@@ -124,4 +130,6 @@ export interface PropsType {
 		bottom?: number;
 	};
 	autoPlay?: boolean | number;
+	onPress?: () => void;
+	disabled: boolean;
 }

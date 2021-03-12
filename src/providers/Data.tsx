@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState } from 'react';
 import { ChildrenType } from '../constants/globalTypes';
 import categoriesObj from '../assets/data/categories';
 import scenesObj from '../assets//data/scenes';
-import yunaObj from '../assets//data/Yuna';
+import yunaObj, { YunaVariantsType } from '../assets//data/Yuna';
 
 const DataContext = createContext<DataPropsType>({
 	categories: {},
@@ -29,5 +29,5 @@ export const useData = () => useContext<DataPropsType>(DataContext);
 type DataPropsType = {
 	categories: { [key: string]: any };
 	scenes: { [key: string]: any };
-	yuna: { [key: string]: any };
+	yuna: YunaVariantsType;
 };

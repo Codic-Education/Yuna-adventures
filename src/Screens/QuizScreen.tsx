@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { createRef, useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
 import Clouds from '../components/Clouds';
 import IconButton from '../components/inputs/IconButton';
@@ -13,6 +13,8 @@ import { LottieSourceType, ScreenProps } from '../constants/globalTypes';
 import { createStyle } from '../providers/Theme';
 import nextLevelArrow from '../assets/animations/next-level-arrow.json';
 import { StackActions } from '@react-navigation/native';
+import { getRandomNumbersArray, getScaledWidth } from '../utilities';
+import { useData } from '../providers/Data';
 
 const QuizScreen = ({
 	route: {
@@ -21,13 +23,24 @@ const QuizScreen = ({
 	navigation: { dispatch },
 }: ScreenProps<ParamsType>) => {
 	const styles = useStyles();
-	const [progress, setProgress] = useState<ProgressValueType>(3);
+	const [randomIndexes] = useState(getRandomNumbersArray(0, 2));
+	const [progress, setProgress] = useState<ProgressValueType>(0);
+	const sceneRef = useRef();
+
+	useEffect(() => {
+		progress === 3 && sceneRef.current.play();
+	}, [progress]);
 
 	return (
 		<ScreenBase>
 			<NavigationHeader />
 			<Clouds />
-			<Scene lottieFileSrc={scene.source} />
+			<Scene
+				ref={sceneRef}
+				lottieFileSrc={scene.source}
+				autoPlay={progress === 3}
+				loop={false}
+			/>
 			<StarsProgressIndicator progressValue={progress} />
 			<View style={styles.itemsContainer}>
 				{items.map((item, i) => (
@@ -36,7 +49,18 @@ const QuizScreen = ({
 							{...item}
 							position={{ bottom: i === 1 ? 102 : 309 }}
 							autoPlay
-							onClickAnimationObject={undefined}
+							onClickAnimationObject={
+								i === randomIndexes[progress]
+									? item.onClickAnimationObject
+									: undefined
+							}
+							onPress={() => {
+								i === randomIndexes[progress] &&
+									setProgress(
+										(current): ProgressValueType =>
+											current < 3 ? current + 1 : current
+									);
+							}}
 						/>
 					</View>
 				))}

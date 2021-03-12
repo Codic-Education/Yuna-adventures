@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { View } from 'react-native';
 import LottieView from 'lottie-react-native';
 import star from './default.json';
@@ -9,30 +9,35 @@ const dimensions = { width: 407, height: 156 };
 
 const StarsProgressIndicator = ({ progressValue }: PropTypes) => {
 	const styles = useStyles();
+	const refs = [useRef(), useRef(), useRef()];
+
+	useEffect(() => {
+		progressValue > 0 && progressValue <= 3 && refs[progressValue - 1].current.play();
+	}, [progressValue]);
 
 	return (
 		<View style={styles.StarsProgressIndicator}>
 			<View style={styles.bottomStarsContainer}>
 				<LottieView
+					ref={refs[0]}
 					source={star}
 					style={styles.star}
 					resizeMode="contain"
-					autoPlay={progressValue >= 1}
 					loop={false}
 				/>
 				<LottieView
+					ref={refs[1]}
 					source={star}
 					style={styles.star}
 					resizeMode="contain"
-					autoPlay={progressValue >= 2}
 					loop={false}
 				/>
 			</View>
 			<LottieView
+				ref={refs[2]}
 				source={star}
 				style={[styles.star, styles.middleStar]}
 				resizeMode="contain"
-				autoPlay={progressValue >= 3}
 				loop={false}
 			/>
 		</View>
