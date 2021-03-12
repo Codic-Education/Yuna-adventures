@@ -17,7 +17,14 @@ const homeStackScreens = {
 
 const HomeStackNavigator = () => {
 	return (
-		<Stack.Navigator mode="card" screenOptions={{ headerShown: false }}>
+		<Stack.Navigator
+			mode="card"
+			screenOptions={{
+				headerShown: false,
+				//TODO remove comment to disable ability to go back
+				//	gestureEnabled: false,
+			}}
+		>
 			{Object.entries({ ...homeStackScreens }).map(([name, component]) => (
 				<Stack.Screen key={name} name={name} component={component} />
 			))}
@@ -29,8 +36,20 @@ const AppNavigation = () => {
 	return (
 		<NavigationContainer>
 			<Stack.Navigator mode="card" screenOptions={{ headerShown: false }}>
-				<Stack.Screen name="SplashScreen" component={SplashScreen} />
-				<Stack.Screen name="HomeStackNavigator" component={HomeStackNavigator} />
+				<Stack.Screen
+					options={{ gestureEnabled: false }}
+					//TODO remove comment to disable ability to go back
+					//	gestureEnabled: false,
+					name="SplashScreen"
+					component={SplashScreen}
+				/>
+				<Stack.Screen
+					options={{ gestureEnabled: false }}
+					//TODO remove comment to disable ability to go back
+					//	gestureEnabled: false,
+					name="HomeStackNavigator"
+					component={HomeStackNavigator}
+				/>
 			</Stack.Navigator>
 		</NavigationContainer>
 	);
