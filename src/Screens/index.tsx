@@ -1,10 +1,11 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import LandingScreen from './LandingScreen';
+import SplashScreen from './SplashScreen';
 import HomeScreen from './HomeScreen';
 import SettingsScreen from './SettingsScreen';
 import ItemNavigator from './ItemNavigator';
+//TODO activate backAbility false
 
 const Stack = createStackNavigator();
 
@@ -16,9 +17,20 @@ const homeStackScreens = {
 
 const HomeStackNavigator = () => {
 	return (
-		<Stack.Navigator mode="card" screenOptions={{ headerShown: false }}>
+		<Stack.Navigator
+			mode="card"
+			screenOptions={{
+				headerShown: false,
+			}}
+		>
 			{Object.entries({ ...homeStackScreens }).map(([name, component]) => (
-				<Stack.Screen key={name} name={name} component={component} />
+				<Stack.Screen
+					//TODO remove comment to disable ability to go back
+					// options={{ gestureEnabled: false }}
+					key={name}
+					name={name}
+					component={component}
+				/>
 			))}
 		</Stack.Navigator>
 	);
@@ -28,8 +40,18 @@ const AppNavigation = () => {
 	return (
 		<NavigationContainer>
 			<Stack.Navigator mode="card" screenOptions={{ headerShown: false }}>
-				<Stack.Screen name="LoadingScreen" component={LandingScreen} />
-				<Stack.Screen name="HomeStackNavigator" component={HomeStackNavigator} />
+				<Stack.Screen
+					//TODO remove comment to disable ability to go back
+					// options={{ gestureEnabled: false }}
+					name="SplashScreen"
+					component={SplashScreen}
+				/>
+				<Stack.Screen
+					//TODO remove comment to disable ability to go back
+					// options={{ gestureEnabled: false }}
+					name="HomeStackNavigator"
+					component={HomeStackNavigator}
+				/>
 			</Stack.Navigator>
 		</NavigationContainer>
 	);

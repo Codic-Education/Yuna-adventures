@@ -4,7 +4,11 @@ import categoriesObj from '../assets/data/categories';
 import scenesObj from '../assets//data/scenes';
 import yunaObj from '../assets//data/Yuna';
 
-const DataContext = createContext<DataPropsType>({ categories: {}, scenes: {}, yuna: {} });
+const DataContext = createContext<DataPropsType>({
+	categories: {},
+	scenes: {},
+	yuna: {},
+});
 
 const DataProvider = ({ children }: ChildrenType) => {
 	const [categories, setCategories] = useState(categoriesObj);
@@ -12,7 +16,9 @@ const DataProvider = ({ children }: ChildrenType) => {
 	const [yuna, setYuna] = useState(yunaObj);
 
 	return (
-		<DataContext.Provider value={{ categories, scenes, yuna }}>{children}</DataContext.Provider>
+		<DataContext.Provider value={{ categories, scenes, yuna }}>
+			{children}
+		</DataContext.Provider>
 	);
 };
 
