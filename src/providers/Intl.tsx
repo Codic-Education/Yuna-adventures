@@ -5,13 +5,13 @@ import en from '../locales/en';
 import sv from '../locales/sv';
 import { ChildrenType } from '../constants/globalTypes';
 
-const languages: languagesType = { en, sv };
+const languages: LanguagesType = { en, sv };
 i18n.translations = languages;
 
 const I18nContext = createContext<ContextProps>({});
 
 const I18nProvider = ({ children }: ChildrenType) => {
-	const initialLang: languageKeyType = Object.keys(languages).includes(
+	const initialLang: LanguagesCodesType = Object.keys(languages).includes(
 		Localization.locale.split('-')[0]
 	)
 		? Localization.locale.split('-')[0]
@@ -34,14 +34,14 @@ const getLangDir = (langCode: string): 'rtl' | 'ltr' => {
 	return ['ar', 'arc', '	az', 'he', 'ku', 'fa', 'ur'].includes(langCode) ? 'rtl' : 'ltr';
 };
 
-type languageKeyType = 'en' | 'sv';
+export type LanguagesCodesType = 'en' | 'sv';
 
-type languagesType = {
-	[key in 'en' | 'sv']: object;
+type LanguagesType = {
+	[key in LanguagesCodesType]: object;
 };
 
 type ContextProps = {
-	lang: 'en' | 'sv';
-	setLang: Dispatch<SetStateAction<languageKeyType>>;
+	lang: LanguagesCodesType;
+	setLang: Dispatch<SetStateAction<LanguagesCodesType>>;
 	langDir: 'rtl' | 'ltr';
 };

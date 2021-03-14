@@ -8,13 +8,13 @@ import InteractiveItem, {
 import NavigationHeader from '../components/NavigationHeader';
 import Scene from '../components/Scene';
 import ScreenBase from '../components/ScreenBase';
-import StarsProgressIndicator, { ProgressValueType } from '../components/StarsProgressIndicator';
-import { LottieSourceType, ScreenProps } from '../constants/globalTypes';
+import StarsProgressIndicator from '../components/StarsProgressIndicator';
+import { LottieSourceType, QuizProgressValueType, ScreenProps } from '../constants/globalTypes';
 import { createStyle } from '../providers/Theme';
 import nextLevelArrow from '../assets/animations/next-level-arrow.json';
 import { StackActions } from '@react-navigation/native';
 import { getRandomNumbersArray, getScaledWidth } from '../utilities';
-import { useData } from '../providers/Data';
+import Yuna from '../components/Yuna';
 
 const QuizScreen = ({
 	route: {
@@ -24,7 +24,7 @@ const QuizScreen = ({
 }: ScreenProps<ParamsType>) => {
 	const styles = useStyles();
 	const [randomIndexes] = useState(getRandomNumbersArray(0, 2));
-	const [progress, setProgress] = useState<ProgressValueType>(0);
+	const [progress, setProgress] = useState<QuizProgressValueType>(0);
 	const sceneRef = useRef();
 
 	useEffect(() => {
@@ -57,7 +57,7 @@ const QuizScreen = ({
 							onPress={() => {
 								i === randomIndexes[progress] &&
 									setProgress(
-										(current): ProgressValueType =>
+										(current): QuizProgressValueType =>
 											current < 3 ? current + 1 : current
 									);
 							}}
@@ -65,6 +65,14 @@ const QuizScreen = ({
 					</View>
 				))}
 			</View>
+			<Yuna
+				variant="quiz"
+				progress={progress}
+				itemsData={randomIndexes.map((i) => ({
+					soundSrc: items[i].onClickAnimationObject?.soundSrc,
+					name: items[i].name,
+				}))}
+			/>
 			<>
 				{progress === 3 && nextLevelData && (
 					<IconButton

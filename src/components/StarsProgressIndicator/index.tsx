@@ -4,6 +4,7 @@ import LottieView from 'lottie-react-native';
 import star from './default.json';
 import { createStyle } from '../../providers/Theme';
 import { getScaledHeight, getScaledWidth } from '../../utilities';
+import { QuizProgressValueType } from '../../constants/globalTypes';
 
 const dimensions = { width: 407, height: 156 };
 
@@ -69,8 +70,6 @@ const useStyles = createStyle(() => ({
 	},
 }));
 
-export type ProgressValueType = 0 | 1 | 2 | 3;
-
 interface PropTypes {
-	progressValue: ProgressValueType;
+	progressValue: QuizProgressValueType;
 }

@@ -8,6 +8,7 @@ import { AnimationObjectType, StylePropertyType } from '../constants/globalTypes
 import { getScaledHeight, getScaledWidth } from '../utilities';
 
 //TODO:Fix animation switching flicker bug "on Android".
+//TODO:change position to centerBottomPosition.
 
 const InteractiveItem = ({
 	animationObject,
@@ -50,7 +51,6 @@ const InteractiveItem = ({
 			const { sound } = await Audio.Sound.createAsync(activeSoundSrc);
 			setDuration((await sound.getStatusAsync()).durationMillis);
 			sound.playAsync();
-			!isOnClickAnimationActive && sound.setIsLoopingAsync(true);
 			setSound(sound);
 		} else {
 			setSound(null);
@@ -131,5 +131,5 @@ export interface PropsType {
 	};
 	autoPlay?: boolean | number;
 	onPress?: () => void;
-	disabled: boolean;
+	disabled?: boolean;
 }
