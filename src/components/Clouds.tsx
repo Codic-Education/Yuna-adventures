@@ -1,14 +1,14 @@
 import React from 'react';
 import LottieView from 'lottie-react-native';
-import def from './default.json';
-import { createStyle } from '../../providers/Theme';
-import { StylePropertyType } from '../../constants/globalTypes';
+import cloud from '../assets/animations/cloud.json';
+import { createStyle } from '../providers/Theme';
+import { StylePropertyType } from '../constants/globalTypes';
 
 const Clouds = ({ style }: PropsType) => {
 	const styles = useStyle();
 	return (
 		<LottieView
-			source={def}
+			source={cloud}
 			style={[styles.Clouds, style]}
 			loop
 			autoPlay

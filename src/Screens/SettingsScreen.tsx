@@ -25,10 +25,10 @@ const dimensions = {
 };
 
 const SettingScreen = ({ navigation }: ScreenProps<undefined>) => {
-	const { scenes, yuna } = useData();
+	const { scenes } = useData();
 	const { resumeBackgroundSound, pauseBackgroundSound, isBackgroundSoundActive } = useSound();
 	const { lang, setLang } = useIntl();
-	const styles = useStyles({ yunaWidth: yuna?.settings.w });
+	const styles = useStyles();
 
 	return (
 		<ScreenBase style={styles.SettingsScreen}>
@@ -59,7 +59,7 @@ const SettingScreen = ({ navigation }: ScreenProps<undefined>) => {
 					/>
 				))}
 			</View>
-			{yuna?.settings && <Yuna variant="settings" />}
+			<Yuna variant="settings" />
 		</ScreenBase>
 	);
 };

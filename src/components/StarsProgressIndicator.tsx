@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import { View } from 'react-native';
 import LottieView from 'lottie-react-native';
-import star from './default.json';
-import { createStyle } from '../../providers/Theme';
-import { getScaledHeight, getScaledWidth } from '../../utilities';
-import { QuizProgressValueType } from '../../constants/globalTypes';
+import star from '../assets/animations/star.json';
+import { createStyle } from '../providers/Theme';
+import { getScaledHeight, getScaledWidth } from '../utilities';
+import { QuizProgressValueType } from '../constants/globalTypes';
 
 const dimensions = { width: 407, height: 156 };
 
