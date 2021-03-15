@@ -6,44 +6,51 @@ import { Audio } from 'expo-av';
 import { Sound } from 'expo-av/build/Audio';
 import { AnimationObjectType, StylePropertyType } from '../constants/globalTypes';
 import { getScaledHeight, getScaledWidth } from '../utilities';
-const firstAutoClickDelay = 2000;
+
 //TODO:Fix animation switching flicker bug "on Android".
+//TODO:change position to centerBottomPosition.
 
 const InteractiveItem = ({
 	animationObject,
 	onClickAnimationObject,
 	position,
+	autoPlay,
+	onPress,
 	style,
+	disabled,
 }: PropsType) => {
-	const [isClicked, setIsClicked] = useState(false);
+	const [isOnClickAnimationActive, setIsOnClickAnimationActive] = useState(false);
 	const [sound, setSound] = useState<Sound | null>(null);
 	const [duration, setDuration] = useState(0);
 
-	const activeLottieSrc = isClicked
-		? onClickAnimationObject.animationSrc
+	const activeLottieSrc = isOnClickAnimationActive
+		? onClickAnimationObject?.animationSrc
+			? onClickAnimationObject.animationSrc
+			: animationObject.animationSrc
 		: animationObject.animationSrc;
 
 	const styles = useStyles({
-		width: activeLottieSrc.w,
+		width: activeLottieSrc?.w,
+		height: activeLottieSrc?.h,
 		position,
 	});
 
-	const handleAnimationFinish = !isClicked
-		? () => {}
-		: (isCancelled: boolean) => {
-				!isCancelled && setIsClicked(false);
-		  };
+	const handleAnimationFinish = (isCancelled: boolean) => {
+		if (!isCancelled && isOnClickAnimationActive) {
+			onPress && onPress();
+			setIsOnClickAnimationActive(false);
+		}
+	};
 
 	const playSound = async () => {
-		const activeSoundSrc = isClicked
-			? onClickAnimationObject.soundSrc
+		const activeSoundSrc = isOnClickAnimationActive
+			? onClickAnimationObject?.soundSrc
 			: animationObject.soundSrc;
 
 		if (activeSoundSrc) {
 			const { sound } = await Audio.Sound.createAsync(activeSoundSrc);
 			setDuration((await sound.getStatusAsync()).durationMillis);
 			sound.playAsync();
-			!isClicked && sound.setIsLoopingAsync(true);
 			setSound(sound);
 		} else {
 			setSound(null);
@@ -52,11 +59,14 @@ const InteractiveItem = ({
 	};
 
 	useEffect(() => {
-		const timeOut = setTimeout(() => {
-			setIsClicked(true);
-		}, firstAutoClickDelay);
+		const timeOut =
+			autoPlay && typeof autoPlay === 'number'
+				? setTimeout(() => {
+						setIsOnClickAnimationActive(true);
+				  }, autoPlay)
+				: null;
 		return () => {
-			clearTimeout(timeOut);
+			timeOut && clearTimeout(timeOut);
 		};
 	}, []);
 
@@ -66,20 +76,23 @@ const InteractiveItem = ({
 			sound?.stopAsync();
 			sound?.unloadAsync();
 		};
-	}, [isClicked]);
+	}, [isOnClickAnimationActive]);
 
 	return (
 		<Button
 			style={[styles.InteractiveItem, style, position ? styles.specificPosition : {}]}
 			onPress={() => {
-				setIsClicked(true);
+				if (!disabled) {
+					onClickAnimationObject && setIsOnClickAnimationActive(true);
+					onPress && !onClickAnimationObject && onPress();
+				}
 			}}
 			activeOpacity={1}
 		>
 			<LottieView
 				source={activeLottieSrc}
-				autoPlay
-				loop={!isClicked}
+				autoPlay={isOnClickAnimationActive || autoPlay ? true : false}
+				loop={!isOnClickAnimationActive}
 				style={styles.lottieView}
 				onAnimationFinish={handleAnimationFinish}
 				resizeMode="contain"
@@ -94,6 +107,7 @@ export default InteractiveItem;
 const useStyles = createStyle({
 	InteractiveItem: {
 		width: ({ width }) => getScaledWidth(width),
+		aspectRatio: ({ width, height }) => width / height,
 	},
 	lottieView: {
 		width: '100%',
@@ -102,17 +116,20 @@ const useStyles = createStyle({
 	specificPosition: {
 		position: 'absolute',
 		marginLeft: ({ width }) => -getScaledWidth(width) / 2,
-		left: ({ position: { left } }) => getScaledWidth(left),
-		bottom: ({ position: { bottom } }) => getScaledHeight(bottom),
+		left: ({ position }) => (position?.left ? getScaledWidth(position.left) : 'auto'),
+		bottom: ({ position }) => (position?.bottom ? getScaledHeight(position.bottom) : 'auto'),
 	},
 });
 
-interface PropsType {
+export interface PropsType {
 	animationObject: AnimationObjectType;
-	onClickAnimationObject: AnimationObjectType;
+	onClickAnimationObject?: AnimationObjectType | undefined;
 	style?: StylePropertyType;
 	position?: {
-		left: number;
-		bottom: number;
+		left?: number;
+		bottom?: number;
 	};
+	autoPlay?: boolean | number;
+	onPress?: () => void;
+	disabled?: boolean;
 }

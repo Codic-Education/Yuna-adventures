@@ -1,13 +1,16 @@
 import React from 'react';
 import LottieView from 'lottie-react-native';
 import { useNavigation } from '@react-navigation/core';
-
 import Clouds from '../components/Clouds';
 import ScreenBase from '../components/ScreenBase';
-import CodicLogo from '../assets/data/splash/CodicLogo';
+//import CodicLogo from '../assets/data/splash/CodicLogo';
 import { getScaledHeight, getScaledWidth } from '../utilities';
 import splashObj from '../assets/data/splash';
 import { createStyle } from '../providers/Theme';
+
+//FIXME: codic logo bug
+//TODO: Move related files to assets/animations instead of assets/data
+//TODO: Move CodicLogo & CloudsBottom to components folder or use lottiefiles instead of svg that can be an alternative to avoid actual svg bug.
 
 const SplashAnimations = () => {
 	const navigation = useNavigation();
@@ -24,7 +27,7 @@ const SplashAnimations = () => {
 				loop={false}
 				onAnimationFinish={() => navigation.navigate('HomeStackNavigator')}
 			/>
-			<CodicLogo style={styles.codicLogo} />
+			{/*<CodicLogo style={styles.codicLogo} />*/}
 		</ScreenBase>
 	);
 };

@@ -1,6 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import ItemScreen from './ItemScreen';
+import QuizScreen from './QuizScreen';
 import ItemSelectorScreen from './ItemSelectorScreen';
 
 const Stack = createStackNavigator();
@@ -8,6 +9,7 @@ const Stack = createStackNavigator();
 const animalScreens = {
 	ItemSelectorScreen,
 	ItemScreen,
+	QuizScreen,
 };
 
 const ItemNavigator = () => {

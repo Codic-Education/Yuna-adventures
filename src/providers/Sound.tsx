@@ -21,7 +21,8 @@ const SoundProvide = ({ children }: ChildrenType) => {
 		const { sound } = await Audio.Sound.createAsync(backgroundSoundSrc);
 		sound.setIsLoopingAsync(true);
 		sound.setVolumeAsync(0.05);
-		sound.playAsync();
+		//TODO:Enable backgroundSound
+		//sound.playAsync();
 		setIsBackgroundSoundActive(true);
 		setBackgroundSound(sound);
 	};

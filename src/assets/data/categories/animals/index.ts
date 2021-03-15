@@ -11,18 +11,10 @@ const animalsLevels = [
 					soundSrc: require('./pig/sounding.wav'),
 				},
 				thumbnailSrc: require('./pig/default.json'),
-			},
-			{
-				scene: 'forest',
-				animationObject: {
-					animationSrc: require('./monkey/default.json'),
+				name: {
+					en: require('./pig/name/en.wav'),
+					sv: require('./pig/name/sv.wav'),
 				},
-				onClickAnimationObject: {
-					animationSrc: require('./monkey/sounding.json'),
-					soundSrc: require('./monkey/sounding.wav'),
-				},
-
-				thumbnailSrc: require('./monkey/default.json'),
 			},
 			{
 				scene: 'farm',
@@ -35,26 +27,35 @@ const animalsLevels = [
 				},
 
 				thumbnailSrc: require('./horse/default.json'),
+				name: {
+					en: require('./horse/name/en.wav'),
+					sv: require('./horse/name/sv.wav'),
+				},
+			},
+			{
+				scene: 'forest',
+				animationObject: {
+					animationSrc: require('./monkey/default.json'),
+				},
+				onClickAnimationObject: {
+					animationSrc: require('./monkey/sounding.json'),
+					soundSrc: require('./monkey/sounding.wav'),
+				},
+
+				thumbnailSrc: require('./monkey/default.json'),
+				name: {
+					en: require('./monkey/name/en.wav'),
+					sv: require('./monkey/name/sv.wav'),
+				},
 			},
 		],
 		quiz: {
+			scene: 'nature1',
 			thumbnailYunaVariant: 'cup',
 		},
 	},
 	{
 		items: [
-			{
-				scene: 'farm',
-				animationObject: {
-					animationSrc: require('./cow/default.json'),
-				},
-				onClickAnimationObject: {
-					animationSrc: require('./cow/sounding.json'),
-					soundSrc: require('./cow/sounding.wav'),
-				},
-
-				thumbnailSrc: require('./cow/default.json'),
-			},
 			{
 				scene: 'farm',
 				animationObject: {
@@ -66,6 +67,26 @@ const animalsLevels = [
 				},
 
 				thumbnailSrc: require('./dog/default.json'),
+				name: {
+					en: require('./dog/name/en.wav'),
+					sv: require('./dog/name/sv.wav'),
+				},
+			},
+			{
+				scene: 'farm',
+				animationObject: {
+					animationSrc: require('./cow/default.json'),
+				},
+				onClickAnimationObject: {
+					animationSrc: require('./cow/sounding.json'),
+					soundSrc: require('./cow/sounding.wav'),
+				},
+
+				thumbnailSrc: require('./cow/default.json'),
+				name: {
+					en: require('./cow/name/en.wav'),
+					sv: require('./cow/name/sv.wav'),
+				},
 			},
 			{
 				scene: 'forest',
@@ -78,9 +99,14 @@ const animalsLevels = [
 				},
 
 				thumbnailSrc: require('./duck/default.json'),
+				name: {
+					en: require('./duck/name/en.wav'),
+					sv: require('./duck/name/sv.wav'),
+				},
 			},
 		],
 		quiz: {
+			scene: 'nature1',
 			thumbnailYunaVariant: 'cup',
 		},
 	},

@@ -16,4 +16,7 @@ export default {
 	settings: {
 		source: require('./settings.json'),
 	},
+	nature1: {
+		source: require('./nature1.json'),
+	},
 };
