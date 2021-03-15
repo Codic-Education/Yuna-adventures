@@ -31,7 +31,7 @@ export const useIntl = () => useContext(I18nContext);
 export default I18nProvider;
 
 const getLangDir = (langCode: string): 'rtl' | 'ltr' => {
-	return ['ar', 'arc', '	az', 'he', 'ku', 'fa', 'ur'].includes(langCode) ? 'rtl' : 'ltr';
+	return ['ar', 'arc', 'az', 'he', 'ku', 'fa', 'ur'].includes(langCode) ? 'rtl' : 'ltr';
 };
 
 export type LanguagesCodesType = 'en' | 'sv';

@@ -33,7 +33,7 @@ const ThemeProvider = ({ children }: ChildrenType) => {
 		setDimensions({ screenWidth: width, screenHeight: height });
 	};
 
-	const createStyle = (style: CreateStylePropsType, props: object) => {
+	const createStyle = <A extends unknown>(style: CreateStylePropsType<A>, props: any) => {
 		const styleObj = supplyStyleWithProps(
 			typeof style === 'function' ? style(theme) : style,
 			props
@@ -52,13 +52,14 @@ export default ThemeProvider;
 
 export const useTheme = () => useContext(ThemeContext);
 
-export const createStyle = (style: CreateStylePropsType) => (props?: object) =>
-	useContext(StyleContext)(style, props);
+export const createStyle = <A extends unknown>(style: CreateStylePropsType<A>) => (
+	props?: any
+): { [key in keyof A]: StylePropertyType } => useContext(StyleContext)(style, props);
 
-const supplyStyleWithProps = (
-	styleObj: CreateStylePropsType,
+const supplyStyleWithProps = <T extends unknown>(
+	styleObj: CreateStylePropsType<T>,
 	props: object
-): CreateStylePropsType => {
+): CreateStylePropsType<any> => {
 	if (props) {
 		return Object.fromEntries(
 			Object.entries(styleObj).map(([key, value]) => {
@@ -79,14 +80,18 @@ const supplyStyleWithProps = (
 	}
 };
 
-//TODO: Improve types.
-
-type StyleObjectType = {
-	[key: string]: StylePropertyType | { [key: string]: any };
+type StyleObjectType<A> = {
+	[key in keyof A]:
+		| StylePropertyType
+		| {
+				[k in keyof StylePropertyType]:
+					| ((props: any) => StylePropertyType[k])
+					| StylePropertyType[k];
+		  };
 };
-type StyleFunctionType = (theme: ThemeType) => StyleObjectType;
+type StyleFunctionType<A> = (theme: ThemeType) => StyleObjectType<A>;
 
-type CreateStylePropsType = StyleObjectType | StyleFunctionType;
+type CreateStylePropsType<A> = StyleObjectType<A> | StyleFunctionType<A>;
 
 interface ThemeType extends InitialThemeType {
 	dimensions: {
