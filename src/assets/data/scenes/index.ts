@@ -8,13 +8,11 @@ export default {
 	},
 	forest: {
 		source: require('./forest.json'),
+		backgroundSound: require('./forest.wav'),
 		itemPosition: {
 			left: 1320,
 			bottom: 248,
 		},
-	},
-	settings: {
-		source: require('./settings.json'),
 	},
 	nature1: {
 		source: require('./nature1.json'),

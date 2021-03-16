@@ -7,12 +7,12 @@ import Scene from '../components/Scene';
 import ScreenBase from '../components/ScreenBase';
 import TranslatedText from '../components/TranslatedText';
 import { ScreenProps } from '../constants/globalTypes';
-import { useData } from '../providers/Data';
 import { useIntl } from '../providers/Intl';
 import { useSound } from '../providers/Sound';
 import { createStyle } from '../providers/Theme';
 import { getScaledHeight, getScaledWidth } from '../utilities';
 import Yuna from '../components/Yuna';
+import scene from '../assets/animations/scene-settings.json';
 
 const languagesFlags = {
 	en: 'united-kingdom',
@@ -25,7 +25,6 @@ const dimensions = {
 };
 
 const SettingScreen = ({ navigation }: ScreenProps<undefined>) => {
-	const { scenes } = useData();
 	const { resumeBackgroundSound, pauseBackgroundSound, isBackgroundSoundActive } = useSound();
 	const { lang, setLang } = useIntl();
 	const styles = useStyles();
@@ -34,7 +33,7 @@ const SettingScreen = ({ navigation }: ScreenProps<undefined>) => {
 		<ScreenBase style={styles.SettingsScreen}>
 			<NavigationHeader variant="back" />
 			<Clouds />
-			<Scene lottieFileSrc={scenes.settings.source} filter={styles.sceneFilter} />
+			<Scene lottieFileSrc={scene} filter={styles.sceneFilter} />
 			<TranslatedText id="SettingsScreen.title" style={styles.title} />
 			<View style={styles.settingsBox}>
 				<IconButton
