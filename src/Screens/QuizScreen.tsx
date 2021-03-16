@@ -13,7 +13,7 @@ import { LottieSourceType, QuizProgressValueType, ScreenProps } from '../constan
 import { createStyle } from '../providers/Theme';
 import nextLevelArrow from '../assets/animations/next-level-arrow.json';
 import { StackActions } from '@react-navigation/native';
-import { getRandomNumbersArray, getScaledWidth } from '../utilities';
+import { getRandomNumbersArray } from '../utilities';
 import Yuna from '../components/Yuna';
 
 const QuizScreen = ({
@@ -47,8 +47,7 @@ const QuizScreen = ({
 					<View key={i} style={styles.itemWrapper}>
 						<InteractiveItem
 							{...item}
-							position={{ bottom: i === 1 ? 102 : 309 }}
-							autoPlay
+							centerBottomPosition={{ bottom: i === 1 ? 102 : 309 }}
 							onClickAnimationObject={
 								i === randomIndexes[progress]
 									? item.onClickAnimationObject

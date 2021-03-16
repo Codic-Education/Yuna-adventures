@@ -16,13 +16,14 @@ const Quiz = ({ progress, itemsData }: PropsType) => {
 			animationObject={{
 				animationSrc: yuna.talking,
 				soundSrc: itemsData[progress]?.name[lang],
+				disableSoundLoop: true,
 			}}
 			onClickAnimationObject={{
 				animationSrc: yuna.sounding,
 				soundSrc: itemsData[progress]?.soundSrc,
 			}}
 			style={styles.Yuna}
-			autoPlay
+			renderAsClicked
 		/>
 	);
 };
@@ -35,12 +36,14 @@ const useStyles = createStyle({
 
 export interface PropsType {
 	progress: QuizProgressValueType;
-	itemsData: [
-		{
-			soundSrc: AVPlaybackSource;
-			name: {
-				[key in LanguagesCodesType]: AVPlaybackSource;
-			};
-		}
-	];
+	itemsData:
+		| [
+				{
+					soundSrc: AVPlaybackSource | undefined;
+					name: {
+						[key in LanguagesCodesType]: AVPlaybackSource;
+					};
+				}
+		  ]
+		| any;
 }

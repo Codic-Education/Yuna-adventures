@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import LottieView from 'lottie-react-native';
 import Button from './inputs/Button';
 import { createStyle } from '../providers/Theme';
@@ -7,21 +7,24 @@ import { Sound } from 'expo-av/build/Audio';
 import { AnimationObjectType, StylePropertyType } from '../constants/globalTypes';
 import { getScaledHeight, getScaledWidth } from '../utilities';
 
-//TODO:Fix animation switching flicker bug "on Android".
-//TODO:change position to centerBottomPosition.
-
 const InteractiveItem = ({
 	animationObject,
 	onClickAnimationObject,
-	position,
-	autoPlay,
+	centerBottomPosition,
+	autoClickTimeout = false,
+	renderAsClicked = false,
 	onPress,
 	style,
 	disabled,
 }: PropsType) => {
-	const [isOnClickAnimationActive, setIsOnClickAnimationActive] = useState(false);
-	const [sound, setSound] = useState<Sound | null>(null);
-	const [duration, setDuration] = useState(0);
+	const [isOnClickAnimationActive, setIsOnClickAnimationActive] = useState(
+		renderAsClicked ? true : false
+	);
+	const [sounds] = useState<[Sound, Sound]>([new Audio.Sound(), new Audio.Sound()]);
+	const [durations, setDurations] = useState([0, 0]);
+	const animationRef = useRef(null);
+	const onClickAnimationRef = useRef(null);
+	const [isReady, setIsReady] = useState(false);
 
 	const activeLottieSrc = isOnClickAnimationActive
 		? onClickAnimationObject?.animationSrc
@@ -32,55 +35,89 @@ const InteractiveItem = ({
 	const styles = useStyles({
 		width: activeLottieSrc?.w,
 		height: activeLottieSrc?.h,
-		position,
+		position: centerBottomPosition,
 	});
 
-	const handleAnimationFinish = (isCancelled: boolean) => {
+	const loadSounds = async () => {
+		const soundsSrc = [animationObject?.soundSrc, onClickAnimationObject?.soundSrc];
+		const durations = [];
+		for (let i = 0; i < sounds.length; i++) {
+			if (soundsSrc[i]) {
+				await sounds[i].loadAsync(soundsSrc[i]);
+			}
+			const duration = (await sounds[i].getStatusAsync()).durationMillis;
+			durations.push(duration || 0);
+		}
+		setDurations(durations);
+		setIsReady(true);
+	};
+	const loadConfigurations = () => {
+		!animationObject.disableSoundLoop && sounds[0]._loaded && sounds[0].setIsLoopingAsync(true);
+	};
+
+	const play = async () => {
+		if (isReady) {
+			if (isOnClickAnimationActive) {
+				sounds[0]._loaded && sounds[0]?.stopAsync();
+				sounds[1]._loaded && sounds[1]?.playAsync();
+				onClickAnimationRef.current?.reset();
+				onClickAnimationRef.current?.play();
+			} else {
+				sounds[1]._loaded && sounds[1]?.stopAsync();
+				sounds[0]._loaded && sounds[0]?.playAsync();
+				animationRef.current?.reset();
+				animationRef.current?.play();
+			}
+		}
+	};
+
+	const handleOnClickAnimationFinish = (isCancelled: boolean) => {
 		if (!isCancelled && isOnClickAnimationActive) {
 			onPress && onPress();
 			setIsOnClickAnimationActive(false);
 		}
 	};
 
-	const playSound = async () => {
-		const activeSoundSrc = isOnClickAnimationActive
-			? onClickAnimationObject?.soundSrc
-			: animationObject.soundSrc;
-
-		if (activeSoundSrc) {
-			const { sound } = await Audio.Sound.createAsync(activeSoundSrc);
-			setDuration((await sound.getStatusAsync()).durationMillis);
-			sound.playAsync();
-			setSound(sound);
-		} else {
-			setSound(null);
-			setDuration(0);
+	const unloadSounds = () => {
+		for (let i = 0; i < sounds.length; i++) {
+			sounds[i]._loaded && sounds[i].unloadAsync();
 		}
 	};
 
 	useEffect(() => {
-		const timeOut =
-			autoPlay && typeof autoPlay === 'number'
-				? setTimeout(() => {
-						setIsOnClickAnimationActive(true);
-				  }, autoPlay)
-				: null;
+		loadSounds();
+		return () => {
+			unloadSounds();
+		};
+	}, [animationObject.soundSrc, onClickAnimationObject?.soundSrc]);
+
+	useEffect(() => {
+		let timeOut = null;
+		if (isReady) {
+			loadConfigurations();
+			timeOut =
+				typeof autoClickTimeout === 'number'
+					? setTimeout(() => {
+							setIsOnClickAnimationActive(true);
+					  }, autoClickTimeout)
+					: null;
+		}
 		return () => {
 			timeOut && clearTimeout(timeOut);
 		};
-	}, []);
+	}, [isReady]);
 
 	useEffect(() => {
-		playSound();
-		return () => {
-			sound?.stopAsync();
-			sound?.unloadAsync();
-		};
-	}, [isOnClickAnimationActive]);
+		play();
+	}, [isOnClickAnimationActive, isReady]);
 
 	return (
 		<Button
-			style={[styles.InteractiveItem, style, position ? styles.specificPosition : {}]}
+			style={[
+				styles.InteractiveItem,
+				style,
+				centerBottomPosition ? styles.specificPosition : {},
+			]}
 			onPress={() => {
 				if (!disabled) {
 					onClickAnimationObject && setIsOnClickAnimationActive(true);
@@ -90,14 +127,28 @@ const InteractiveItem = ({
 			activeOpacity={1}
 		>
 			<LottieView
-				source={activeLottieSrc}
-				autoPlay={isOnClickAnimationActive || autoPlay ? true : false}
-				loop={!isOnClickAnimationActive}
-				style={styles.lottieView}
-				onAnimationFinish={handleAnimationFinish}
+				ref={animationRef}
+				source={animationObject.animationSrc}
+				style={[styles.lottieView, isOnClickAnimationActive && styles.hiddenAnimation]}
 				resizeMode="contain"
-				duration={duration}
+				duration={durations[0]}
 			/>
+			<>
+				{onClickAnimationObject?.animationSrc && (
+					<LottieView
+						ref={onClickAnimationRef}
+						source={onClickAnimationObject?.animationSrc}
+						loop={false}
+						style={[
+							styles.lottieView,
+							!isOnClickAnimationActive && styles.hiddenAnimation,
+						]}
+						onAnimationFinish={handleOnClickAnimationFinish}
+						resizeMode="contain"
+						duration={durations[1]}
+					/>
+				)}
+			</>
 		</Button>
 	);
 };
@@ -112,6 +163,9 @@ const useStyles = createStyle({
 	lottieView: {
 		width: '100%',
 		height: '100%',
+		position: 'absolute',
+		top: 0,
+		left: 0,
 	},
 	specificPosition: {
 		position: 'absolute',
@@ -119,17 +173,19 @@ const useStyles = createStyle({
 		left: ({ position }) => (position?.left ? getScaledWidth(position.left) : 'auto'),
 		bottom: ({ position }) => (position?.bottom ? getScaledHeight(position.bottom) : 'auto'),
 	},
+	hiddenAnimation: { opacity: 0 },
 });
 
 export interface PropsType {
 	animationObject: AnimationObjectType;
-	onClickAnimationObject?: AnimationObjectType | undefined;
+	onClickAnimationObject?: AnimationObjectType;
 	style?: StylePropertyType;
-	position?: {
+	centerBottomPosition?: {
 		left?: number;
 		bottom?: number;
 	};
-	autoPlay?: boolean | number;
+	autoClickTimeout?: boolean | number;
+	renderAsClicked?: boolean;
 	onPress?: () => void;
 	disabled?: boolean;
 }

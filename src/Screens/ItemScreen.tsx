@@ -19,10 +19,10 @@ const ItemScreen = ({
 			<Clouds />
 			<Scene lottieFileSrc={scene.source} autoPlay />
 			<InteractiveItem
-				position={scene.itemPosition ? scene.itemPosition : defaultItemPosition}
+				centerBottomPosition={scene.itemPosition ? scene.itemPosition : defaultItemPosition}
 				animationObject={animationObject}
 				onClickAnimationObject={onClickAnimationObject}
-				autoPlay={2000}
+				autoClickTimeout={2000}
 			/>
 		</ScreenBase>
 	);

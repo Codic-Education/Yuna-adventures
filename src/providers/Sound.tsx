@@ -4,7 +4,6 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import backgroundSoundSrc from '../assets/sounds/background.wav';
 import { ChildrenType } from '../constants/globalTypes';
 
-
 const backgroundSoundPlayDelay = 500;
 
 const SoundContext = createContext<ContextPropsType>({
