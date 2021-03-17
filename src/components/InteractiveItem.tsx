@@ -16,7 +16,7 @@ const InteractiveItem = ({
 	onPress,
 	style,
 	disabled,
-}: PropsType) => {
+}: InteractiveItemPropsType) => {
 	const [isOnClickAnimationActive, setIsOnClickAnimationActive] = useState(
 		renderAsClicked ? true : false
 	);
@@ -176,7 +176,7 @@ const useStyles = createStyle({
 	hiddenAnimation: { opacity: 0 },
 });
 
-export interface PropsType {
+export interface InteractiveItemPropsType {
 	animationObject: AnimationObjectType;
 	onClickAnimationObject?: AnimationObjectType;
 	style?: StylePropertyType;

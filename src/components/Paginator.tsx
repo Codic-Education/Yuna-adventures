@@ -2,7 +2,7 @@ import React from 'react';
 import { createStyle } from '../providers/Theme';
 import IconButton from './inputs/IconButton';
 
-const Paginator = ({ state, lastIndex }: PropsType) => {
+const Paginator = ({ state, lastIndex }: PaginatorPropsType) => {
 	const styles = useStyles();
 	const [index, setIndex] = state;
 
@@ -55,7 +55,7 @@ const useStyles = createStyle(({ dimensions: { screenHeight } }) => ({
 	},
 }));
 
-interface PropsType {
+interface PaginatorPropsType {
 	state: [number, (index: number) => void];
 	lastIndex: number;
 }

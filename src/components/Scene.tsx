@@ -8,8 +8,8 @@ import { useSound } from '../providers/Sound';
 import { Audio } from 'expo-av';
 
 const Scene = forwardRef(
-	({ lottieFileSrc, backgroundSound, filter, autoPlay, loop = true }: PropsType, ref) => {
-		const styles = useStyle();
+	({ lottieFileSrc, backgroundSound, filter, autoPlay, loop = true }: ScenePropsType, ref) => {
+		const styles = useStyles();
 		const { isBackgroundSoundActive, pauseBackgroundSound, resumeBackgroundSound } = useSound();
 		const [sound] = useState(new Audio.Sound());
 
@@ -51,7 +51,7 @@ const Scene = forwardRef(
 
 export default Scene;
 
-const useStyle = createStyle({
+const useStyles = createStyle({
 	Scene: {
 		width: '100%',
 		height: '100%',
@@ -61,7 +61,7 @@ const useStyle = createStyle({
 	},
 });
 
-interface PropsType {
+interface ScenePropsType {
 	lottieFileSrc: LottieSourceType;
 	backgroundSound?: AVPlaybackSource;
 	filter?: StylePropertyType;

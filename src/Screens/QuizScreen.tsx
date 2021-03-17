@@ -1,10 +1,8 @@
-import React, { createRef, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
 import Clouds from '../components/Clouds';
 import IconButton from '../components/inputs/IconButton';
-import InteractiveItem, {
-	PropsType as InteractiveItemPropsType,
-} from '../components/InteractiveItem';
+import InteractiveItem, { InteractiveItemPropsType } from '../components/InteractiveItem';
 import NavigationHeader from '../components/NavigationHeader';
 import Scene from '../components/Scene';
 import ScreenBase from '../components/ScreenBase';
@@ -25,10 +23,10 @@ const QuizScreen = ({
 	const styles = useStyles();
 	const [randomIndexes] = useState(getRandomNumbersArray(0, 2));
 	const [progress, setProgress] = useState<QuizProgressValueType>(0);
-	const sceneRef = useRef();
+	const sceneRef = useRef(null);
 
 	useEffect(() => {
-		progress === 3 && sceneRef.current.play();
+		progress === 3 && sceneRef.current?.play();
 	}, [progress]);
 
 	return (
@@ -37,7 +35,7 @@ const QuizScreen = ({
 			<Clouds />
 			<Scene
 				ref={sceneRef}
-				lottieFileSrc={scene.source}
+				lottieFileSrc={scene.animationSrc}
 				autoPlay={progress === 3}
 				loop={false}
 			/>
@@ -109,9 +107,9 @@ const useStyles = createStyle({
 
 type ParamsType = {
 	scene: {
-		source: LottieSourceType;
+		animationSrc: LottieSourceType;
 	};
-	items: [InteractiveItemPropsType];
+	items: [InteractiveItemObjectType];
 	nextLevelData: [
 		string,
 		{
@@ -120,3 +118,7 @@ type ParamsType = {
 		}
 	];
 };
+
+interface InteractiveItemObjectType extends InteractiveItemPropsType {
+	name: object;
+}

@@ -18,7 +18,11 @@ const ItemScreen = ({
 		<ScreenBase>
 			<NavigationHeader />
 			<Clouds />
-			<Scene lottieFileSrc={scene.source} backgroundSound={scene?.backgroundSound} autoPlay />
+			<Scene
+				lottieFileSrc={scene.animationSrc}
+				backgroundSound={scene?.backgroundSound}
+				autoPlay
+			/>
 			<InteractiveItem
 				centerBottomPosition={scene.itemPosition ? scene.itemPosition : defaultItemPosition}
 				animationObject={animationObject}
@@ -33,7 +37,7 @@ export default ItemScreen;
 
 type ParamsType = {
 	scene: {
-		source: LottieSourceType;
+		animationSrc: LottieSourceType;
 		backgroundSound: AVPlaybackSource;
 		itemPosition: {
 			left: number;

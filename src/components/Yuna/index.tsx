@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import Quiz, { PropsType as QuizPropsType } from './Quiz';
+import Quiz, { QuizPropsType } from './Quiz';
 import Settings from './Settings';
 
 const Yuna = ({ variant, ...props }: PropsType): ComponentType => {

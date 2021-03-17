@@ -4,8 +4,8 @@ import cloud from '../assets/animations/cloud.json';
 import { createStyle } from '../providers/Theme';
 import { StylePropertyType } from '../constants/globalTypes';
 
-const Clouds = ({ style }: PropsType) => {
-	const styles = useStyle();
+const Clouds = ({ style }: CloudsPropsType) => {
+	const styles = useStyles();
 	return (
 		<LottieView
 			source={cloud}
@@ -20,7 +20,7 @@ const Clouds = ({ style }: PropsType) => {
 
 export default Clouds;
 
-const useStyle = createStyle({
+const useStyles = createStyle({
 	Clouds: {
 		width: '100%',
 		position: 'absolute',
@@ -30,6 +30,6 @@ const useStyle = createStyle({
 	},
 });
 
-type PropsType = {
+type CloudsPropsType = {
 	style?: StylePropertyType;
 };

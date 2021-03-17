@@ -6,7 +6,7 @@ import { useIntl, LanguagesCodesType } from '../../providers/Intl';
 import { createStyle } from '../../providers/Theme';
 import InteractiveItem from '../InteractiveItem';
 
-const Quiz = ({ progress, itemsData }: PropsType) => {
+const Quiz = ({ progress, itemsData }: QuizPropsType) => {
 	const { yuna } = useData();
 	const styles = useStyles();
 	const { lang } = useIntl();
@@ -34,7 +34,7 @@ const useStyles = createStyle({
 	Yuna: { position: 'absolute', bottom: 0, left: 0 },
 });
 
-export interface PropsType {
+export interface QuizPropsType {
 	progress: QuizProgressValueType;
 	itemsData:
 		| [

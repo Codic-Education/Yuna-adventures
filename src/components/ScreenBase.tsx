@@ -3,15 +3,15 @@ import { View } from 'react-native';
 import { ChildrenType, StylePropertyType } from '../constants/globalTypes';
 import { createStyle } from '../providers/Theme';
 
-const ScreenBase = ({ children, style }: PropsType) => {
-	const styles = useStyle();
+const ScreenBase = ({ children, style }: ScreenBasePropsType) => {
+	const styles = useStyles();
 
 	return <View style={[styles.ViewBackground, style]}>{children}</View>;
 };
 
 export default ScreenBase;
 
-const useStyle = createStyle(({ palette: { color2, type } }) => ({
+const useStyles = createStyle(({ palette: { color2, type } }) => ({
 	ViewBackground: {
 		backgroundColor: color2[type],
 		width: '100%',
@@ -20,6 +20,6 @@ const useStyle = createStyle(({ palette: { color2, type } }) => ({
 	},
 }));
 
-interface PropsType extends ChildrenType {
+interface ScreenBasePropsType extends ChildrenType {
 	style?: StylePropertyType;
 }

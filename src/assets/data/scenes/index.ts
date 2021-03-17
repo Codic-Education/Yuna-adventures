@@ -1,13 +1,13 @@
 export default {
 	farm: {
-		source: require('./farm.json'),
+		animationSrc: require('./farm.json'),
 		itemPosition: {
 			left: 1489,
 			bottom: 227,
 		},
 	},
 	forest: {
-		source: require('./forest.json'),
+		animationSrc: require('./forest.json'),
 		backgroundSound: require('./forest.wav'),
 		itemPosition: {
 			left: 1320,
@@ -15,6 +15,6 @@ export default {
 		},
 	},
 	nature1: {
-		source: require('./nature1.json'),
+		animationSrc: require('./nature1.json'),
 	},
 };
