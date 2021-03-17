@@ -1,10 +1,8 @@
-import React, { createRef, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
 import Clouds from '../components/Clouds';
 import IconButton from '../components/inputs/IconButton';
-import InteractiveItem, {
-	PropsType as InteractiveItemPropsType,
-} from '../components/InteractiveItem';
+import InteractiveItem, { InteractiveItemPropsType } from '../components/InteractiveItem';
 import NavigationHeader from '../components/NavigationHeader';
 import Scene from '../components/Scene';
 import ScreenBase from '../components/ScreenBase';
@@ -13,7 +11,7 @@ import { LottieSourceType, QuizProgressValueType, ScreenProps } from '../constan
 import { createStyle } from '../providers/Theme';
 import nextLevelArrow from '../assets/animations/next-level-arrow.json';
 import { StackActions } from '@react-navigation/native';
-import { getRandomNumbersArray, getScaledWidth } from '../utilities';
+import { getRandomNumbersArray } from '../utilities';
 import Yuna from '../components/Yuna';
 
 const QuizScreen = ({
@@ -25,10 +23,10 @@ const QuizScreen = ({
 	const styles = useStyles();
 	const [randomIndexes] = useState(getRandomNumbersArray(0, 2));
 	const [progress, setProgress] = useState<QuizProgressValueType>(0);
-	const sceneRef = useRef();
+	const sceneRef = useRef(null);
 
 	useEffect(() => {
-		progress === 3 && sceneRef.current.play();
+		progress === 3 && sceneRef.current?.play();
 	}, [progress]);
 
 	return (
@@ -37,7 +35,7 @@ const QuizScreen = ({
 			<Clouds />
 			<Scene
 				ref={sceneRef}
-				lottieFileSrc={scene.source}
+				lottieFileSrc={scene.animationSrc}
 				autoPlay={progress === 3}
 				loop={false}
 			/>
@@ -47,8 +45,7 @@ const QuizScreen = ({
 					<View key={i} style={styles.itemWrapper}>
 						<InteractiveItem
 							{...item}
-							position={{ bottom: i === 1 ? 102 : 309 }}
-							autoPlay
+							centerBottomPosition={{ bottom: i === 1 ? 102 : 309 }}
 							onClickAnimationObject={
 								i === randomIndexes[progress]
 									? item.onClickAnimationObject
@@ -110,9 +107,9 @@ const useStyles = createStyle({
 
 type ParamsType = {
 	scene: {
-		source: LottieSourceType;
+		animationSrc: LottieSourceType;
 	};
-	items: [InteractiveItemPropsType];
+	items: [InteractiveItemObjectType];
 	nextLevelData: [
 		string,
 		{
@@ -121,3 +118,7 @@ type ParamsType = {
 		}
 	];
 };
+
+interface InteractiveItemObjectType extends InteractiveItemPropsType {
+	name: object;
+}

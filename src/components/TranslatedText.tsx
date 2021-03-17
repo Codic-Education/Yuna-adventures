@@ -3,7 +3,7 @@ import { t } from 'i18n-js';
 import { Text, TextProps } from 'react-native';
 import { useIntl } from '../providers/Intl';
 
-const TranslatedText = ({ id, ...props }: PropsType) => {
+const TranslatedText = ({ id, ...props }: TranslatedTextPropsType) => {
 	const { lang } = useIntl();
 
 	useEffect(() => {
@@ -15,6 +15,6 @@ const TranslatedText = ({ id, ...props }: PropsType) => {
 
 export default TranslatedText;
 
-interface PropsType extends TextProps {
+interface TranslatedTextPropsType extends TextProps {
 	id: string;
 }

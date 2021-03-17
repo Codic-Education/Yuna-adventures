@@ -8,7 +8,7 @@ import { getScaledHeight, getScaledWidth } from '../utilities';
 
 export const SelectableItemWidth: number = 425.84;
 
-const SelectableItem = ({ thumbnailSrc, onPress, lottieViewStyle }: PropsType) => {
+const SelectableItem = ({ thumbnailSrc, onPress, lottieViewStyle }: SelectableItemPropsType) => {
 	const styles = useStyles({
 		thumbnailWidth: getScaledWidth(thumbnailSrc?.w),
 	});
@@ -51,7 +51,7 @@ const useStyles = createStyle(({ palette: { color1, color3, type } }) => ({
 	},
 }));
 
-interface PropsType {
+interface SelectableItemPropsType {
 	style?: StylePropertyType;
 	thumbnailSrc: LottieSourceType;
 	onPress: (event: GestureResponderEvent) => void;

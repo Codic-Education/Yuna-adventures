@@ -3,7 +3,7 @@ import IconButton from './inputs/IconButton';
 import { createStyle } from '../providers/Theme';
 import { useNavigation } from '@react-navigation/native';
 
-const NavigationHeader = ({ variant = 'back' }: PropsType) => {
+const NavigationHeader = ({ variant = 'back' }: NavigationHeaderPropsType) => {
 	const styles = useStyles();
 	const { navigate, goBack } = useNavigation();
 
@@ -60,6 +60,6 @@ const useStyles = createStyle({
 	},
 });
 
-interface PropsType {
+interface NavigationHeaderPropsType {
 	variant?: 'settings' | 'home' | 'back';
 }

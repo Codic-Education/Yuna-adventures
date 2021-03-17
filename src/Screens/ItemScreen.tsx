@@ -1,3 +1,4 @@
+import { AVPlaybackSource } from 'expo-av/build/AV';
 import React from 'react';
 import Clouds from '../components/Clouds';
 import InteractiveItem from '../components/InteractiveItem';
@@ -17,12 +18,16 @@ const ItemScreen = ({
 		<ScreenBase>
 			<NavigationHeader />
 			<Clouds />
-			<Scene lottieFileSrc={scene.source} autoPlay />
+			<Scene
+				lottieFileSrc={scene.animationSrc}
+				backgroundSound={scene?.backgroundSound}
+				autoPlay
+			/>
 			<InteractiveItem
-				position={scene.itemPosition ? scene.itemPosition : defaultItemPosition}
+				centerBottomPosition={scene.itemPosition ? scene.itemPosition : defaultItemPosition}
 				animationObject={animationObject}
 				onClickAnimationObject={onClickAnimationObject}
-				autoPlay={2000}
+				autoClickTimeout={2000}
 			/>
 		</ScreenBase>
 	);
@@ -32,7 +37,8 @@ export default ItemScreen;
 
 type ParamsType = {
 	scene: {
-		source: LottieSourceType;
+		animationSrc: LottieSourceType;
+		backgroundSound: AVPlaybackSource;
 		itemPosition: {
 			left: number;
 			bottom: number;
