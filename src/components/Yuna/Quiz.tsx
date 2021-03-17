@@ -6,36 +6,41 @@ import { useIntl, LanguagesCodesType } from '../../providers/Intl';
 import { createStyle } from '../../providers/Theme';
 import InteractiveItem from '../InteractiveItem';
 
-const Quiz = ({ progress, itemsData }: QuizPropsType) => {
-	const { yuna } = useData();
+const Quiz = ({ progress, itemsData, yunaSetVariant }: QuizPropsType) => {
+	const {
+		yuna: { [yunaSetVariant]: yunaSet },
+	} = useData();
 	const styles = useStyles();
 	const { lang } = useIntl();
 
 	return (
-		<InteractiveItem
-			animationObject={{
-				animationSrc: yuna.talking,
-				soundSrc: itemsData[progress]?.name[lang],
-				disableSoundLoop: true,
-			}}
-			onClickAnimationObject={{
-				animationSrc: yuna.sounding,
-				soundSrc: itemsData[progress]?.soundSrc,
-			}}
-			style={styles.Yuna}
-			renderAsClicked
-		/>
+		<>
+			<InteractiveItem
+				animationObject={{
+					animationSrc: yunaSet.talking,
+					soundSrc: itemsData[progress]?.name[lang],
+					disableSoundLoop: true,
+				}}
+				onClickAnimationObject={{
+					animationSrc: yunaSet.sounding,
+					soundSrc: itemsData[progress]?.soundSrc,
+				}}
+				style={styles.YunaPosition}
+				renderAsClicked
+			/>
+		</>
 	);
 };
 
 export default Quiz;
 
 const useStyles = createStyle({
-	Yuna: { position: 'absolute', bottom: 0, left: 0 },
+	YunaPosition: { position: 'absolute', bottom: 0, left: 0 },
 });
 
 export interface QuizPropsType {
 	progress: QuizProgressValueType;
+	yunaSetVariant: string;
 	itemsData:
 		| [
 				{

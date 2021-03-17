@@ -12,7 +12,7 @@ export type StylePropertyType = ViewStyle | TextStyle | ImageStyle;
 export interface CategoryType {
 	titleId: string;
 	thumbnailSrc: LottieSourceType;
-	items: object;
+	levels: object;
 }
 
 export type ScreenProps<T> = {
