@@ -29,7 +29,7 @@ const Quiz = ({ progress, itemsData, yunaSetVariant, yunaState }: QuizPropsType)
 		yuna: { [yunaSetVariant]: yunaSet },
 	} = useData();
 	const { lang } = useIntl();
-	const [yunaStatus, setYunaStatus] = yunaState || useState<YunaStatusType>('waiting');
+	const [yunaStatus, setYunaStatus] = yunaState || useState<YunaStatusType>('ready');
 	const [isYunaInforming, setIsYunaInforming] = useState(false);
 	const styles = useStyles({
 		yunaWaitingWidth: yunaSet.waiting.w,
@@ -50,14 +50,14 @@ const Quiz = ({ progress, itemsData, yunaSetVariant, yunaState }: QuizPropsType)
 
 	const stopSounds = () => {
 		sounds.map(async (sound) => {
-			await sound.stopAsync();
+			sound._loaded && (await sound.stopAsync());
 			return sound;
 		});
 	};
 
 	const unloadSounds = () => {
 		sounds.map(async (sound) => {
-			await sound.unloadAsync();
+			sound._loaded && (await sound.unloadAsync());
 			return sound;
 		});
 	};
@@ -86,10 +86,14 @@ const Quiz = ({ progress, itemsData, yunaSetVariant, yunaState }: QuizPropsType)
 
 	useEffect(() => {
 		loadSounds();
-		setTimeout(() => {
+		const timeout = setTimeout(() => {
 			setYunaStatus('informing');
 		}, informingDelay);
-		return unloadSounds;
+
+		return () => {
+			clearTimeout(timeout);
+			unloadSounds();
+		};
 	}, []);
 
 	useEffect(() => {
@@ -147,7 +151,7 @@ const Quiz = ({ progress, itemsData, yunaSetVariant, yunaState }: QuizPropsType)
 				]}
 				onAnimationFinish={() => {
 					setYunaStatus('waiting');
-					setTimeout(() => setYunaStatus('informing'), 1000);
+					setYunaStatus('informing');
 				}}
 				resizeMode="contain"
 				loop={false}
@@ -161,7 +165,10 @@ const Quiz = ({ progress, itemsData, yunaSetVariant, yunaState }: QuizPropsType)
 				resizeMode="contain"
 			/>
 			<Button
-				style={[styles.yunaPosition, yunaStatus !== 'waiting' && styles.hidden]}
+				style={[
+					styles.yunaPosition,
+					yunaStatus !== 'waiting' && yunaStatus !== 'ready' && styles.hidden,
+				]}
 				onPress={() => {
 					setYunaStatus('informing');
 				}}
@@ -208,4 +215,10 @@ export interface QuizPropsType {
 		| any;
 }
 
-export type YunaStatusType = 'waiting' | 'informing' | 'correct-answer' | 'wrong-answer' | 'win';
+export type YunaStatusType =
+	| 'ready'
+	| 'waiting'
+	| 'informing'
+	| 'correct-answer'
+	| 'wrong-answer'
+	| 'win';

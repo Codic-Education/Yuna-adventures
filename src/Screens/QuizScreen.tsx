@@ -23,7 +23,7 @@ const QuizScreen = ({
 	navigation: { dispatch },
 }: ScreenProps<ParamsType>) => {
 	const styles = useStyles();
-	const [yunaState, setYunaState] = useState<YunaStatusType>('waiting');
+	const [yunaState, setYunaState] = useState<YunaStatusType>('ready');
 	const { categories, scenes } = useData();
 	const [randomIndexes] = useState(getRandomNumbersArray(0, 2));
 	const [progress, setProgress] = useState<QuizProgressValueType>(0);
