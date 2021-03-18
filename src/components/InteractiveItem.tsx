@@ -210,5 +210,5 @@ export interface InteractiveItemPropsType {
 }
 
 interface AnimationObjectExtendedType extends AnimationObjectType {
-	disableAnimationLoop: boolean;
+	disableAnimationLoop?: boolean;
 }
