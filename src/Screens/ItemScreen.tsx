@@ -1,19 +1,28 @@
-import { AVPlaybackSource } from 'expo-av/build/AV';
 import React from 'react';
 import Clouds from '../components/Clouds';
 import InteractiveItem from '../components/InteractiveItem';
 import NavigationHeader from '../components/NavigationHeader';
 import Scene from '../components/Scene';
 import ScreenBase from '../components/ScreenBase';
-import { AnimationObjectType, LottieSourceType, ScreenProps } from '../constants/globalTypes';
+import { ScreenProps } from '../constants/globalTypes';
+import { useData } from '../providers/Data';
 
 const defaultItemPosition = { left: 1320, bottom: 248 };
 
 const ItemScreen = ({
 	route: {
-		params: { scene, animationObject, onClickAnimationObject },
+		params: { category, levelIndex, itemIndex },
 	},
 }: ScreenProps<ParamsType>) => {
+	const {
+		categories: {
+			[category]: { levels },
+		},
+		scenes,
+	} = useData();
+	const item = levels[levelIndex].items[itemIndex];
+	const scene = scenes[item.scene];
+
 	return (
 		<ScreenBase>
 			<NavigationHeader />
@@ -23,10 +32,11 @@ const ItemScreen = ({
 				backgroundSound={scene?.backgroundSound}
 				autoPlay
 			/>
+
 			<InteractiveItem
 				centerBottomPosition={scene.itemPosition ? scene.itemPosition : defaultItemPosition}
-				animationObject={animationObject}
-				onClickAnimationObject={onClickAnimationObject}
+				animationObject={item.animationObject}
+				onClickAnimationObject={item.onClickAnimationObject}
 				autoClickTimeout={2000}
 			/>
 		</ScreenBase>
@@ -36,14 +46,7 @@ const ItemScreen = ({
 export default ItemScreen;
 
 type ParamsType = {
-	scene: {
-		animationSrc: LottieSourceType;
-		backgroundSound: AVPlaybackSource;
-		itemPosition: {
-			left: number;
-			bottom: number;
-		};
-	};
-	animationObject: AnimationObjectType;
-	onClickAnimationObject: AnimationObjectType;
+	category: string;
+	levelIndex: number;
+	itemIndex: 0 | 1 | 2 | 3;
 };

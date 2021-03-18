@@ -1,30 +1,32 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, Dispatch, SetStateAction } from 'react';
 import LottieView from 'lottie-react-native';
 import Button from './inputs/Button';
 import { createStyle } from '../providers/Theme';
 import { Audio } from 'expo-av';
 import { Sound } from 'expo-av/build/Audio';
-import { AnimationObjectType, StylePropertyType } from '../constants/globalTypes';
+import { AnimationObjectType } from '../constants/globalTypes';
 import { getScaledHeight, getScaledWidth } from '../utilities';
+import { StyleProp, ViewStyle } from 'react-native';
 
 const InteractiveItem = ({
+	isOnClickAnimationActiveState,
 	animationObject,
 	onClickAnimationObject,
 	centerBottomPosition,
 	autoClickTimeout = false,
 	renderAsClicked = false,
-	onPress,
 	style,
 	disabled,
 }: InteractiveItemPropsType) => {
-	const [isOnClickAnimationActive, setIsOnClickAnimationActive] = useState(
-		renderAsClicked ? true : false
-	);
+	const [isOnClickAnimationActive, setIsOnClickAnimationActive] =
+		isOnClickAnimationActiveState || useState();
+
 	const [sounds] = useState<[Sound, Sound]>([new Audio.Sound(), new Audio.Sound()]);
 	const [durations, setDurations] = useState([0, 0]);
 	const animationRef = useRef(null);
 	const onClickAnimationRef = useRef(null);
 	const [isReady, setIsReady] = useState(false);
+	const [isAutoClickTimeoutActive, setIsAutoClickTimeoutActive] = useState(!!autoClickTimeout);
 
 	const activeLottieSrc = isOnClickAnimationActive
 		? onClickAnimationObject?.animationSrc
@@ -71,9 +73,15 @@ const InteractiveItem = ({
 		}
 	};
 
+	const handleAnimationFinish = (isCancelled: boolean) => {
+		if (!isCancelled) {
+			animationObject.onAnimationFinish && animationObject.onAnimationFinish();
+		}
+	};
+
 	const handleOnClickAnimationFinish = (isCancelled: boolean) => {
 		if (!isCancelled && isOnClickAnimationActive) {
-			onPress && onPress();
+			onClickAnimationObject?.onAnimationFinish && onClickAnimationObject.onAnimationFinish();
 			setIsOnClickAnimationActive(false);
 		}
 	};
@@ -83,6 +91,10 @@ const InteractiveItem = ({
 			sounds[i]._loaded && sounds[i].unloadAsync();
 		}
 	};
+
+	useEffect(() => {
+		setIsAutoClickTimeoutActive(renderAsClicked ? true : false);
+	}, []);
 
 	useEffect(() => {
 		loadSounds();
@@ -98,6 +110,7 @@ const InteractiveItem = ({
 			timeOut =
 				typeof autoClickTimeout === 'number'
 					? setTimeout(() => {
+							setIsAutoClickTimeoutActive(false);
 							setIsOnClickAnimationActive(true);
 					  }, autoClickTimeout)
 					: null;
@@ -108,20 +121,24 @@ const InteractiveItem = ({
 	}, [isReady]);
 
 	useEffect(() => {
-		play();
-	}, [isOnClickAnimationActive, isReady]);
+		if (!isAutoClickTimeoutActive) {
+			play();
+		}
+	}, [isOnClickAnimationActive, isAutoClickTimeoutActive, isReady]);
 
 	return (
 		<Button
 			style={[
 				styles.InteractiveItem,
-				style,
 				centerBottomPosition ? styles.specificPosition : {},
+				style,
 			]}
 			onPress={() => {
 				if (!disabled) {
 					onClickAnimationObject && setIsOnClickAnimationActive(true);
-					onPress && !onClickAnimationObject && onPress();
+					onClickAnimationObject?.onAnimationFinish &&
+						!onClickAnimationObject.animationSrc &&
+						onClickAnimationObject.onAnimationFinish();
 				}
 			}}
 			activeOpacity={1}
@@ -132,6 +149,8 @@ const InteractiveItem = ({
 				style={[styles.lottieView, isOnClickAnimationActive && styles.hiddenAnimation]}
 				resizeMode="contain"
 				duration={durations[0]}
+				loop={animationObject.disableAnimationLoop ? false : true}
+				onAnimationFinish={handleAnimationFinish}
 			/>
 			<>
 				{onClickAnimationObject?.animationSrc && (
@@ -177,15 +196,19 @@ const useStyles = createStyle({
 });
 
 export interface InteractiveItemPropsType {
-	animationObject: AnimationObjectType;
+	isOnClickAnimationActiveState?: [boolean, Dispatch<SetStateAction<boolean>>];
+	animationObject: AnimationObjectExtendedType;
 	onClickAnimationObject?: AnimationObjectType;
-	style?: StylePropertyType;
+	style?: StyleProp<ViewStyle>;
 	centerBottomPosition?: {
 		left?: number;
 		bottom?: number;
 	};
 	autoClickTimeout?: boolean | number;
 	renderAsClicked?: boolean;
-	onPress?: () => void;
 	disabled?: boolean;
+}
+
+interface AnimationObjectExtendedType extends AnimationObjectType {
+	disableAnimationLoop: boolean;
 }

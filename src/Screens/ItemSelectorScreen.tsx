@@ -19,7 +19,7 @@ const ItemSelectorScreen = ({
 	route: {
 		params: { category, levelIndex },
 	},
-	navigation: { navigate, dispatch },
+	navigation: { navigate },
 }: ScreenProps<ParamsType>) => {
 	const styles = useStyles();
 	const [levelIndexState, setLevelIndexState] = useState(levelIndex ? levelIndex - 1 : 0);
@@ -28,36 +28,25 @@ const ItemSelectorScreen = ({
 
 	useEffect(() => {
 		setItems([
-			...categories[category].items[levelIndexState].items,
+			...categories[category].levels[levelIndexState].items,
 			{
-				...categories[category].items[levelIndexState].quiz,
-				thumbnailSrc:
-					yuna[categories[category].items[levelIndexState].quiz.thumbnailYunaVariant],
+				thumbnailSrc: yuna[categories[category].levels[levelIndexState].yunaSetVariant].win,
 				isQuiz: true,
 			},
 		]);
 	}, [levelIndexState]);
 
-	const _renderItem = ({ item }: RenderItemPropsType) => {
+	const _renderItem = ({ item, index }: RenderItemPropsType) => {
 		return (
 			<SelectableItem
 				thumbnailSrc={item.thumbnailSrc}
 				onPress={() => {
 					navigate(item.isQuiz ? 'QuizScreen' : 'ItemScreen', {
-						...item,
-						scene: scenes[item.scene],
-						nextLevelData:
-							item.isQuiz && levelIndexState + 1 < categories[category].items.length
-								? [
-										'ItemSelectorScreen',
-										{
-											category,
-											levelIndex: levelIndexState + 2,
-										},
-								  ]
-								: undefined,
-						items: item.isQuiz
-							? categories[category].items[levelIndexState].items
+						category,
+						levelIndex: levelIndexState,
+						itemIndex: index,
+						isNextLevelExist: item.isQuiz
+							? levelIndexState + 1 < categories[category].levels.length
 							: undefined,
 					});
 				}}
@@ -72,7 +61,7 @@ const ItemSelectorScreen = ({
 			<Clouds />
 			<Paginator
 				state={[levelIndexState, setLevelIndexState]}
-				lastIndex={categories[category].items.length - 1}
+				lastIndex={categories[category].levels.length - 1}
 			/>
 			<FlatList
 				style={styles.flatList}
@@ -123,6 +112,7 @@ interface RenderItemPropsType {
 		scene: string;
 		isQuiz?: boolean;
 	};
+	index: number;
 }
 
 type ParamsType = {

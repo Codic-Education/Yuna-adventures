@@ -3,15 +3,26 @@
 import { LottieSourceType } from '../../../constants/globalTypes';
 
 const variants: YunaVariantsType = {
-	cup: require('./cup.json'),
-	talking: require('./talking.json'),
-	sounding: require('./sounding.json'),
-	trueAnswer: require('./true-answer.json'),
-	falseAnswer: require('./false-answer.json'),
+	animals: {
+		win: require('./animals/win.json'),
+		talking: require('./animals/talking.json'),
+		sounding: require('./animals/sounding.json'),
+		correctAnswer: require('./animals/correct-answer.json'),
+		wrongAnswer: require('./animals/wrong-answer.json'),
+		waiting: require('./animals/waiting.json'),
+	},
 };
 
 export default variants;
 
 export type YunaVariantsType = {
-	[key in 'cup' | 'talking' | 'sounding' | 'trueAnswer' | 'falseAnswer']: LottieSourceType;
+	[key: string]: {
+		[key in
+			| 'win'
+			| 'talking'
+			| 'sounding'
+			| 'correctAnswer'
+			| 'wrongAnswer'
+			| 'waiting']: LottieSourceType;
+	};
 };

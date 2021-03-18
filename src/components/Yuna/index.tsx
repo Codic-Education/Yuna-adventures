@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import Quiz, { QuizPropsType } from './Quiz';
 import Settings from './Settings';
 
-const Yuna = ({ variant, ...props }: PropsType): ComponentType => {
+const Yuna = ({ variant, ...props }: PropsType): YunaPropsType => {
 	const yunaVariants = {
 		quiz: Quiz,
 		settings: Settings,
@@ -24,4 +24,4 @@ interface SettingsVariantPropsType {
 	variant: 'settings';
 }
 
-type ComponentType = ReactElement<QuizPropsType> | ReactElement<undefined>;
+type YunaPropsType = ReactElement<QuizPropsType> | ReactElement<undefined>;

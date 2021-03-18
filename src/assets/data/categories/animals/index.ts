@@ -1,5 +1,6 @@
 const animalsLevels = [
 	{
+		yunaSetVariant: 'animals',
 		items: [
 			{
 				scene: 'farm',
@@ -51,10 +52,10 @@ const animalsLevels = [
 		],
 		quiz: {
 			scene: 'nature1',
-			thumbnailYunaVariant: 'cup',
 		},
 	},
 	{
+		yunaSetVariant: 'animals',
 		items: [
 			{
 				scene: 'farm',
@@ -107,7 +108,6 @@ const animalsLevels = [
 		],
 		quiz: {
 			scene: 'nature1',
-			thumbnailYunaVariant: 'cup',
 		},
 	},
 ];

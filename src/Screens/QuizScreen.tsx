@@ -2,28 +2,47 @@ import React, { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
 import Clouds from '../components/Clouds';
 import IconButton from '../components/inputs/IconButton';
-import InteractiveItem, { InteractiveItemPropsType } from '../components/InteractiveItem';
+import InteractiveItem from '../components/InteractiveItem';
 import NavigationHeader from '../components/NavigationHeader';
 import Scene from '../components/Scene';
 import ScreenBase from '../components/ScreenBase';
 import StarsProgressIndicator from '../components/StarsProgressIndicator';
-import { LottieSourceType, QuizProgressValueType, ScreenProps } from '../constants/globalTypes';
+import { QuizProgressValueType, ScreenProps } from '../constants/globalTypes';
 import { createStyle } from '../providers/Theme';
 import nextLevelArrow from '../assets/animations/next-level-arrow.json';
 import { StackActions } from '@react-navigation/native';
 import { getRandomNumbersArray } from '../utilities';
 import Yuna from '../components/Yuna';
+import { YunaStatusType } from '../components/Yuna/Quiz';
+import { useData } from '../providers/Data';
 
 const QuizScreen = ({
 	route: {
-		params: { scene, items, nextLevelData },
+		params: { category, levelIndex, isNextLevelExist },
 	},
 	navigation: { dispatch },
 }: ScreenProps<ParamsType>) => {
 	const styles = useStyles();
+	const [yunaState, setYunaState] = useState<YunaStatusType>('ready');
+	const { categories, scenes } = useData();
 	const [randomIndexes] = useState(getRandomNumbersArray(0, 2));
 	const [progress, setProgress] = useState<QuizProgressValueType>(0);
 	const sceneRef = useRef(null);
+	const scene = scenes[categories[category].levels[levelIndex].quiz.scene];
+	const items = categories[category].levels[levelIndex].items;
+
+	const checkAnswer = (itemIndex: 0 | 1 | 2) => {
+		if (itemIndex === randomIndexes[progress]) {
+			setProgress((current) => {
+				if (current < 3) {
+					progress === 2 ? setYunaState('win') : setYunaState('correct-answer');
+					return current + 1;
+				}
+			});
+		} else {
+			setYunaState('wrong-answer');
+		}
+	};
 
 	useEffect(() => {
 		progress === 3 && sceneRef.current?.play();
@@ -46,24 +65,19 @@ const QuizScreen = ({
 						<InteractiveItem
 							{...item}
 							centerBottomPosition={{ bottom: i === 1 ? 102 : 309 }}
-							onClickAnimationObject={
-								i === randomIndexes[progress]
-									? item.onClickAnimationObject
-									: undefined
-							}
-							onPress={() => {
-								i === randomIndexes[progress] &&
-									setProgress(
-										(current): QuizProgressValueType =>
-											current < 3 ? current + 1 : current
-									);
+							onClickAnimationObject={{
+								...item.onClickAnimationObject,
+								onAnimationFinish: () => checkAnswer(i),
 							}}
+							disabled={yunaState !== 'waiting'}
 						/>
 					</View>
 				))}
 			</View>
 			<Yuna
+				yunaState={[yunaState, setYunaState]}
 				variant="quiz"
+				yunaSetVariant={categories[category].levels[levelIndex].yunaSetVariant}
 				progress={progress}
 				itemsData={randomIndexes.map((i) => ({
 					soundSrc: items[i].onClickAnimationObject?.soundSrc,
@@ -71,10 +85,15 @@ const QuizScreen = ({
 				}))}
 			/>
 			<>
-				{progress === 3 && nextLevelData && (
+				{progress === 3 && isNextLevelExist && (
 					<IconButton
 						onPress={() =>
-							dispatch(StackActions.replace(nextLevelData[0], nextLevelData[1]))
+							dispatch(
+								StackActions.replace('ItemSelectorScreen', {
+									category,
+									levelIndex: levelIndex + 2,
+								})
+							)
 						}
 						lottieFileSrc={nextLevelArrow}
 						style={styles.nextLevelButton}
@@ -106,19 +125,7 @@ const useStyles = createStyle({
 });
 
 type ParamsType = {
-	scene: {
-		animationSrc: LottieSourceType;
-	};
-	items: [InteractiveItemObjectType];
-	nextLevelData: [
-		string,
-		{
-			category: string;
-			levelIndex: number;
-		}
-	];
+	category: string;
+	levelIndex: number;
+	isNextLevelExist: boolean;
 };
-
-interface InteractiveItemObjectType extends InteractiveItemPropsType {
-	name: object;
-}
