@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, TouchableOpacity, TouchableOpacityProps } from 'react-native';
+import { StyleProp, Text, TouchableOpacity, TouchableOpacityProps, ViewStyle } from 'react-native';
 import { ChildrenType } from '../../constants/globalTypes';
 
 const Button = ({ children, style, ...props }: Props) => {
@@ -23,9 +23,11 @@ const Button = ({ children, style, ...props }: Props) => {
 export default Button;
 
 interface Props extends TouchableOpacityProps, ChildrenType {
-	style?: any;
+	style?: StyleProp<ViewStyle>;
 }
 
 Button.defaultProps = {
 	style: {},
 };
+
+//Note: Don't use opacity to hide this component

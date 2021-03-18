@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
 import Clouds from '../components/Clouds';
 import IconButton from '../components/inputs/IconButton';
-import InteractiveItem, { InteractiveItemPropsType } from '../components/InteractiveItem';
+import InteractiveItem from '../components/InteractiveItem';
 import NavigationHeader from '../components/NavigationHeader';
 import Scene from '../components/Scene';
 import ScreenBase from '../components/ScreenBase';
@@ -13,6 +13,7 @@ import nextLevelArrow from '../assets/animations/next-level-arrow.json';
 import { StackActions } from '@react-navigation/native';
 import { getRandomNumbersArray } from '../utilities';
 import Yuna from '../components/Yuna';
+import { YunaStatusType } from '../components/Yuna/Quiz';
 import { useData } from '../providers/Data';
 
 const QuizScreen = ({
@@ -22,12 +23,26 @@ const QuizScreen = ({
 	navigation: { dispatch },
 }: ScreenProps<ParamsType>) => {
 	const styles = useStyles();
+	const [yunaState, setYunaState] = useState<YunaStatusType>('waiting');
 	const { categories, scenes } = useData();
 	const [randomIndexes] = useState(getRandomNumbersArray(0, 2));
 	const [progress, setProgress] = useState<QuizProgressValueType>(0);
 	const sceneRef = useRef(null);
 	const scene = scenes[categories[category].levels[levelIndex].quiz.scene];
 	const items = categories[category].levels[levelIndex].items;
+
+	const checkAnswer = (itemIndex: 0 | 1 | 2) => {
+		if (itemIndex === randomIndexes[progress]) {
+			setProgress((current) => {
+				if (current < 3) {
+					progress === 2 ? setYunaState('win') : setYunaState('correct-answer');
+					return current + 1;
+				}
+			});
+		} else {
+			setYunaState('wrong-answer');
+		}
+	};
 
 	useEffect(() => {
 		progress === 3 && sceneRef.current?.play();
@@ -50,23 +65,17 @@ const QuizScreen = ({
 						<InteractiveItem
 							{...item}
 							centerBottomPosition={{ bottom: i === 1 ? 102 : 309 }}
-							onClickAnimationObject={
-								i === randomIndexes[progress]
-									? item.onClickAnimationObject
-									: undefined
-							}
-							onPress={() => {
-								i === randomIndexes[progress] &&
-									setProgress(
-										(current): QuizProgressValueType =>
-											current < 3 ? current + 1 : current
-									);
+							onClickAnimationObject={{
+								...item.onClickAnimationObject,
+								onAnimationFinish: () => checkAnswer(i),
 							}}
+							disabled={yunaState !== 'waiting'}
 						/>
 					</View>
 				))}
 			</View>
 			<Yuna
+				yunaState={[yunaState, setYunaState]}
 				variant="quiz"
 				yunaSetVariant={categories[category].levels[levelIndex].yunaSetVariant}
 				progress={progress}

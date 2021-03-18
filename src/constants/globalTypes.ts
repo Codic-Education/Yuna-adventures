@@ -35,10 +35,11 @@ interface LottieAnimationObjectType {
 
 export type LottieSourceType = LottieAnimationObjectType;
 
-export type AnimationObjectType = {
+export interface AnimationObjectType {
 	animationSrc: LottieSourceType;
 	soundSrc?: AVPlaybackSource;
 	disableSoundLoop?: boolean;
-};
+	onAnimationFinish?: () => void;
+}
 
 export type QuizProgressValueType = 0 | 1 | 2 | 3;
