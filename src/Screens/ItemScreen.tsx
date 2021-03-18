@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Clouds from '../components/Clouds';
 import InteractiveItem from '../components/InteractiveItem';
 import NavigationHeader from '../components/NavigationHeader';
 import Scene from '../components/Scene';
 import ScreenBase from '../components/ScreenBase';
+import Yuna from '../components/Yuna';
 import { ScreenProps } from '../constants/globalTypes';
 import { useData } from '../providers/Data';
 
@@ -14,7 +15,9 @@ const ItemScreen = ({
 		params: { category, levelIndex, itemIndex },
 	},
 }: ScreenProps<ParamsType>) => {
+	const [isYunaActive, setIsYunaActive] = useState(false);
 	const {
+		categories,
 		categories: {
 			[category]: { levels },
 		},
@@ -36,8 +39,19 @@ const ItemScreen = ({
 			<InteractiveItem
 				centerBottomPosition={scene.itemPosition ? scene.itemPosition : defaultItemPosition}
 				animationObject={item.animationObject}
-				onClickAnimationObject={item.onClickAnimationObject}
+				onClickAnimationObject={{
+					...item.onClickAnimationObject,
+					onAnimationFinish: () => {
+						setIsYunaActive(true);
+					},
+				}}
 				autoClickTimeout={2000}
+			/>
+			<Yuna
+				variant="item-name-speaker"
+				yunaSetVariant={categories[category].levels[levelIndex].yunaSetVariant}
+				itemName={item.name}
+				isOnClickAnimationActiveState={[isYunaActive, setIsYunaActive]}
 			/>
 		</ScreenBase>
 	);
