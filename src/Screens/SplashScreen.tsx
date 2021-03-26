@@ -1,5 +1,4 @@
 import React from 'react';
-import CodicLogo from '../components/CodicLogo';
 import LottieView from 'lottie-react-native';
 import ScreenBase from '../components/ScreenBase';
 import Clouds from '../components/Clouds';
@@ -7,7 +6,6 @@ import { createStyle } from '../providers/Theme';
 import { getScaledWidth } from '../utilities';
 import { ScreenProps } from '../constants/globalTypes';
 import splashAnimation from '../assets/animations/splashAnimation.json';
-import CloudsBottom from '../components/CloudsBottom';
 
 const SplashScreen = ({ navigation }: ScreenProps<undefined>) => {
 	const styles = useStyles({ width: splashAnimation.w });
@@ -15,7 +13,6 @@ const SplashScreen = ({ navigation }: ScreenProps<undefined>) => {
 	return (
 		<ScreenBase style={styles.SplashScreen}>
 			<Clouds />
-			<CloudsBottom />
 			<LottieView
 				style={styles.logo}
 				resizeMode="contain"
@@ -24,7 +21,7 @@ const SplashScreen = ({ navigation }: ScreenProps<undefined>) => {
 				loop={false}
 				onAnimationFinish={() => navigation.navigate('HomeStackNavigator')}
 			/>
-			<CodicLogo style={styles.codicLogo} />
+		{/*	<CodicLogo style={styles.codicLogo} /> */}
 		</ScreenBase>
 	);
 };
