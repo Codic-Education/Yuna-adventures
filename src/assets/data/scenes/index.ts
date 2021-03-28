@@ -17,4 +17,10 @@ export default {
 	nature1: {
 		animationSrc: require('./nature1.json'),
 	},
+	cityStreet: {
+		animationSrc: require('./city-street.json'),
+	},
+	city1: {
+		animationSrc: require('./city1.json'),
+	},
 };

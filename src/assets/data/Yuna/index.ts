@@ -1,5 +1,3 @@
-//TODO:Move to animations!
-
 import { LottieSourceType } from '../../../constants/globalTypes';
 
 const variants: YunaVariantsType = {
@@ -10,6 +8,14 @@ const variants: YunaVariantsType = {
 		correctAnswer: require('./animals/correct-answer.json'),
 		wrongAnswer: require('./animals/wrong-answer.json'),
 		waiting: require('./animals/waiting.json'),
+	},
+	vehicles: {
+		win: require('./vehicles/win.json'),
+		talking: require('./vehicles/talking.json'),
+		sounding: require('./vehicles/sounding.json'),
+		correctAnswer: require('./vehicles/correct-answer.json'),
+		wrongAnswer: require('./vehicles/wrong-answer.json'),
+		waiting: require('./vehicles/waiting.json'),
 	},
 };
 
