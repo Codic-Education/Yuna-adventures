@@ -10,4 +10,8 @@ export default {
 	SettingsScreen: {
 		title: 'Settings',
 	},
+	LevelPurchaseDialog: {
+		title: 'Locked level',
+		description: 'This level is locked, unlock it now for ',
+	},
 };

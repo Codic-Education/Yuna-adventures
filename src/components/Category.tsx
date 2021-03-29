@@ -14,7 +14,7 @@ const Category = ({ style, titleId, thumbnailSrc, onPress, ...props }: Props) =>
 	return (
 		<Button style={[styles.Category, style]} onPress={onPress} {...props}>
 			<TranslatedText id={titleId} style={styles.title} />
-			<View style={styles.button}>
+			<View style={styles.thumbnail}>
 				<Clouds style={{ top: 10 }} />
 				<LottieView resizeMode="cover" source={thumbnailSrc} autoPlay loop />
 			</View>
@@ -25,7 +25,10 @@ const Category = ({ style, titleId, thumbnailSrc, onPress, ...props }: Props) =>
 export default Category;
 
 const useStyles = createStyle(
-	({ palette: { color0, color2, color3, color6, type }, dimensions: { screenWidth } }) => ({
+	({
+		palette: { color0, color2, color3, color6, color8, type },
+		dimensions: { screenWidth },
+	}) => ({
 		Category: {
 			height: '100%',
 			flex: 1,
@@ -41,11 +44,11 @@ const useStyles = createStyle(
 			marginTop: 20,
 			marginBottom: 20,
 		},
-		button: {
+		thumbnail: {
 			width: ({ buttonWidth }) => getScaledWidth(buttonWidth),
 			backgroundColor: color2[type],
-			borderWidth: 8,
-			borderColor: '#fff',
+			borderWidth: getScaledWidth(16),
+			borderColor: color8[type],
 			borderRadius: screenWidth,
 			overflow: 'hidden',
 			position: 'relative',

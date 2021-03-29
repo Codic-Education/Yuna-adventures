@@ -5,6 +5,7 @@ import * as iconPackages from '@expo/vector-icons';
 import FlagIcon from 'react-native-ico-flags';
 import { LottieSourceType, StylePropertyType } from '../../constants/globalTypes';
 import LottieView from 'lottie-react-native';
+import { getScaledWidth } from '../../utilities';
 
 const iconWidth = 30;
 
@@ -26,7 +27,7 @@ const IconButton = ({
 	return (
 		<View style={[style, inactive && styles.inactive]}>
 			<TouchableOpacity
-				style={[styles.btn, touchableOpacityStyle]}
+				style={[styles.Button, touchableOpacityStyle]}
 				activeOpacity={0.8}
 				{...props}
 			>
@@ -54,16 +55,16 @@ const IconButton = ({
 
 export default IconButton;
 
-const useStyles = createStyle(({ palette: { color1, color3, color5, type } }) => ({
-	btn: {
+const useStyles = createStyle(({ palette: { color3, color5, color8, type } }) => ({
+	Button: {
 		maxWidth: 80,
 		maxHeight: 80,
 		backgroundColor: color3[type],
 		padding: 18,
 		borderRadius: 60,
 		borderStyle: 'solid',
-		borderWidth: 7,
-		borderColor: color1[type],
+		borderWidth: getScaledWidth(10),
+		borderColor: color8[type],
 		overflow: 'hidden',
 		alignItems: 'center',
 		justifyContent: 'center',

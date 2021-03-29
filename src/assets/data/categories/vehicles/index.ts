@@ -1,5 +1,6 @@
 const vehiclesLevels = [
 	{
+		isPurchased: true,
 		yunaSetVariant: 'vehicles',
 		items: [
 			{

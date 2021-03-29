@@ -1,5 +1,6 @@
 const animalsLevels = [
 	{
+		isPurchased: true,
 		yunaSetVariant: 'animals',
 		items: [
 			{
@@ -55,6 +56,7 @@ const animalsLevels = [
 		},
 	},
 	{
+		isPurchased: false,
 		yunaSetVariant: 'animals',
 		items: [
 			{

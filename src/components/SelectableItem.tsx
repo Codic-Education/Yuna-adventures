@@ -14,7 +14,7 @@ const SelectableItem = ({ thumbnailSrc, onPress, lottieViewStyle }: SelectableIt
 	});
 
 	return (
-		<Button style={styles.SelectableItems} onPress={onPress}>
+		<Button style={styles.SelectableItem} onPress={onPress}>
 			<LottieView
 				style={[styles.lottieView, lottieViewStyle]}
 				autoPlay
@@ -27,13 +27,13 @@ const SelectableItem = ({ thumbnailSrc, onPress, lottieViewStyle }: SelectableIt
 
 export default SelectableItem;
 
-const useStyles = createStyle(({ palette: { color1, color3, type } }) => ({
-	SelectableItems: {
+const useStyles = createStyle(({ palette: { color3, color8, type } }) => ({
+	SelectableItem: {
 		width: getScaledWidth(SelectableItemWidth),
 		height: getScaledHeight(SelectableItemWidth),
 		maxHeight: getScaledWidth(SelectableItemWidth),
-		borderWidth: 10,
-		borderColor: color1[type],
+		borderWidth: getScaledWidth(10),
+		borderColor: color8[type],
 		backgroundColor: color3[type],
 		borderRadius: 15,
 		shadowOffset: { height: 5, width: 5 },
