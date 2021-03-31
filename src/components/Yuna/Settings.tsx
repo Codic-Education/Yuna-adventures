@@ -17,5 +17,6 @@ const useStyles = createStyle({
 		position: 'absolute',
 		bottom: 0,
 		left: 0,
+		elevation: 11,
 	},
 });
