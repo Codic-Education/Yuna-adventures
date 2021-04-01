@@ -27,6 +27,7 @@ const QuizScreen = ({
 	const { categories, scenes } = useData();
 	const [randomIndexes] = useState(getRandomNumbersArray(0, 2));
 	const [progress, setProgress] = useState<QuizProgressValueType>(0);
+	const [isThereActiveItem, setIsThereActiveItem] = useState(false);
 	const sceneRef = useRef(null);
 	const scene = scenes[categories[category].levels[levelIndex].quiz.scene];
 	const items = categories[category].levels[levelIndex].items;
@@ -67,9 +68,15 @@ const QuizScreen = ({
 							centerBottomPosition={{ bottom: i === 1 ? 102 : 309 }}
 							onClickAnimationObject={{
 								...item.onClickAnimationObject,
-								onAnimationFinish: () => checkAnswer(i),
+								onAnimationFinish: () => {
+									checkAnswer(i);
+									setIsThereActiveItem(false);
+								},
 							}}
-							disabled={yunaState !== 'waiting'}
+							onPressStart={() => {
+								setIsThereActiveItem(true);
+							}}
+							disabled={yunaState !== 'waiting' || isThereActiveItem}
 						/>
 					</View>
 				))}

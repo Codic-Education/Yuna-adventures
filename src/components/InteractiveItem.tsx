@@ -17,6 +17,7 @@ const InteractiveItem = ({
 	renderAsClicked = false,
 	style,
 	disabled,
+	onPressStart,
 }: InteractiveItemPropsType) => {
 	const [isOnClickAnimationActive, setIsOnClickAnimationActive] =
 		isOnClickAnimationActiveState || useState();
@@ -135,6 +136,7 @@ const InteractiveItem = ({
 			]}
 			onPress={() => {
 				if (!disabled) {
+					onPressStart && onPressStart();
 					onClickAnimationObject && setIsOnClickAnimationActive(true);
 					onClickAnimationObject?.onAnimationFinish &&
 						!onClickAnimationObject.animationSrc &&
@@ -207,6 +209,7 @@ export interface InteractiveItemPropsType {
 	autoClickTimeout?: boolean | number;
 	renderAsClicked?: boolean;
 	disabled?: boolean;
+	onPressStart?: () => void;
 }
 
 interface AnimationObjectExtendedType extends AnimationObjectType {
