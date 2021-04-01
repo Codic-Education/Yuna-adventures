@@ -14,7 +14,7 @@ const dimensions = {
 	width: 1100,
 	height: Dimensions.get('screen').height > 720 ? 650 : 720,
 };
-console.log(Dimensions.get('screen').height);
+
 const LevelPurchaseDialog = ({
 	price = '0',
 	onPurchaseSuccessAnimationFinish,
