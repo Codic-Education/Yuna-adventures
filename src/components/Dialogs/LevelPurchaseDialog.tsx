@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Dimensions } from 'react-native';
 import { createStyle } from '../../providers/Theme';
 import { getScaledHeight, getScaledWidth } from '../../utilities';
 import TranslatedText from '../TranslatedText';
@@ -12,9 +12,9 @@ import Button from '../inputs/Button';
 
 const dimensions = {
 	width: 1100,
-	height: 720,
+	height: Dimensions.get('screen').height > 720 ? 650 : 720,
 };
-
+console.log(Dimensions.get('screen').height);
 const LevelPurchaseDialog = ({
 	price = '0',
 	onPurchaseSuccessAnimationFinish,
@@ -101,7 +101,7 @@ const useStyles = createStyle(({ palette: { color0, color1, color3, color7, colo
 		borderWidth: getScaledWidth(15),
 		borderRadius: 20,
 		padding: 20,
-		paddingTop: 45,
+		paddingTop: getScaledHeight(120),
 		borderColor: color1[type],
 		position: 'relative',
 	},
@@ -122,17 +122,17 @@ const useStyles = createStyle(({ palette: { color0, color1, color3, color7, colo
 	},
 	title: {
 		color: color1[type],
-		fontSize: 25,
+		fontSize: getScaledWidth(55),
 		fontFamily: 'coiny',
 		alignSelf: 'center',
-		marginBottom: 15,
+		marginBottom: getScaledHeight(79),
 	},
 	description: {
 		color: color1[type],
-		fontSize: 16,
+		fontSize: getScaledWidth(35),
 	},
 	price: {
-		fontSize: 16,
+		fontSize: getScaledWidth(35),
 		color: color1[type],
 		fontWeight: 'bold',
 	},
@@ -147,7 +147,7 @@ const useStyles = createStyle(({ palette: { color0, color1, color3, color7, colo
 		textAlign: 'center',
 		alignItems: 'center',
 		position: 'absolute',
-		bottom: 15,
+		bottom: getScaledHeight(93),
 		alignSelf: 'center',
 		borderWidth: getScaledWidth(10),
 		borderColor: color8[type],
