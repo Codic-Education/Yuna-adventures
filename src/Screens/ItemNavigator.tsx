@@ -16,7 +16,12 @@ const ItemNavigator = () => {
 	return (
 		<Stack.Navigator mode="card" screenOptions={{ headerShown: false }}>
 			{Object.entries({ ...animalScreens }).map(([name, component]) => (
-				<Stack.Screen key={name} name={name} component={component} />
+				<Stack.Screen
+					options={{ gestureEnabled: false }}
+					key={name}
+					name={name}
+					component={component}
+				/>
 			))}
 		</Stack.Navigator>
 	);
