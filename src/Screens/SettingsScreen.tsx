@@ -39,8 +39,7 @@ const SettingScreen = ({ navigation }: ScreenProps<undefined>) => {
 				<View style={styles.buttonsContainer}>
 					<IconButton
 						touchableOpacityStyle={styles.iconButton}
-						packageName="MaterialIcons"
-						iconName="audiotrack"
+						lottieFileSrc={require('../assets/icons/music.json')}
 						inactive={!isBackgroundSoundActive}
 						redStroke={!isBackgroundSoundActive}
 						onPress={() => {

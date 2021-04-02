@@ -1,7 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, TouchableOpacityProps, View } from 'react-native';
 import { createStyle } from '../../providers/Theme';
-import * as iconPackages from '@expo/vector-icons';
 import FlagIcon from 'react-native-ico-flags';
 import { LottieSourceType, StylePropertyType } from '../../constants/globalTypes';
 import LottieView from 'lottie-react-native';
@@ -10,8 +9,6 @@ import { getScaledWidth } from '../../utilities';
 const iconWidth = 30;
 
 const IconButton = ({
-	iconName,
-	packageName,
 	flag,
 	touchableOpacityStyle,
 	inactive,
@@ -20,9 +17,8 @@ const IconButton = ({
 	lottieFileSrc,
 	lottieViewStyle,
 	...props
-}: PropsType) => {
+}: IconButtonPropsType) => {
 	const styles = useStyles();
-	const IconComponent = packageName ? iconPackages[packageName] : undefined;
 
 	return (
 		<View style={[style, inactive && styles.inactive]}>
@@ -31,13 +27,6 @@ const IconButton = ({
 				activeOpacity={0.8}
 				{...props}
 			>
-				{packageName && iconName && (
-					<IconComponent
-						name={iconName}
-						size={iconWidth}
-						color={touchableOpacityStyle?.color || 'white'}
-					/>
-				)}
 				{flag && <FlagIcon name={flag} width={iconWidth} height={iconWidth} />}
 				{lottieFileSrc && (
 					<LottieView
@@ -90,36 +79,12 @@ const useStyles = createStyle(({ palette: { color3, color5, color8, type } }) =>
 	},
 }));
 
-type PropsType =
+export type IconButtonPropsType =
 	| (PropsBaseType & {
-			packageName:
-				| 'AntDesign'
-				| 'Entypo'
-				| 'EvilIcons'
-				| 'Feather'
-				| 'FontAwesome'
-				| 'FontAwesome5'
-				| 'Fontisto'
-				| 'Foundation'
-				| 'Ionicons'
-				| 'MaterialCommunityIcons'
-				| 'MaterialIcons'
-				| 'Octicons'
-				| 'SimpleLineIcons'
-				| 'Zocial';
-			iconName: string;
-			flag?: undefined;
-			lottieFileSrc?: undefined;
-	  })
-	| (PropsBaseType & {
-			packageName?: undefined;
-			iconName?: undefined;
 			flag: string;
 			lottieFileSrc?: undefined;
 	  })
 	| (PropsBaseType & {
-			packageName?: undefined;
-			iconName?: undefined;
 			flag?: undefined;
 			lottieFileSrc: LottieSourceType;
 	  });
