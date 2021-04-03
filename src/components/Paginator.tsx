@@ -18,20 +18,18 @@ const Paginator = ({ state, lastIndex }: PaginatorPropsType) => {
 		<>
 			{index > 0 && (
 				<IconButton
-					packageName="Entypo"
+					lottieFileSrc={require('../assets/icons/arrow-left.json')}
 					onPress={previousScreen}
 					style={styles.previousButton}
 					inactive={index === 0}
-					iconName="arrow-left"
 				/>
 			)}
 			{index < lastIndex && (
 				<IconButton
-					packageName="Entypo"
+					lottieFileSrc={require('../assets/icons/arrow-right.json')}
 					onPress={nextScreen}
 					style={styles.nextButton}
 					inactive={index === lastIndex}
-					iconName="arrow-right"
 				/>
 			)}
 		</>

@@ -17,8 +17,7 @@ const ItemNavigator = () => {
 		<Stack.Navigator mode="card" screenOptions={{ headerShown: false }}>
 			{Object.entries({ ...animalScreens }).map(([name, component]) => (
 				<Stack.Screen
-					//TODO remove comment to disable ability to go back
-					// options={{ gestureEnabled: false }}
+					options={{ gestureEnabled: false }}
 					key={name}
 					name={name}
 					component={component}

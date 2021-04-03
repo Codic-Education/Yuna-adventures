@@ -8,6 +8,7 @@
 		"lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
 	},
 	"dependencies": {
+		"@react-native-async-storage/async-storage": "^1.15.1",
 		"@react-native-community/masked-view": "0.1.10",
 		"@react-navigation/native": "^5.9.3",
 		"@react-navigation/stack": "^5.14.3",
@@ -25,6 +26,7 @@
 		"react-native": "~0.63.4",
 		"react-native-gesture-handler": "^1.10.2",
 		"react-native-ico-flags": "^3.3.1",
+		"react-native-immersive-mode": "^2.0.0",
 		"react-native-safe-area-context": "^3.2.0",
 		"react-native-screens": "~2.15.0",
 		"react-native-svg": "^12.1.0",

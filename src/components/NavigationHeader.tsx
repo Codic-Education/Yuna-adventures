@@ -1,5 +1,5 @@
 import React from 'react';
-import IconButton from './inputs/IconButton';
+import IconButton, { IconButtonPropsType } from './inputs/IconButton';
 import { createStyle } from '../providers/Theme';
 import { useNavigation } from '@react-navigation/native';
 
@@ -7,27 +7,25 @@ const NavigationHeader = ({ variant = 'back' }: NavigationHeaderPropsType) => {
 	const styles = useStyles();
 	const { navigate, goBack } = useNavigation();
 
-	const buttons = {
+	const buttons: { [key in variantType]: [IconButtonPropsType] } = {
+		// a variant can have multiple buttons
 		settings: [
 			{
-				packageName: 'Entypo',
-				iconName: 'cog',
+				lottieFileSrc: require('../assets/icons/settings.json'),
 				onPress: () => navigate('SettingsScreen'),
 				style: styles.rightButton,
 			},
 		],
 		back: [
 			{
-				packageName: 'Entypo',
-				iconName: 'arrow-left',
+				lottieFileSrc: require('../assets/icons/arrow-left.json'),
 				onPress: () => goBack(),
 				style: styles.leftButton,
 			},
 		],
 		home: [
 			{
-				packageName: 'Entypo',
-				iconName: 'home',
+				lottieFileSrc: require('../assets/icons/home.json'),
 				onPress: () => navigate('HomeScreen'),
 				style: styles.leftButton,
 			},
@@ -36,7 +34,7 @@ const NavigationHeader = ({ variant = 'back' }: NavigationHeaderPropsType) => {
 
 	return (
 		<>
-			{buttons[variant].map((props: {}, i: number) => (
+			{buttons[variant].map((props, i: number) => (
 				<IconButton key={variant + i} {...props} />
 			))}
 		</>
@@ -60,6 +58,8 @@ const useStyles = createStyle({
 	},
 });
 
+type variantType = 'settings' | 'home' | 'back';
+
 interface NavigationHeaderPropsType {
-	variant?: 'settings' | 'home' | 'back';
+	variant?: variantType;
 }

@@ -39,10 +39,10 @@ const useStyles = createStyle(
 		},
 		title: {
 			color: color3[type],
-			fontWeight: 'bold',
-			fontSize: 20,
-			marginTop: 20,
-			marginBottom: 20,
+			fontFamily: 'coiny',
+			fontSize: 25,
+			marginTop: 10,
+			marginBottom: 10,
 		},
 		thumbnail: {
 			width: ({ buttonWidth }) => getScaledWidth(buttonWidth),

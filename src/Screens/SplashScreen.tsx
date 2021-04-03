@@ -6,10 +6,11 @@ import { createStyle } from '../providers/Theme';
 import { getScaledWidth } from '../utilities';
 import { ScreenProps } from '../constants/globalTypes';
 import splashAnimation from '../assets/animations/splashAnimation.json';
+import codicLogo from '../assets/animations/codic-logo.json';
 import bottomClouds from '../assets/animations/clouds-bottom.json';
 
 const SplashScreen = ({ navigation }: ScreenProps<undefined>) => {
-	const styles = useStyles({ width: splashAnimation.w });
+	const styles = useStyles({ logoWidth: splashAnimation.w, codicLogoWidth: codicLogo.w });
 
 	return (
 		<ScreenBase style={styles.SplashScreen}>
@@ -28,6 +29,7 @@ const SplashScreen = ({ navigation }: ScreenProps<undefined>) => {
 				loop={false}
 				onAnimationFinish={() => navigation.navigate('HomeStackNavigator')}
 			/>
+			<LottieView style={styles.codicLogo} resizeMode="contain" source={codicLogo} />
 		</ScreenBase>
 	);
 };
@@ -42,7 +44,13 @@ const useStyles = createStyle({
 		bottom: 0,
 	},
 	logo: {
-		width: ({ width }) => getScaledWidth(width),
+		width: ({ logoWidth }) => getScaledWidth(logoWidth),
 		alignSelf: 'center',
+	},
+	codicLogo: {
+		width: ({ codicLogoWidth }) => getScaledWidth(codicLogoWidth + 50),
+		position: 'absolute',
+		bottom: 10,
+		right: 10,
 	},
 });

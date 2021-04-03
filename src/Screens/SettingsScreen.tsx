@@ -8,9 +8,9 @@ import ScreenBase from '../components/ScreenBase';
 import TranslatedText from '../components/TranslatedText';
 import { ScreenProps } from '../constants/globalTypes';
 import { useIntl } from '../providers/Intl';
-import { useSound } from '../providers/Sound';
+import { useSound } from '../providers/BackgroundSound';
 import { createStyle } from '../providers/Theme';
-import { getScaledHeight, getScaledWidth } from '../utilities';
+import { getScaledWidth } from '../utilities';
 import Yuna from '../components/Yuna';
 import scene from '../assets/animations/scene-settings.json';
 
@@ -26,7 +26,7 @@ const dimensions = {
 
 const SettingScreen = ({ navigation }: ScreenProps<undefined>) => {
 	const { resumeBackgroundSound, pauseBackgroundSound, isBackgroundSoundActive } = useSound();
-	const { lang, setLang } = useIntl();
+	const { lang, changeLang } = useIntl();
 	const styles = useStyles();
 
 	return (
@@ -34,29 +34,32 @@ const SettingScreen = ({ navigation }: ScreenProps<undefined>) => {
 			<NavigationHeader variant="back" />
 			<Clouds />
 			<Scene lottieFileSrc={scene} filter={styles.sceneFilter} />
-			<TranslatedText id="SettingsScreen.title" style={styles.title} />
 			<View style={styles.settingsBox}>
-				<IconButton
-					touchableOpacityStyle={styles.iconButton}
-					packageName="MaterialIcons"
-					iconName="audiotrack"
-					inactive={!isBackgroundSoundActive}
-					redStroke={!isBackgroundSoundActive}
-					onPress={() => {
-						isBackgroundSoundActive ? pauseBackgroundSound() : resumeBackgroundSound();
-					}}
-				/>
-				{Object.entries(languagesFlags).map(([code, flag]) => (
+				<TranslatedText id="SettingsScreen.title" style={styles.title} />
+				<View style={styles.buttonsContainer}>
 					<IconButton
-						key={code}
 						touchableOpacityStyle={styles.iconButton}
-						flag={flag}
-						inactive={code !== lang}
+						lottieFileSrc={require('../assets/icons/music.json')}
+						inactive={!isBackgroundSoundActive}
+						redStroke={!isBackgroundSoundActive}
 						onPress={() => {
-							setLang(code);
+							isBackgroundSoundActive
+								? pauseBackgroundSound()
+								: resumeBackgroundSound();
 						}}
 					/>
-				))}
+					{Object.entries(languagesFlags).map(([code, flag]) => (
+						<IconButton
+							key={code}
+							touchableOpacityStyle={styles.iconButton}
+							flag={flag}
+							inactive={code !== lang}
+							onPress={() => {
+								changeLang(code);
+							}}
+						/>
+					))}
+				</View>
 			</View>
 			<Yuna variant="settings" />
 		</ScreenBase>
@@ -75,26 +78,29 @@ const useStyles = createStyle(({ palette: { color0, color1, color3, type } }) =>
 		opacity: 0.2,
 	},
 	title: {
-		color: color3[type],
-		fontSize: 25,
-		fontWeight: '700',
-		marginTop: -getScaledHeight(125),
-		marginBottom: getScaledHeight(50),
+		color: color1[type],
+		fontSize: 30,
+		fontFamily: 'coiny',
+		position: 'absolute',
+		top: 10,
 	},
 	settingsBox: {
-		flexDirection: 'row',
 		justifyContent: 'center',
 		alignItems: 'center',
 		backgroundColor: color3[type],
 		width: getScaledWidth(dimensions.width),
 		aspectRatio: dimensions.width / dimensions.height,
-		borderWidth: 8,
+		borderWidth: getScaledWidth(15),
 		borderRadius: getScaledWidth(dimensions.width) / 10,
 		borderColor: color1[type],
 		shadowOffset: { height: 5, width: 5 },
 		shadowColor: color0[type],
 		shadowOpacity: 0.2,
 		elevation: 10,
+	},
+	buttonsContainer: {
+		flexDirection: 'row',
+		marginTop: 10,
 	},
 	iconButton: {
 		marginRight: getScaledWidth(50),

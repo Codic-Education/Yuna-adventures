@@ -1,11 +1,10 @@
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import React, { useRef, useState } from 'react';
+import { NavigationContainer, NavigationContainerRef } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import SplashScreen from './SplashScreen';
 import HomeScreen from './HomeScreen';
 import SettingsScreen from './SettingsScreen';
 import ItemNavigator from './ItemNavigator';
-//TODO activate backAbility false
 
 const Stack = createStackNavigator();
 
@@ -24,33 +23,36 @@ const HomeStackNavigator = () => {
 			}}
 		>
 			{Object.entries({ ...homeStackScreens }).map(([name, component]) => (
-				<Stack.Screen
-					//TODO remove comment to disable ability to go back
-					// options={{ gestureEnabled: false }}
-					key={name}
-					name={name}
-					component={component}
-				/>
+				<Stack.Screen key={name} name={name} component={component} />
 			))}
 		</Stack.Navigator>
 	);
 };
 
 const AppNavigation = () => {
+	const navigationRef = useRef<NavigationContainerRef>(null);
+	const [hasSplashScreenSwitched, setHasSplashScreenSwitched] = useState(false);
+
 	return (
-		<NavigationContainer>
+		<NavigationContainer
+			ref={navigationRef}
+			onStateChange={async () => {
+				if (
+					!hasSplashScreenSwitched &&
+					navigationRef.current?.getCurrentRoute()?.name === 'HomeScreen'
+				) {
+					setHasSplashScreenSwitched(true);
+				}
+			}}
+		>
 			<Stack.Navigator mode="card" screenOptions={{ headerShown: false }}>
+				{!hasSplashScreenSwitched && (
+					<Stack.Screen name="SplashScreen" component={SplashScreen} />
+				)}
 				<Stack.Screen
-					//TODO remove comment to disable ability to go back
-					// options={{ gestureEnabled: false }}
-					name="SplashScreen"
-					component={SplashScreen}
-				/>
-				<Stack.Screen
-					//TODO remove comment to disable ability to go back
-					// options={{ gestureEnabled: false }}
 					name="HomeStackNavigator"
 					component={HomeStackNavigator}
+					options={{ animationEnabled: false }}
 				/>
 			</Stack.Navigator>
 		</NavigationContainer>

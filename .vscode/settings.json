@@ -3,5 +3,9 @@
 		"**/node_modules/**/*": true,
 		"**/node_modules/*/**": false
 	},
-	"cSpell.words": ["Yuna", "codic"]
+	"cSpell.words": [
+		"Yuna",
+		"codic",
+		"coiny"
+	]
 }

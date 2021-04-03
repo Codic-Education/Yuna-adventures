@@ -106,28 +106,25 @@ const ItemSelectorScreen = ({
 
 export default ItemSelectorScreen;
 
-const useStyles = createStyle({
+const useStyles = createStyle(({ dimensions: { screenHeight } }) => ({
 	flatList: {
 		alignSelf: 'center',
 		flexDirection: 'row',
-		overflow: 'visible',
 	},
 	contentContainerStyle: {
 		alignContent: 'space-between',
 		justifyContent: 'space-between',
 		alignSelf: 'center',
 		width: getScaledWidth(flatListDimensions.width),
-		height: getScaledHeight(flatListDimensions.height),
-		paddingTop: 10,
+		paddingTop: (screenHeight - getScaledHeight(flatListDimensions.height)) / 2,
+		paddingBottom: (screenHeight - getScaledHeight(flatListDimensions.height)) / 2,
+		height: '100%',
 		maxWidth: 2.5 * getScaledWidth(SelectableItemWidth),
 		maxHeight: 2.5 * getScaledWidth(SelectableItemWidth),
-		//backgroundColor: 'pink',
 		overflow: 'visible',
 	},
 	rowWrapperStyle: {
 		justifyContent: 'space-between',
-		overflow: 'visible',
-		//backgroundColor: 'green',
 	},
 	yunaStyle: {
 		position: 'relative',
@@ -136,7 +133,7 @@ const useStyles = createStyle({
 		right: 0,
 		bottom: 0,
 	},
-});
+}));
 
 interface RenderItemPropsType {
 	item: {

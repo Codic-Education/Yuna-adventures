@@ -1,9 +1,10 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Dimensions, StyleSheet, ScaledSize } from 'react-native';
-import initialTheme, { InitialThemeType } from '../constants/theme';
+import initialTheme, { InitialThemeType, fonts } from '../constants/theme';
 import { PaletteType } from '../constants/palette';
 import { ChildrenType } from '../constants/globalTypes';
 import { StylePropertyType } from '../constants/globalTypes';
+import { useFonts } from 'expo-font';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('screen');
 
@@ -14,6 +15,7 @@ const ThemeContext = createContext({
 });
 
 const ThemeProvider = ({ children }: ChildrenType) => {
+	useFonts(fonts);
 	const [paletteType, setPaletteType] = useState<PaletteType>('light');
 	const [dimensions, setDimensions] = useState({ screenWidth, screenHeight });
 	const theme: ThemeType = {
