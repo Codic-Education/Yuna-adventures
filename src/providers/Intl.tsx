@@ -1,9 +1,17 @@
-import React, { createContext, Dispatch, SetStateAction, useContext, useState } from 'react';
+import React, {
+	createContext,
+	Dispatch,
+	SetStateAction,
+	useContext,
+	useEffect,
+	useState,
+} from 'react';
 import * as Localization from 'expo-localization';
 import i18n from 'i18n-js';
 import en from '../locales/en';
 import sv from '../locales/sv';
 import { ChildrenType } from '../constants/globalTypes';
+import asyncStorage from '@react-native-async-storage/async-storage';
 
 const languages: LanguagesType = { en, sv };
 i18n.translations = languages;
@@ -11,18 +19,47 @@ i18n.translations = languages;
 const I18nContext = createContext<ContextProps>({});
 
 const I18nProvider = ({ children }: ChildrenType) => {
-	const initialLang: LanguagesCodesType = Object.keys(languages).includes(
+	const initialLangCode: LanguagesCodesType = Object.keys(languages).includes(
 		Localization.locale.split('-')[0]
 	)
 		? Localization.locale.split('-')[0]
 		: 'en';
 
-	const [lang, setLang] = useState(initialLang);
-	const langDir = getLangDir(lang);
-	i18n.locale = lang;
+	const [langCode, setLangCode] = useState(initialLangCode);
+	const langDir = getLangDir(langCode);
+	i18n.locale = langCode;
+
+	const changeLang = async (langCode: LanguagesCodesType) => {
+		try {
+			await asyncStorage.setItem('lang', langCode);
+			setLangCode(langCode);
+		} catch (e) {}
+	};
+
+	const onFetchStoredLangCode = async (
+		callback: (storedLangCode: LanguagesCodesType | null) => void
+	) => {
+		try {
+			const storedLangCode = await asyncStorage.getItem('lang');
+			(Object.keys(languages).includes(storedLangCode) || storedLangCode === null) &&
+				callback(storedLangCode);
+		} catch (e) {}
+	};
+
+	useEffect(() => {
+		onFetchStoredLangCode((langCode) => {
+			if (langCode !== null) {
+				setLangCode(langCode);
+			} else {
+				changeLang(initialLangCode);
+			}
+		});
+	}, []);
 
 	return (
-		<I18nContext.Provider value={{ lang, setLang, langDir }}>{children}</I18nContext.Provider>
+		<I18nContext.Provider value={{ lang: langCode, changeLang, langDir }}>
+			{children}
+		</I18nContext.Provider>
 	);
 };
 
@@ -42,6 +79,6 @@ type LanguagesType = {
 
 type ContextProps = {
 	lang: LanguagesCodesType;
-	setLang: Dispatch<SetStateAction<LanguagesCodesType>>;
+	changeLang: (langCode: LanguagesCodesType) => void;
 	langDir: 'rtl' | 'ltr';
 };

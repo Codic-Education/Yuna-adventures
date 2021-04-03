@@ -26,7 +26,7 @@ const dimensions = {
 
 const SettingScreen = ({ navigation }: ScreenProps<undefined>) => {
 	const { resumeBackgroundSound, pauseBackgroundSound, isBackgroundSoundActive } = useSound();
-	const { lang, setLang } = useIntl();
+	const { lang, changeLang } = useIntl();
 	const styles = useStyles();
 
 	return (
@@ -55,7 +55,7 @@ const SettingScreen = ({ navigation }: ScreenProps<undefined>) => {
 							flag={flag}
 							inactive={code !== lang}
 							onPress={() => {
-								setLang(code);
+								changeLang(code);
 							}}
 						/>
 					))}
