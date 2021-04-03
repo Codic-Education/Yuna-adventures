@@ -4,7 +4,7 @@ import { createStyle } from '../providers/Theme';
 import { LottieSourceType, StylePropertyType } from '../constants/globalTypes';
 import { View } from 'react-native';
 import { AVPlaybackSource } from 'expo-av/build/AV';
-import { useSound } from '../providers/Sound';
+import { useSound } from '../providers/BackgroundSound';
 import { Audio } from 'expo-av';
 
 const Scene = forwardRef(

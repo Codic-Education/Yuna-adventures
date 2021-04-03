@@ -8,9 +8,9 @@ import ScreenBase from '../components/ScreenBase';
 import TranslatedText from '../components/TranslatedText';
 import { ScreenProps } from '../constants/globalTypes';
 import { useIntl } from '../providers/Intl';
-import { useSound } from '../providers/Sound';
+import { useSound } from '../providers/BackgroundSound';
 import { createStyle } from '../providers/Theme';
-import { getScaledHeight, getScaledWidth } from '../utilities';
+import { getScaledWidth } from '../utilities';
 import Yuna from '../components/Yuna';
 import scene from '../assets/animations/scene-settings.json';
 

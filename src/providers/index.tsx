@@ -3,17 +3,17 @@ import { ChildrenType } from '../constants/globalTypes';
 import I18n from './Intl';
 import Theme from './Theme';
 import DataProvider from './Data';
-import SoundProvide from './Sound';
+import BackgroundSound from './BackgroundSound';
 
 const Index = ({ children }: ChildrenType) => {
 	return (
-		<SoundProvide>
+		<BackgroundSound>
 			<DataProvider>
 				<Theme>
 					<I18n>{children}</I18n>
 				</Theme>
 			</DataProvider>
-		</SoundProvide>
+		</BackgroundSound>
 	);
 };
 

@@ -33,3 +33,7 @@ export const getRandomNumbersArray = (min: number, max: number) => {
 	}
 	return result;
 };
+
+export const parseBoolean = (value: string | null): boolean | null => {
+	return value === 'true' ? true : value === 'false' ? false : null;
+};
