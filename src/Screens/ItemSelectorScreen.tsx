@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, FlatList } from 'react-native';
+import { FlatList, Platform } from 'react-native';
+import * as RNIAP from 'react-native-iap';
 import SelectableItem, { SelectableItemWidth } from '../components/SelectableItem';
 import NavigationHeader from '../components/NavigationHeader';
 import { LottieSourceType, ScreenProps } from '../constants/globalTypes';
@@ -24,7 +25,7 @@ const ItemSelectorScreen = ({
 }: ScreenProps<ParamsType>) => {
 	const styles = useStyles();
 	const [levelIndexState, setLevelIndexState] = useState(levelIndex ? levelIndex - 1 : 0);
-	const { categories, yuna } = useData();
+	const { categories, yuna, updateCategories } = useData();
 	const [levelData, setLevelData] = useState<any>(categories[category].levels[levelIndexState]);
 	const [isLevelPurchaseDialogVisible, setIsLevelPurchaseDialogVisible] = useState(true);
 	const [hasBeenPurchased, setHasBeenPurchased] = useState(false);
@@ -37,12 +38,31 @@ const ItemSelectorScreen = ({
 
 	useEffect(() => {
 		setIsLevelPurchaseDialogVisible(levelData.isPurchased === false);
-	}, [levelData.isPurchased]);
+	}, [levelData]);
 
-	const handlePurchase = () => {
-		Alert.alert('Level is unlocked now!');
-		setHasBeenPurchased(true);
-		//TODO: Update level isPurchase value if purchase process has been succeeded
+	useEffect(() => {
+		if (!levelData.isPurchased && !isLevelPurchaseDialogVisible) {
+			updateCategories([levelData.productId]);
+		}
+	}, [isLevelPurchaseDialogVisible]);
+
+	const handlePurchase = async (sku: string) => {
+		try {
+			await RNIAP.requestPurchase(sku, false)
+				.then(async (result: any) => {
+					if (Platform.OS === 'ios') {
+						await RNIAP.finishTransactionIOS(result.transactionId);
+						result.transactionId && setHasBeenPurchased(true);
+					} else if (Platform.OS === 'android') {
+						await RNIAP.finishTransaction(result, true);
+					}
+				})
+				.catch((err) => {
+					console.log(`IAP REQUEST PURCHASE ERROR: ${err.code}`, err.message);
+				});
+		} catch (error) {
+			console.warn('IAP ERROR ', error.code, error.message, error);
+		}
 	};
 
 	const _renderItem = ({ item, index }: RenderItemPropsType) => {
@@ -87,9 +107,11 @@ const ItemSelectorScreen = ({
 			<>
 				{isLevelPurchaseDialogVisible && (
 					<LevelPurchaseDialog
-						price="1 SEK"
+						price="10kr"
 						hasBeenPurchased={hasBeenPurchased}
-						onPressPurchaseButton={handlePurchase}
+						onPressPurchaseButton={() => {
+							handlePurchase(levelData.productId);
+						}}
 						onPurchaseSuccessAnimationFinish={() =>
 							setIsLevelPurchaseDialogVisible(false)
 						}

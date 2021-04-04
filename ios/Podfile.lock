@@ -302,6 +302,8 @@ PODS:
     - React
   - RNGestureHandler (1.10.3):
     - React-Core
+  - RNIap (6.0.2):
+    - React-Core
   - RNScreens (2.15.2):
     - React-Core
   - RNSVG (12.1.0):
@@ -375,6 +377,7 @@ DEPENDENCIES:
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNIap (from `../node_modules/react-native-iap`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - UMAppLoader (from `../node_modules/unimodules-app-loader/ios`)
@@ -491,6 +494,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/masked-view"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNIap:
+    :path: "../node_modules/react-native-iap"
   RNScreens:
     :path: "../node_modules/react-native-screens"
   RNSVG:
@@ -573,6 +578,7 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: 11080f1edfb382991959746b580a2dae29e75da0
   RNCMaskedView: f5c7d14d6847b7b44853f7acb6284c1da30a3459
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
+  RNIap: b28bd608368dbe17577c91bd46c2d6e070c4174b
   RNScreens: 3d682bcaba69a4f8e55543d90818704f34338db1
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   UMAppLoader: 515d02d30e29cf05bbe58f77c59f896840cc5895

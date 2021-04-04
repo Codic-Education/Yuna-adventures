@@ -9,10 +9,30 @@ export interface ChildrenType {
 
 export type StylePropertyType = ViewStyle | TextStyle | ImageStyle;
 
+export type LanguagesCodesType = 'en' | 'sv';
+
 export interface CategoryType {
 	titleId: string;
 	thumbnailSrc: LottieSourceType;
-	levels: object;
+	levels: LevelType[];
+}
+
+export interface LevelType {
+	productId?: string;
+	isPurchased: boolean;
+	yunaSetVariant: string;
+	items: ItemType[];
+	quiz: {
+		scene: string;
+	};
+}
+
+export interface ItemType {
+	scene: string;
+	animationObject: AnimationObjectType;
+	onClickAnimationObject: AnimationObjectType;
+	thumbnailSrc: LottieAnimationObjectType;
+	name: { [key in LanguagesCodesType]: AVPlaybackSource };
 }
 
 export type ScreenProps<T> = {

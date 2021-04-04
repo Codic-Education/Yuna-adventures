@@ -1,3 +1,5 @@
+import levelsSkus from '../levelsSkus';
+
 const animalsLevels = [
 	{
 		isPurchased: true,
@@ -56,6 +58,7 @@ const animalsLevels = [
 		},
 	},
 	{
+		productId: levelsSkus.animalsLvl2,
 		isPurchased: false,
 		yunaSetVariant: 'animals',
 		items: [
