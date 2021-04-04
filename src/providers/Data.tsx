@@ -3,10 +3,10 @@ import { ChildrenType } from '../constants/globalTypes';
 import categoriesObj from '../assets/data/categories';
 import scenesObj from '../assets//data/scenes';
 import yunaObj, { YunaVariantsType } from '../assets//data/Yuna';
-
 import * as RNIAP from 'react-native-iap';
 import { Platform } from 'react-native';
 import levelsSkus from '../assets/data/categories/levelsSkus';
+import asyncStorage from '@react-native-async-storage/async-storage';
 
 const DataContext = createContext<DataPropsType>({
 	categories: {},
@@ -22,7 +22,6 @@ const DataProvider = ({ children }: ChildrenType) => {
 
 	useEffect(() => {
 		initilizeIAPConnection();
-
 		const purchaseUpdateSubcription = RNIAP.purchaseUpdatedListener(
 			async ({ transactionReceipt, transactionId }) => {
 				const receipt = transactionReceipt;
@@ -51,8 +50,14 @@ const DataProvider = ({ children }: ChildrenType) => {
 	const initilizeIAPConnection = async () => {
 		await RNIAP.initConnection()
 			.then(async (connection) => {
-				connection && updatePurchasedLevelsState();
-				await RNIAP.getProducts(Object.values(levelsSkus));
+				if (connection) {
+					updatePurchasedLevelsState();
+					await RNIAP.getProducts(Object.values(levelsSkus));
+				} else {
+					onFetchStoredPurchasedLevelProductsIds((storedPurchasedLevelProductsIds) => {
+						updateCategories(storedPurchasedLevelProductsIds);
+					});
+				}
 			})
 			.catch((err) => {
 				console.log(err);
@@ -64,6 +69,7 @@ const DataProvider = ({ children }: ChildrenType) => {
 			const products = await RNIAP.getPurchaseHistory();
 			const productIds = products.map(({ productId }) => productId);
 			updateCategories(productIds);
+			addToStoredPurchasedLevelProductsIds(productIds);
 		} catch (error) {
 			console.log('IAP erro ', error.code, error.message, error);
 		}
@@ -102,6 +108,37 @@ const DataProvider = ({ children }: ChildrenType) => {
 export default DataProvider;
 
 export const useData = () => useContext<DataPropsType>(DataContext);
+
+const onFetchStoredPurchasedLevelProductsIds = async (
+	callback: (storedPurchasedLevelProductsIds: string[]) => void
+) => {
+	try {
+		const storedPurchasedLevelProductsIds = await asyncStorage.getItem(
+			'purchasedLevelProductsIds'
+		);
+		callback(JSON.parse(storedPurchasedLevelProductsIds || '[]'));
+	} catch (e) {}
+};
+
+export const addToStoredPurchasedLevelProductsIds = async (
+	purchasedLevelProductsIdsToAddToStorage: string[]
+) => {
+	try {
+		onFetchStoredPurchasedLevelProductsIds(async (storedPurchasedLevelProductsIds) => {
+			const newPurchasedLevelProductsIds = storedPurchasedLevelProductsIds;
+
+			purchasedLevelProductsIdsToAddToStorage.map((id) => {
+				!newPurchasedLevelProductsIds.includes(id) && newPurchasedLevelProductsIds.push(id);
+				return id;
+			});
+
+			await asyncStorage.setItem(
+				'purchasedLevelProductsIds',
+				JSON.stringify(newPurchasedLevelProductsIds)
+			);
+		});
+	} catch (e) {}
+};
 
 type DataPropsType = {
 	categories: { [key: string]: any };

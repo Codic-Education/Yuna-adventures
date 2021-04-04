@@ -7,7 +7,7 @@ import { LottieSourceType, ScreenProps } from '../constants/globalTypes';
 import { createStyle } from '../providers/Theme';
 import Clouds from '../components/Clouds';
 import ScreenBase from '../components/ScreenBase';
-import { useData } from '../providers/Data';
+import { addToStoredPurchasedLevelProductsIds, useData } from '../providers/Data';
 import { getScaledHeight, getScaledWidth } from '../utilities';
 import Paginator from '../components/Paginator';
 import LevelPurchaseDialog from '../components/Dialogs/LevelPurchaseDialog';
@@ -40,9 +40,12 @@ const ItemSelectorScreen = ({
 		setIsLevelPurchaseDialogVisible(levelData.isPurchased === false);
 	}, [levelData]);
 
+	//Note: This useEffect is used to update a paid level state after purchasing process sucess.
 	useEffect(() => {
 		if (!levelData.isPurchased && !isLevelPurchaseDialogVisible) {
 			updateCategories([levelData.productId]);
+			addToStoredPurchasedLevelProductsIds([levelData.productId]);
+			//Done
 		}
 	}, [isLevelPurchaseDialogVisible]);
 
