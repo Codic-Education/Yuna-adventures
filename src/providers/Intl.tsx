@@ -1,17 +1,10 @@
-import React, {
-	createContext,
-	Dispatch,
-	SetStateAction,
-	useContext,
-	useEffect,
-	useState,
-} from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import * as Localization from 'expo-localization';
 import i18n from 'i18n-js';
 import en from '../locales/en';
 import sv from '../locales/sv';
-import { ChildrenType } from '../constants/globalTypes';
 import asyncStorage from '@react-native-async-storage/async-storage';
+import { ChildrenType, LanguagesCodesType } from '../constants/globalTypes';
 
 const languages: LanguagesType = { en, sv };
 i18n.translations = languages;
@@ -70,8 +63,6 @@ export default I18nProvider;
 const getLangDir = (langCode: string): 'rtl' | 'ltr' => {
 	return ['ar', 'arc', 'az', 'he', 'ku', 'fa', 'ur'].includes(langCode) ? 'rtl' : 'ltr';
 };
-
-export type LanguagesCodesType = 'en' | 'sv';
 
 type LanguagesType = {
 	[key in LanguagesCodesType]: object;

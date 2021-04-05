@@ -16,7 +16,7 @@ const dimensions = {
 };
 
 const LevelPurchaseDialog = ({
-	price = '0',
+	price,
 	onPurchaseSuccessAnimationFinish,
 	onPressPurchaseButton,
 	hasBeenPurchased = false,
@@ -58,11 +58,20 @@ const LevelPurchaseDialog = ({
 						justifyContent: 'center',
 					}}
 				>
-					<TranslatedText
-						id="LevelPurchaseDialog.description"
-						style={styles.description}
-					/>
-					<Text style={styles.price}>{price}</Text>
+					{price ? (
+						<>
+							<TranslatedText
+								id="LevelPurchaseDialog.description"
+								style={styles.description}
+							/>
+							<Text style={styles.price}>{price}</Text>
+						</>
+					) : (
+						<TranslatedText
+							id="LevelPurchaseDialog.descriptionWithoutPrice"
+							style={styles.description}
+						/>
+					)}
 				</View>
 				<Button
 					style={styles.buyButton}
@@ -125,6 +134,7 @@ const useStyles = createStyle(({ palette: { color0, color1, color3, color7, colo
 		fontSize: getScaledWidth(55),
 		fontFamily: 'coiny',
 		alignSelf: 'center',
+		lineHeight: getScaledWidth(65),
 		marginBottom: getScaledHeight(79),
 	},
 	description: {
@@ -164,7 +174,7 @@ const useStyles = createStyle(({ palette: { color0, color1, color3, color7, colo
 }));
 
 type LevelPurchaseDialogPropsType = {
-	price: string;
+	price?: string;
 	hasBeenPurchased: boolean;
 	onPurchaseSuccessAnimationFinish: () => void;
 	onPressPurchaseButton: () => void;

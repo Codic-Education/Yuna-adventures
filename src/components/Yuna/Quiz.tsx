@@ -1,8 +1,8 @@
 import { AVPlaybackSource } from 'expo-av/build/AV';
 import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
-import { QuizProgressValueType } from '../../constants/globalTypes';
+import { LanguagesCodesType, QuizProgressValueType } from '../../constants/globalTypes';
 import { useData } from '../../providers/Data';
-import { useIntl, LanguagesCodesType } from '../../providers/Intl';
+import { useIntl } from '../../providers/Intl';
 import { createStyle } from '../../providers/Theme';
 import InteractiveItem from '../InteractiveItem';
 import LottieView from 'lottie-react-native';
