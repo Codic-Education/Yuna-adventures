@@ -3,14 +3,18 @@ import { StatusBar } from 'expo-status-bar';
 import Providers from './src/providers';
 import Screens from './src/Screens';
 import ImmersiveMode from 'react-native-immersive-mode';
-import { Platform } from 'react-native';
+import { AppState, Platform } from 'react-native';
 
 const App = () => {
 	useEffect(() => {
-		if (Platform.OS === 'android') {
-			ImmersiveMode.fullLayout(true);
-			ImmersiveMode.setBarMode('FullSticky');
-		}
+		AppState.addEventListener('change', (nextAppState) => {
+			try {
+				if (Platform.OS === 'android' && nextAppState === 'active') {
+					ImmersiveMode.fullLayout(true);
+					ImmersiveMode.setBarMode('FullSticky');
+				}
+			} catch (e) {}
+		});
 	}, []);
 
 	return (
