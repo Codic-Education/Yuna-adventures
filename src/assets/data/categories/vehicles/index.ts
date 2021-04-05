@@ -1,5 +1,8 @@
+import PaidProducts, { freeProducts } from '../levelsSkus';
+
 const vehiclesLevels = [
 	{
+		productId: freeProducts.vehiclesLvl1,
 		isPurchased: true,
 		yunaSetVariant: 'vehicles',
 		items: [

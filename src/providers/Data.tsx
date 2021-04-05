@@ -51,12 +51,13 @@ const DataProvider = ({ children }: ChildrenType) => {
 		await RNIAP.initConnection()
 			.then(async (connection) => {
 				if (connection) {
-					updatePurchasedLevelsState();
-					await RNIAP.getProducts(Object.values(levelsSkus));
+					updateLocalPurchasedLevelsStateFromCloud();
 				} else {
-					onFetchStoredPurchasedLevelProductsIds((storedPurchasedLevelProductsIds) => {
-						updateCategories(storedPurchasedLevelProductsIds);
-					});
+					onFetchStoredLevelsPricesAndPurchaseStates(
+						(storedPurchasedLevelProductsIds) => {
+							updateCategories(storedPurchasedLevelProductsIds);
+						}
+					);
 				}
 			})
 			.catch((err) => {
@@ -64,19 +65,43 @@ const DataProvider = ({ children }: ChildrenType) => {
 			});
 	};
 
-	const updatePurchasedLevelsState = async () => {
+	const updateLocalPurchasedLevelsStateFromCloud = async () => {
 		try {
-			const products = await RNIAP.getPurchaseHistory();
-			const productIds = products.map(({ productId }) => productId);
-			updateCategories(productIds);
-			addToStoredPurchasedLevelProductsIds(productIds);
+			const levelSkus = Object.values(levelsSkus);
+			const products = await RNIAP.getProducts(levelSkus);
+			const purchasedProducts = await RNIAP.getPurchaseHistory();
+			const purchasedProductIds = purchasedProducts.map(({ productId }) => productId);
+			const newLevelsData = Object.fromEntries(
+				products.map(({ productId, localizedPrice }) => {
+					return [
+						productId,
+						{
+							isPurchased: purchasedProductIds.includes(productId),
+							price: localizedPrice,
+						},
+					];
+				})
+			);
+			updateCategories(newLevelsData);
+			addToStoredPurchasedLevels(newLevelsData);
+			// Note: the following lines uses to check if some of levelSkus doesn't exist in cloud.
+
+			const allProductsIds = products.map(({ productId }) => productId);
+			levelSkus.map((id) => {
+				!allProductsIds.includes(id) &&
+					console.log(
+						'product with the following id ',
+						id,
+						'could not be found in cloud.'
+					);
+			});
 		} catch (error) {
 			console.log('IAP erro ', error.code, error.message, error);
 		}
 	};
 
-	const updateCategories = (productIds: string[]) => {
-		if (productIds.length) {
+	const updateCategories = (levelsPricesAndPurchaseStates: LevelsPricesAndPurchaseStatesType) => {
+		if (Object.entries(levelsPricesAndPurchaseStates).length) {
 			setCategories((current) =>
 				Object.fromEntries(
 					Object.entries(current).map(([key, value]) => [
@@ -85,11 +110,10 @@ const DataProvider = ({ children }: ChildrenType) => {
 							...value,
 							levels: value.levels.map((level) => ({
 								...level,
-								isPurchased: !level.isPurchased
-									? level?.productId
-										? productIds.includes(level.productId)
-										: false
-									: level.isPurchased,
+								...(level.productId &&
+								levelsPricesAndPurchaseStates[level.productId]
+									? levelsPricesAndPurchaseStates[level.productId]
+									: {}),
 							})),
 						},
 					])
@@ -109,40 +133,40 @@ export default DataProvider;
 
 export const useData = () => useContext<DataPropsType>(DataContext);
 
-const onFetchStoredPurchasedLevelProductsIds = async (
-	callback: (storedPurchasedLevelProductsIds: string[]) => void
+const onFetchStoredLevelsPricesAndPurchaseStates = async (
+	callback: (storedLevelsPricesAndPurchaseStates: LevelsPricesAndPurchaseStatesType) => void
 ) => {
 	try {
-		const storedPurchasedLevelProductsIds = await asyncStorage.getItem(
-			'purchasedLevelProductsIds'
+		const storedLevelsPricesAndPurchaseStates = await asyncStorage.getItem(
+			'storedLevelsPricesAndPurchaseStates'
 		);
-		callback(JSON.parse(storedPurchasedLevelProductsIds || '[]'));
+		callback(JSON.parse(storedLevelsPricesAndPurchaseStates || '{}'));
 	} catch (e) {}
 };
 
-export const addToStoredPurchasedLevelProductsIds = async (
-	purchasedLevelProductsIdsToAddToStorage: string[]
+export const addToStoredPurchasedLevels = async (
+	levelsPricesAndPurchaseStatesToAddToStorage: LevelsPricesAndPurchaseStatesType
 ) => {
 	try {
-		onFetchStoredPurchasedLevelProductsIds(async (storedPurchasedLevelProductsIds) => {
-			const newPurchasedLevelProductsIds = storedPurchasedLevelProductsIds;
-
-			purchasedLevelProductsIdsToAddToStorage.map((id) => {
-				!newPurchasedLevelProductsIds.includes(id) && newPurchasedLevelProductsIds.push(id);
-				return id;
-			});
-
+		onFetchStoredLevelsPricesAndPurchaseStates(async (storedLevelsPricesAndPurchaseStates) => {
 			await asyncStorage.setItem(
-				'purchasedLevelProductsIds',
-				JSON.stringify(newPurchasedLevelProductsIds)
+				'storedLevelsPricesAndPurchaseStates',
+				JSON.stringify({
+					...storedLevelsPricesAndPurchaseStates,
+					...levelsPricesAndPurchaseStatesToAddToStorage,
+				})
 			);
 		});
 	} catch (e) {}
+};
+
+type LevelsPricesAndPurchaseStatesType = {
+	[sku: string]: { isPurchased: boolean; price?: string };
 };
 
 type DataPropsType = {
 	categories: { [key: string]: any };
 	scenes: { [key: string]: any };
 	yuna: YunaVariantsType;
-	updateCategories: (productsIds: string[]) => void;
+	updateCategories: (levelsPricesAndPurchaseStates: LevelsPricesAndPurchaseStatesType) => void;
 };

@@ -18,7 +18,8 @@ export interface CategoryType {
 }
 
 export interface LevelType {
-	productId?: string;
+	productId: string;
+	price?: string;
 	isPurchased: boolean;
 	yunaSetVariant: string;
 	items: ItemType[];

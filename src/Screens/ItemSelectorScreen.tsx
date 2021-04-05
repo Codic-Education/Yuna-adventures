@@ -3,11 +3,11 @@ import { FlatList, Platform } from 'react-native';
 import * as RNIAP from 'react-native-iap';
 import SelectableItem, { SelectableItemWidth } from '../components/SelectableItem';
 import NavigationHeader from '../components/NavigationHeader';
-import { LottieSourceType, ScreenProps } from '../constants/globalTypes';
+import { LevelType, LottieSourceType, ScreenProps } from '../constants/globalTypes';
 import { createStyle } from '../providers/Theme';
 import Clouds from '../components/Clouds';
 import ScreenBase from '../components/ScreenBase';
-import { addToStoredPurchasedLevelProductsIds, useData } from '../providers/Data';
+import { addToStoredPurchasedLevels, useData } from '../providers/Data';
 import { getScaledHeight, getScaledWidth } from '../utilities';
 import Paginator from '../components/Paginator';
 import LevelPurchaseDialog from '../components/Dialogs/LevelPurchaseDialog';
@@ -26,7 +26,9 @@ const ItemSelectorScreen = ({
 	const styles = useStyles();
 	const [levelIndexState, setLevelIndexState] = useState(levelIndex ? levelIndex - 1 : 0);
 	const { categories, yuna, updateCategories } = useData();
-	const [levelData, setLevelData] = useState<any>(categories[category].levels[levelIndexState]);
+	const [levelData, setLevelData] = useState<LevelType>(
+		categories[category].levels[levelIndexState]
+	);
 	const [isLevelPurchaseDialogVisible, setIsLevelPurchaseDialogVisible] = useState(true);
 	const [hasBeenPurchased, setHasBeenPurchased] = useState(false);
 
@@ -43,9 +45,14 @@ const ItemSelectorScreen = ({
 	//Note: This useEffect is used to update a paid level state after purchasing process sucess.
 	useEffect(() => {
 		if (!levelData.isPurchased && !isLevelPurchaseDialogVisible) {
-			updateCategories([levelData.productId]);
-			addToStoredPurchasedLevelProductsIds([levelData.productId]);
-			//Done
+			const newPurchasedLevelState = {
+				[levelData.productId]: {
+					isPurchased: true,
+					price: levelData.price,
+				},
+			};
+			updateCategories(newPurchasedLevelState);
+			addToStoredPurchasedLevels(newPurchasedLevelState);
 		}
 	}, [isLevelPurchaseDialogVisible]);
 
@@ -96,7 +103,7 @@ const ItemSelectorScreen = ({
 				contentContainerStyle={styles.contentContainerStyle}
 				columnWrapperStyle={styles.rowWrapperStyle}
 				data={[
-					...(levelData?.items ? levelData?.items : []),
+					...levelData.items,
 					{
 						thumbnailSrc: yuna[levelData.yunaSetVariant]?.win,
 						isQuiz: true,
@@ -110,10 +117,10 @@ const ItemSelectorScreen = ({
 			<>
 				{isLevelPurchaseDialogVisible && (
 					<LevelPurchaseDialog
-						price="10kr"
+						price={levelData.price}
 						hasBeenPurchased={hasBeenPurchased}
 						onPressPurchaseButton={() => {
-							handlePurchase(levelData.productId);
+							levelData.productId && handlePurchase(levelData.productId);
 						}}
 						onPurchaseSuccessAnimationFinish={() =>
 							setIsLevelPurchaseDialogVisible(false)
@@ -163,7 +170,7 @@ const useStyles = createStyle(({ dimensions: { screenHeight } }) => ({
 interface RenderItemPropsType {
 	item: {
 		thumbnailSrc: LottieSourceType;
-		scene: string;
+		scene?: string;
 		isQuiz?: boolean;
 	};
 	index: number;

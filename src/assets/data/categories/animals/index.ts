@@ -1,7 +1,8 @@
-import levelsSkus from '../levelsSkus';
+import PaidProducts, { freeProducts } from '../levelsSkus';
 
 const animalsLevels = [
 	{
+		productId: freeProducts.animalsLvl1,
 		isPurchased: true,
 		yunaSetVariant: 'animals',
 		items: [
@@ -58,7 +59,7 @@ const animalsLevels = [
 		},
 	},
 	{
-		productId: levelsSkus.animalsLvl2,
+		productId: PaidProducts.animalsLvl2,
 		isPurchased: false,
 		yunaSetVariant: 'animals',
 		items: [
