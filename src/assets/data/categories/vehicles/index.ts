@@ -13,7 +13,7 @@ const vehiclesLevels = [
 				},
 				onClickAnimationObject: {
 					animationSrc: require('./ambulance/sounding.json'),
-					soundSrc: require('./ambulance/sounding.wav'),
+					soundSrc: require('./ambulance/sounding-audio.wav'),
 				},
 				thumbnailSrc: require('./ambulance/default.json'),
 				name: {
@@ -28,7 +28,7 @@ const vehiclesLevels = [
 				},
 				onClickAnimationObject: {
 					animationSrc: require('./fire-truck/sounding.json'),
-					soundSrc: require('./fire-truck/sounding.wav'),
+					soundSrc: require('./fire-truck/sounding-audio.wav'),
 				},
 
 				thumbnailSrc: require('./fire-truck/default.json'),
@@ -44,7 +44,7 @@ const vehiclesLevels = [
 				},
 				onClickAnimationObject: {
 					animationSrc: require('./police-car/sounding.json'),
-					soundSrc: require('./police-car/sounding.wav'),
+					soundSrc: require('./police-car/sounding-audio.wav'),
 				},
 
 				thumbnailSrc: require('./police-car/default.json'),
