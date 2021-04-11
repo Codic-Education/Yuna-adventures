@@ -16,11 +16,22 @@ export interface CategoryType {
 	thumbnailSrc: LottieSourceType;
 	levels: LevelType[];
 }
+/**
+ * UNPURCHASED: Unpurchased yet & can be used to make a product paid.
+ * PENDING: Pending
+ * PURCHASED: Purchased & can be used to make a product free.
+ */
+export enum PURCHASE_STATE {
+	UNPURCHASED = -1,
+	PENDING = 0,
+	PURCHASED = 1,
+}
 
 export interface LevelType {
 	productId: string;
 	price?: string;
-	isPurchased: boolean;
+	purchaseState: PURCHASE_STATE;
+	isNewPurchased?: boolean;
 	yunaSetVariant: string;
 	items: ItemType[];
 	quiz: {
@@ -64,3 +75,7 @@ export interface AnimationObjectType {
 }
 
 export type QuizProgressValueType = 0 | 1 | 2 | 3;
+
+export type LevelsPricesAndPurchaseStatesType = {
+	[sku: string]: { purchaseState?: PURCHASE_STATE; price?: string; isNewPurchased?: boolean };
+};

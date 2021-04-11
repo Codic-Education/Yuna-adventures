@@ -1,9 +1,10 @@
+import { LevelType } from '../../../../constants/globalTypes';
 import PaidProducts, { freeProducts } from '../levelsSkus';
 
-const animalsLevels = [
+const animalsLevels: Array<LevelType> = [
 	{
 		productId: freeProducts.animalsLvl1,
-		isPurchased: true,
+		purchaseState: 1,
 		yunaSetVariant: 'animals',
 		items: [
 			{
@@ -13,7 +14,7 @@ const animalsLevels = [
 				},
 				onClickAnimationObject: {
 					animationSrc: require('./pig/sounding.json'),
-					soundSrc: require('./pig/sounding.wav'),
+					soundSrc: require('./pig/sounding-audio.wav'),
 				},
 				thumbnailSrc: require('./pig/default.json'),
 				name: {
@@ -28,7 +29,7 @@ const animalsLevels = [
 				},
 				onClickAnimationObject: {
 					animationSrc: require('./horse/sounding.json'),
-					soundSrc: require('./horse/sounding.wav'),
+					soundSrc: require('./horse/sounding-audio.wav'),
 				},
 
 				thumbnailSrc: require('./horse/default.json'),
@@ -44,7 +45,7 @@ const animalsLevels = [
 				},
 				onClickAnimationObject: {
 					animationSrc: require('./monkey/sounding.json'),
-					soundSrc: require('./monkey/sounding.wav'),
+					soundSrc: require('./monkey/sounding-audio.wav'),
 				},
 
 				thumbnailSrc: require('./monkey/default.json'),
@@ -60,7 +61,7 @@ const animalsLevels = [
 	},
 	{
 		productId: PaidProducts.animalsLvl2,
-		isPurchased: false,
+		purchaseState: -1,
 		yunaSetVariant: 'animals',
 		items: [
 			{
@@ -70,7 +71,7 @@ const animalsLevels = [
 				},
 				onClickAnimationObject: {
 					animationSrc: require('./dog/sounding.json'),
-					soundSrc: require('./dog/sounding.wav'),
+					soundSrc: require('./dog/sounding-audio.wav'),
 				},
 
 				thumbnailSrc: require('./dog/default.json'),
@@ -86,7 +87,7 @@ const animalsLevels = [
 				},
 				onClickAnimationObject: {
 					animationSrc: require('./cow/sounding.json'),
-					soundSrc: require('./cow/sounding.wav'),
+					soundSrc: require('./cow/sounding-audio.wav'),
 				},
 
 				thumbnailSrc: require('./cow/default.json'),
@@ -102,7 +103,7 @@ const animalsLevels = [
 				},
 				onClickAnimationObject: {
 					animationSrc: require('./duck/sounding.json'),
-					soundSrc: require('./duck/sounding.wav'),
+					soundSrc: require('./duck/sounding-audio.wav'),
 				},
 
 				thumbnailSrc: require('./duck/default.json'),

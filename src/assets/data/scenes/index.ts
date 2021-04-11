@@ -8,7 +8,7 @@ export default {
 	},
 	forest: {
 		animationSrc: require('./forest.json'),
-		backgroundSound: require('./forest.wav'),
+		backgroundSound: require('./forest-audio.wav'),
 		itemPosition: {
 			left: 1320,
 			bottom: 248,

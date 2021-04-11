@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { FlatList, Platform } from 'react-native';
-import * as RNIAP from 'react-native-iap';
+import React, { useState } from 'react';
+import { FlatList } from 'react-native';
+import RNIAP from 'react-native-iap';
 import SelectableItem, { SelectableItemWidth } from '../components/SelectableItem';
 import NavigationHeader from '../components/NavigationHeader';
-import { LevelType, LottieSourceType, ScreenProps } from '../constants/globalTypes';
+import { LevelType, LottieSourceType, PURCHASE_STATE, ScreenProps } from '../constants/globalTypes';
 import { createStyle } from '../providers/Theme';
 import Clouds from '../components/Clouds';
 import ScreenBase from '../components/ScreenBase';
-import { addToStoredPurchasedLevels, useData } from '../providers/Data';
+import { useData } from '../providers/Data';
 import { getScaledHeight, getScaledWidth } from '../utilities';
 import Paginator from '../components/Paginator';
 import LevelPurchaseDialog from '../components/Dialogs/LevelPurchaseDialog';
@@ -26,52 +26,13 @@ const ItemSelectorScreen = ({
 	const styles = useStyles();
 	const [levelIndexState, setLevelIndexState] = useState(levelIndex ? levelIndex - 1 : 0);
 	const { categories, yuna, updateCategories } = useData();
-	const [levelData, setLevelData] = useState<LevelType>(
-		categories[category].levels[levelIndexState]
-	);
-	const [isLevelPurchaseDialogVisible, setIsLevelPurchaseDialogVisible] = useState(true);
-	const [hasBeenPurchased, setHasBeenPurchased] = useState(false);
-
-	useEffect(() => {
-		setLevelData(categories[category].levels[levelIndexState]);
-		setIsLevelPurchaseDialogVisible(true);
-		setHasBeenPurchased(false);
-	}, [levelIndexState]);
-
-	useEffect(() => {
-		setIsLevelPurchaseDialogVisible(levelData.isPurchased === false);
-	}, [levelData]);
-
-	//Note: This useEffect is used to update a paid level state after purchasing process sucess.
-	useEffect(() => {
-		if (!levelData.isPurchased && !isLevelPurchaseDialogVisible) {
-			const newPurchasedLevelState = {
-				[levelData.productId]: {
-					isPurchased: true,
-					price: levelData.price,
-				},
-			};
-			updateCategories(newPurchasedLevelState);
-			addToStoredPurchasedLevels(newPurchasedLevelState);
-		}
-	}, [isLevelPurchaseDialogVisible]);
+	const levelData: LevelType = categories[category].levels[levelIndexState];
 
 	const handlePurchase = async (sku: string) => {
 		try {
-			await RNIAP.requestPurchase(sku, false)
-				.then(async (result: any) => {
-					if (Platform.OS === 'ios') {
-						await RNIAP.finishTransactionIOS(result.transactionId);
-						result.transactionId && setHasBeenPurchased(true);
-					} else if (Platform.OS === 'android') {
-						await RNIAP.finishTransaction(result, true);
-					}
-				})
-				.catch((err) => {
-					console.log(`IAP REQUEST PURCHASE ERROR: ${err.code}`, err.message);
-				});
+			await RNIAP.requestPurchase(sku, false);
 		} catch (error) {
-			console.warn('IAP ERROR ', error.code, error.message, error);
+			console.warn('HandlePurchaseERROR :', error.code, error.message, error);
 		}
 	};
 
@@ -115,16 +76,22 @@ const ItemSelectorScreen = ({
 				scrollEnabled={false}
 			/>
 			<>
-				{isLevelPurchaseDialogVisible && (
+				{!(
+					levelData.purchaseState === PURCHASE_STATE.PURCHASED &&
+					!levelData.isNewPurchased
+				) && (
 					<LevelPurchaseDialog
 						price={levelData.price}
-						hasBeenPurchased={hasBeenPurchased}
+						purchaseState={levelData.purchaseState}
+						isNewPurchased={!!levelData?.isNewPurchased}
 						onPressPurchaseButton={() => {
 							levelData.productId && handlePurchase(levelData.productId);
 						}}
-						onPurchaseSuccessAnimationFinish={() =>
-							setIsLevelPurchaseDialogVisible(false)
-						}
+						onPurchaseSuccessAnimationFinish={() => {
+							updateCategories({
+								[levelData.productId]: { isNewPurchased: false },
+							});
+						}}
 					/>
 				)}
 			</>

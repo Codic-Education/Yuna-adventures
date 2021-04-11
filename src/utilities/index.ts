@@ -1,5 +1,6 @@
 // Dimensions that have been used with illustration & animation design "entireScene"
 import { Dimensions } from 'react-native';
+import { END_POINTS } from '../constants';
 
 const preDimensions = {
 	width: 1900,
@@ -36,4 +37,17 @@ export const getRandomNumbersArray = (min: number, max: number) => {
 
 export const parseBoolean = (value: string | null): boolean | null => {
 	return value === 'true' ? true : value === 'false' ? false : null;
+};
+
+//Note : Receipt must be an parsable string.
+export const storeReceiptInDB = async (receipt: string) => {
+	try {
+		await fetch(END_POINTS.RECEIPT_STORING, {
+			headers: { 'Content-Type': 'application/json' },
+			method: 'POST',
+			body: JSON.stringify({ data: receipt }),
+		});
+	} catch (error) {
+		console.log(error);
+	}
 };
