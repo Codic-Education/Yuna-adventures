@@ -1,5 +1,6 @@
 //Note: Paid products "levels" must be stored here.
 const paidProducts = {
+	//TODO: activate disable test product.
 	animalsLvl2: 'ya_animals_lvl2',
 };
 

@@ -1,12 +1,17 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { ChildrenType } from '../constants/globalTypes';
+import {
+	ChildrenType,
+	LevelsPricesAndPurchaseStatesType,
+	PURCHASE_STATE,
+} from '../constants/globalTypes';
 import categoriesObj from '../assets/data/categories';
 import scenesObj from '../assets//data/scenes';
 import yunaObj, { YunaVariantsType } from '../assets//data/Yuna';
-import * as RNIAP from 'react-native-iap';
-import { Platform } from 'react-native';
+import RNIAP, { PurchaseStateAndroid } from 'react-native-iap';
 import levelsSkus from '../assets/data/categories/levelsSkus';
 import asyncStorage from '@react-native-async-storage/async-storage';
+import { Platform } from 'react-native';
+import { storeReceiptInDB } from '../utilities';
 
 const DataContext = createContext<DataPropsType>({
 	categories: {},
@@ -16,87 +21,114 @@ const DataContext = createContext<DataPropsType>({
 });
 
 const DataProvider = ({ children }: ChildrenType) => {
+	const isAndroid = Platform.OS === 'android';
 	const [categories, setCategories] = useState(categoriesObj);
 	const [scenes] = useState(scenesObj);
 	const [yuna] = useState(yunaObj);
 
 	useEffect(() => {
-		initilizeIAPConnection();
-		const purchaseUpdateSubcription = RNIAP.purchaseUpdatedListener(
-			async ({ transactionReceipt, transactionId }) => {
-				const receipt = transactionReceipt;
-				if (receipt) {
-					try {
-						if (Platform.OS === 'ios' && transactionId) {
-							RNIAP.finishTransactionIOS(transactionId);
-						}
-					} catch (error) {
-						console.log('ERROR IN APP: ', error);
+		initializeIAPConnection();
+		const purchaseUpdatedListener = RNIAP.purchaseUpdatedListener(async (purchase) => {
+			try {
+				if (isAndroid) {
+					if (purchase.purchaseStateAndroid === PurchaseStateAndroid.PURCHASED) {
+						updateCategories({
+							[purchase.productId]: {
+								purchaseState: 1,
+								isNewPurchased: true,
+							},
+						});
+						addToStoredPurchasedLevels({
+							[purchase.productId]: {
+								purchaseState: 1,
+							},
+						});
+						await RNIAP.finishTransaction(purchase, false);
+						storeReceiptInDB(purchase.transactionReceipt);
+					} else {
+						updateCategories({
+							[purchase.productId]: {
+								purchaseState:
+									purchase.purchaseStateAndroid === PurchaseStateAndroid.PENDING
+										? PURCHASE_STATE.PENDING
+										: PURCHASE_STATE.UNPURCHASED,
+							},
+						});
 					}
 				}
+			} catch (error) {
+				console.log('PurchaseUpdatedListenerError: ', error);
 			}
-		);
+		});
 
-		RNIAP.purchaseErrorListener((error) => {
-			console.log('purchaseErrorListener: ', error);
+		const purchaseErrorListener = RNIAP.purchaseErrorListener((error) => {
+			console.log('PurchaseErrorListener: ', error);
 		});
 
 		return () => {
-			purchaseUpdateSubcription.remove();
+			purchaseUpdatedListener?.remove();
+			purchaseErrorListener?.remove();
 			RNIAP.endConnection();
 		};
 	}, []);
 
-	const initilizeIAPConnection = async () => {
-		await RNIAP.initConnection()
-			.then(async (connection) => {
-				if (connection) {
-					updateLocalPurchasedLevelsStateFromCloud();
-				} else {
-					onFetchStoredLevelsPricesAndPurchaseStates(
-						(storedPurchasedLevelProductsIds) => {
-							updateCategories(storedPurchasedLevelProductsIds);
-						}
-					);
-				}
-			})
-			.catch((err) => {
-				console.log(err);
+	const initializeIAPConnection = async () => {
+		try {
+			await RNIAP.initConnection();
+			isAndroid && RNIAP.flushFailedPurchasesCachedAsPendingAndroid();
+			await updateLocalPaidLevelsStatesFromCloud();
+		} catch (error) {
+			onFetchStoredLevelsPricesAndPurchaseStates((storedPurchasedLevelProductsIds) => {
+				updateCategories(storedPurchasedLevelProductsIds);
 			});
+		}
 	};
 
-	const updateLocalPurchasedLevelsStateFromCloud = async () => {
+	const updateLocalPaidLevelsStatesFromCloud = async () => {
 		try {
 			const levelSkus = Object.values(levelsSkus);
 			const products = await RNIAP.getProducts(levelSkus);
-			const purchasedProducts = await RNIAP.getPurchaseHistory();
-			const purchasedProductIds = purchasedProducts.map(({ productId }) => productId);
-			const newLevelsData = Object.fromEntries(
-				products.map(({ productId, localizedPrice }) => {
-					return [
-						productId,
-						{
-							isPurchased: purchasedProductIds.includes(productId),
-							price: localizedPrice,
-						},
-					];
-				})
-			);
-			updateCategories(newLevelsData);
-			addToStoredPurchasedLevels(newLevelsData);
-			// Note: the following lines uses to check if some of levelSkus doesn't exist in cloud.
+			const purchasedProducts = await RNIAP.getAvailablePurchases();
 
-			const allProductsIds = products.map(({ productId }) => productId);
-			levelSkus.map((id) => {
-				!allProductsIds.includes(id) &&
-					console.log(
-						'product with the following id ',
-						id,
-						'could not be found in cloud.'
-					);
-			});
+			const filteredPurchasedProductAndroid = isAndroid
+				? purchasedProducts.filter(
+						async ({
+							purchaseStateAndroid,
+							isAcknowledgedAndroid,
+							purchaseToken,
+							transactionReceipt,
+						}) => {
+							const isPurchased =
+								purchaseStateAndroid === PurchaseStateAndroid.PURCHASED;
+							if (isPurchased && !isAcknowledgedAndroid && purchaseToken) {
+								await RNIAP.acknowledgePurchaseAndroid(purchaseToken);
+								storeReceiptInDB(transactionReceipt);
+							}
+							return isPurchased;
+						}
+				  )
+				: purchasedProducts;
+
+			const purchasedProductIds = (isAndroid
+				? filteredPurchasedProductAndroid
+				: purchasedProducts
+			).map(({ productId }) => productId);
+
+			const updatedPaidLevelsData: LevelsPricesAndPurchaseStatesType = Object.fromEntries(
+				products.map(({ productId, localizedPrice }) => [
+					productId,
+					{
+						purchaseState: purchasedProductIds.includes(productId) ? 1 : -1,
+						price: localizedPrice,
+					},
+				])
+			);
+
+			updateCategories(updatedPaidLevelsData);
+			addToStoredPurchasedLevels(updatedPaidLevelsData);
 		} catch (error) {
-			console.log('IAP erro ', error.code, error.message, error);
+			console.log('updateLocalPaidLevelsStatesFromCloud: ', error);
+			throw error;
 		}
 	};
 
@@ -110,8 +142,7 @@ const DataProvider = ({ children }: ChildrenType) => {
 							...value,
 							levels: value.levels.map((level) => ({
 								...level,
-								...(level.productId &&
-								levelsPricesAndPurchaseStates[level.productId]
+								...(levelsPricesAndPurchaseStates[level.productId]
 									? levelsPricesAndPurchaseStates[level.productId]
 									: {}),
 							})),
@@ -158,10 +189,6 @@ export const addToStoredPurchasedLevels = async (
 			);
 		});
 	} catch (e) {}
-};
-
-type LevelsPricesAndPurchaseStatesType = {
-	[sku: string]: { isPurchased: boolean; price?: string };
 };
 
 type DataPropsType = {

@@ -17,6 +17,8 @@ export interface PaletteObjectType {
 	color6: PaletteColor;
 	color7: PaletteColor;
 	color8: PaletteColor;
+	color9: PaletteColor;
+	color10: PaletteColor;
 }
 
 const palette: PaletteObjectType = {
@@ -30,6 +32,8 @@ const palette: PaletteObjectType = {
 	color6: { light: '#F0CD6E' },
 	color7: { light: '#57BDCF' },
 	color8: { light: '#EEEEEE' },
+	color9: { light: '#ffbe00' },
+	color10: { light: '#60c776' },
 };
 
 export default palette;
