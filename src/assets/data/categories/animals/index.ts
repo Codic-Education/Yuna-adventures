@@ -1,10 +1,10 @@
-import { LevelType } from '../../../../constants/globalTypes';
+import { LevelType, PURCHASE_STATE } from '../../../../constants/globalTypes';
 import PaidProducts, { freeProducts } from '../levelsSkus';
 
 const animalsLevels: Array<LevelType> = [
 	{
 		productId: freeProducts.animalsLvl1,
-		purchaseState: 1,
+		purchaseState: PURCHASE_STATE.PURCHASED,
 		yunaSetVariant: 'animals',
 		items: [
 			{
@@ -61,7 +61,7 @@ const animalsLevels: Array<LevelType> = [
 	},
 	{
 		productId: PaidProducts.animalsLvl2,
-		purchaseState: -1,
+		purchaseState: PURCHASE_STATE.UNPURCHASED,
 		yunaSetVariant: 'animals',
 		items: [
 			{

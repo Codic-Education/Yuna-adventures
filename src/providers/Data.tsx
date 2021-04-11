@@ -12,6 +12,7 @@ import levelsSkus from '../assets/data/categories/levelsSkus';
 import asyncStorage from '@react-native-async-storage/async-storage';
 import { Platform } from 'react-native';
 import { storeReceiptInDB } from '../utilities';
+import NetInfo from '@react-native-community/netinfo';
 
 const DataContext = createContext<DataPropsType>({
 	categories: {},
@@ -25,22 +26,29 @@ const DataProvider = ({ children }: ChildrenType) => {
 	const [categories, setCategories] = useState(categoriesObj);
 	const [scenes] = useState(scenesObj);
 	const [yuna] = useState(yunaObj);
+	const [isOnline, setIsOnline] = useState(false);
 
 	useEffect(() => {
-		initializeIAPConnection();
+		isOnline && initializeIAPConnection();
+	}, [isOnline]);
+
+	useEffect(() => {
+		const unsubscribeNetInfo = NetInfo.addEventListener((state) => {
+			state.isConnected && setIsOnline(state.isConnected);
+		});
 		const purchaseUpdatedListener = RNIAP.purchaseUpdatedListener(async (purchase) => {
 			try {
 				if (isAndroid) {
 					if (purchase.purchaseStateAndroid === PurchaseStateAndroid.PURCHASED) {
 						updateCategories({
 							[purchase.productId]: {
-								purchaseState: 1,
+								purchaseState: PURCHASE_STATE.PURCHASED,
 								isNewPurchased: true,
 							},
 						});
 						addToStoredPurchasedLevels({
 							[purchase.productId]: {
-								purchaseState: 1,
+								purchaseState: PURCHASE_STATE.PURCHASED,
 							},
 						});
 						await RNIAP.finishTransaction(purchase, false);
@@ -69,6 +77,7 @@ const DataProvider = ({ children }: ChildrenType) => {
 			purchaseUpdatedListener?.remove();
 			purchaseErrorListener?.remove();
 			RNIAP.endConnection();
+			unsubscribeNetInfo();
 		};
 	}, []);
 
@@ -118,7 +127,9 @@ const DataProvider = ({ children }: ChildrenType) => {
 				products.map(({ productId, localizedPrice }) => [
 					productId,
 					{
-						purchaseState: purchasedProductIds.includes(productId) ? 1 : -1,
+						purchaseState: purchasedProductIds.includes(productId)
+							? PURCHASE_STATE.PURCHASED
+							: PURCHASE_STATE.UNPURCHASED,
 						price: localizedPrice,
 					},
 				])

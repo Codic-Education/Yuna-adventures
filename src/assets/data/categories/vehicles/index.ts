@@ -1,10 +1,10 @@
-import { LevelType } from '../../../../constants/globalTypes';
+import { LevelType, PURCHASE_STATE } from '../../../../constants/globalTypes';
 import PaidProducts, { freeProducts } from '../levelsSkus';
 
 const vehiclesLevels: Array<LevelType> = [
 	{
 		productId: freeProducts.vehiclesLvl1,
-		purchaseState: 1,
+		purchaseState: PURCHASE_STATE.PURCHASED,
 		yunaSetVariant: 'vehicles',
 		items: [
 			{
