@@ -27,8 +27,8 @@ const LevelPurchaseDialog = ({
 }: LevelPurchaseDialogPropsType) => {
 	const unlockAnimationRef = useRef(null);
 	const styles = useStyles({
-		lockedLockHeight: lockedLock.h,
-		unlockedLockHeight: unlockedLock.h,
+		lockWidth: lockedLock.w,
+		lockHeight: lockedLock.h,
 		yunaWidth: yuna.w,
 		unlockedLock: purchaseState === PURCHASE_STATE.PURCHASED && isNewPurchased,
 		purchaseState,
@@ -115,7 +115,7 @@ const LevelPurchaseDialog = ({
 export default LevelPurchaseDialog;
 
 const useStyles = createStyle(
-	({ palette: { color0, color1, color3, color6, color7, color8, color9, color10, type } }) => ({
+	({ palette: { color0, color1, color3, color6, color7, color8, color10, type } }) => ({
 		DialogBase: {
 			width: '100%',
 			height: '100%',
@@ -139,15 +139,13 @@ const useStyles = createStyle(
 			position: 'absolute',
 			top: getScaledHeight(-90),
 			alignSelf: 'center',
-			height: ({ lockedLockHeight, unlockedLock }) =>
-				unlockedLock ? 0 : getScaledHeight(lockedLockHeight),
+			width: ({ lockWidth, unlockedLock }) => (unlockedLock ? 0 : getScaledWidth(lockWidth)),
 		},
 		unlockedLock: {
 			position: 'absolute',
 			top: getScaledHeight(-90),
 			alignSelf: 'center',
-			height: ({ unlockedLockHeight, unlockedLock }) =>
-				unlockedLock ? getScaledHeight(unlockedLockHeight) : 0,
+			width: ({ lockWidth, unlockedLock }) => (unlockedLock ? getScaledWidth(lockWidth) : 0),
 			zIndex: 100,
 		},
 		title: {
