@@ -137,13 +137,13 @@ const useStyles = createStyle(
 		},
 		lockedLock: {
 			position: 'absolute',
-			top: getScaledHeight(-90),
+			top: getScaledHeight(-100),
 			alignSelf: 'center',
 			width: ({ lockWidth, unlockedLock }) => (unlockedLock ? 0 : getScaledWidth(lockWidth)),
 		},
 		unlockedLock: {
 			position: 'absolute',
-			top: getScaledHeight(-90),
+			top: getScaledHeight(-100),
 			alignSelf: 'center',
 			width: ({ lockWidth, unlockedLock }) => (unlockedLock ? getScaledWidth(lockWidth) : 0),
 			zIndex: 100,
