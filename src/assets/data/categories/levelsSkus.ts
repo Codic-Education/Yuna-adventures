@@ -4,7 +4,8 @@ const paidProducts = {
 	// animalsLvl2: 'ya_animals_lvl2_test20',
 	// animalsLvl2: 'ya_animals_lvl2_test21',
 	// animalsLvl2: 'ya_animals_lvl2_test22',
-	animalsLvl2: 'ya_animals_lvl2_test23',
+	animalsLvl2: 'ya_animals_lvl2_test32',
+	// animalsLvl2: 'ya_animals_lvl2_test31',
 
 };
 
