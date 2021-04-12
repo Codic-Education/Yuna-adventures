@@ -101,10 +101,10 @@ const DataProvider = ({ children }: ChildrenType) => {
 		});
 
 		return () => {
+			unsubscribeNetInfo();
 			purchaseUpdatedListener?.remove();
 			purchaseErrorListener?.remove();
 			RNIAP.endConnection();
-			unsubscribeNetInfo();
 		};
 	}, []);
 

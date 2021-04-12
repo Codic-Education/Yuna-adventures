@@ -49,13 +49,13 @@ export default StarsProgressIndicator;
 
 const useStyles = createStyle(() => ({
 	StarsProgressIndicator: {
-		top: 5,
+		top: getScaledHeight(23),
 		width: getScaledWidth(dimensions.width),
 		height: getScaledHeight(dimensions.height),
 		flexDirection: 'row',
 		alignSelf: 'center',
 		justifyContent: 'center',
-		position: 'relative',
+		position: 'absolute',
 	},
 	star: {
 		width: getScaledWidth(star.w),
