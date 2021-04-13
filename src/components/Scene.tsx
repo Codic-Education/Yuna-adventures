@@ -4,32 +4,38 @@ import { createStyle } from '../providers/Theme';
 import { LottieSourceType, StylePropertyType } from '../constants/globalTypes';
 import { View } from 'react-native';
 import { AVPlaybackSource } from 'expo-av/build/AV';
-import { useSound } from '../providers/BackgroundSound';
+import { useBackgroundSound } from '../providers/BackgroundSound';
 import { Audio } from 'expo-av';
 
 const Scene = forwardRef(
-	({ lottieFileSrc, backgroundSound, filter, autoPlay, loop = true }: ScenePropsType, ref) => {
+	({ lottieFileSrc, audioFile, filter, autoPlay, loop = true }: ScenePropsType, ref) => {
 		const styles = useStyles();
-		const { isBackgroundSoundActive, pauseBackgroundSound, resumeBackgroundSound } = useSound();
+		const {
+			isBackgroundSoundActive,
+			pauseBackgroundSound,
+			resumeBackgroundSound,
+		} = useBackgroundSound();
 		const [sound] = useState(new Audio.Sound());
 
 		useEffect(() => {
-			(async () => {
-				if (backgroundSound) {
+			const unloadSceneSound = (async () => {
+				if (audioFile) {
 					isBackgroundSoundActive && pauseBackgroundSound();
-					await sound.loadAsync(backgroundSound);
+					await sound.loadAsync(audioFile);
 					sound.setIsLoopingAsync(true);
 					sound.setVolumeAsync(0.035);
 					sound.playAsync();
+					return () => sound.unloadAsync();
 				}
 			})();
 
 			return () => {
-				if (sound._loaded) {
-					sound.unloadAsync();
-					if (isBackgroundSoundActive) {
-						resumeBackgroundSound();
-					}
+				(async () => {
+					const unloadSound = await unloadSceneSound;
+					unloadSound && unloadSound();
+				})();
+				if (audioFile && isBackgroundSoundActive) {
+					resumeBackgroundSound();
 				}
 			};
 		}, []);
@@ -63,7 +69,7 @@ const useStyles = createStyle({
 
 interface ScenePropsType {
 	lottieFileSrc: LottieSourceType;
-	backgroundSound?: AVPlaybackSource;
+	audioFile?: AVPlaybackSource;
 	filter?: StylePropertyType;
 	autoPlay?: boolean;
 	loop?: boolean;

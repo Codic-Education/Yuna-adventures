@@ -87,7 +87,7 @@ const BackgroundSound = ({ children }: ChildrenType) => {
 	}, [backgroundSound?._loaded]);
 
 	useEffect(() => {
-		updateBackgroundStateInStorage();
+		updateBackgroundStateInStorage(isBackgroundSoundActive);
 	}, [isBackgroundSoundActive]);
 
 	return (
@@ -101,7 +101,7 @@ const BackgroundSound = ({ children }: ChildrenType) => {
 
 export default BackgroundSound;
 
-export const useSound = () => useContext(BackgroundSoundContext);
+export const useBackgroundSound = () => useContext(BackgroundSoundContext);
 
 interface ContextPropsType {
 	resumeBackgroundSound: () => void;

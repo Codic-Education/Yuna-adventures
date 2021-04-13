@@ -30,11 +30,7 @@ const ItemScreen = ({
 		<ScreenBase>
 			<NavigationHeader />
 			<Clouds />
-			<Scene
-				lottieFileSrc={scene.animationSrc}
-				backgroundSound={scene?.backgroundSound}
-				autoPlay
-			/>
+			<Scene lottieFileSrc={scene.animationSrc} audioFile={scene?.backgroundSound} autoPlay />
 
 			<InteractiveItem
 				centerBottomPosition={scene.itemPosition ? scene.itemPosition : defaultItemPosition}

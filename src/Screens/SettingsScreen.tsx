@@ -8,7 +8,7 @@ import ScreenBase from '../components/ScreenBase';
 import TranslatedText from '../components/TranslatedText';
 import { LanguagesCodesType, ScreenProps } from '../constants/globalTypes';
 import { useIntl } from '../providers/Intl';
-import { useSound } from '../providers/BackgroundSound';
+import { useBackgroundSound } from '../providers/BackgroundSound';
 import { createStyle } from '../providers/Theme';
 import { getScaledWidth } from '../utilities';
 import Yuna from '../components/Yuna';
@@ -26,7 +26,11 @@ const dimensions = {
 };
 
 const SettingScreen = ({ navigation }: ScreenProps<undefined>) => {
-	const { resumeBackgroundSound, pauseBackgroundSound, isBackgroundSoundActive } = useSound();
+	const {
+		resumeBackgroundSound,
+		pauseBackgroundSound,
+		isBackgroundSoundActive,
+	} = useBackgroundSound();
 	const { lang, changeLang } = useIntl();
 	const styles = useStyles();
 

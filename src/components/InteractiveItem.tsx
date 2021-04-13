@@ -149,8 +149,8 @@ const InteractiveItem = ({
 					onClickAnimationObject.onAnimationFinish();
 				}
 			}}
-			activeOpacity={1}
-			disabled={disabled}
+			activeOpacity={0.97}
+			disablePressSound
 		>
 			<LottieView
 				ref={animationRef}

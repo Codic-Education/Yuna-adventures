@@ -1,10 +1,11 @@
 import React from 'react';
-import { TouchableOpacity, TouchableOpacityProps, View } from 'react-native';
+import { View } from 'react-native';
 import { createStyle } from '../../providers/Theme';
 import FlagIcon from 'react-native-ico-flags';
 import { LottieSourceType, StylePropertyType } from '../../constants/globalTypes';
 import LottieView from 'lottie-react-native';
 import { getScaledWidth } from '../../utilities';
+import Pressable, { PressablePropsType } from './Pressable';
 
 const iconWidth = 30;
 
@@ -22,7 +23,7 @@ const IconButton = ({
 
 	return (
 		<View style={[style, inactive && styles.inactive]}>
-			<TouchableOpacity
+			<Pressable
 				style={[styles.Button, touchableOpacityStyle]}
 				activeOpacity={0.8}
 				{...props}
@@ -37,7 +38,7 @@ const IconButton = ({
 					/>
 				)}
 				{redStroke && <View style={styles.redStroke} />}
-			</TouchableOpacity>
+			</Pressable>
 		</View>
 	);
 };
@@ -89,7 +90,7 @@ export type IconButtonPropsType =
 			lottieFileSrc: LottieSourceType;
 	  });
 
-interface PropsBaseType extends TouchableOpacityProps {
+interface PropsBaseType extends PressablePropsType {
 	inactive?: boolean;
 	redStroke?: boolean;
 	touchableOpacityStyle?: StylePropertyType;

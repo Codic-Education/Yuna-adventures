@@ -1,10 +1,10 @@
 import React from 'react';
-import { StyleProp, Text, TouchableOpacity, TouchableOpacityProps, ViewStyle } from 'react-native';
-import { ChildrenType } from '../../constants/globalTypes';
+import { Text } from 'react-native';
+import Pressable, { PressablePropsType } from './Pressable';
 
-const Button = ({ children, style, ...props }: Props) => {
+const Button = ({ children, style, ...props }: PressablePropsType) => {
 	return (
-		<TouchableOpacity style={style} activeOpacity={0.8} {...props}>
+		<Pressable style={style} {...props}>
 			{typeof children === 'string' ? (
 				<Text
 					style={{
@@ -16,15 +16,11 @@ const Button = ({ children, style, ...props }: Props) => {
 			) : (
 				children
 			)}
-		</TouchableOpacity>
+		</Pressable>
 	);
 };
 
 export default Button;
-
-interface Props extends TouchableOpacityProps, ChildrenType {
-	style?: StyleProp<ViewStyle>;
-}
 
 Button.defaultProps = {
 	style: {},
