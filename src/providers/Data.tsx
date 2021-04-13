@@ -128,7 +128,7 @@ const DataProvider = ({ children }: ChildrenType) => {
 
 			const filteredPurchasedProductAndroid = isAndroid
 				? purchasedProducts.filter(
-						async ({
+						({
 							purchaseStateAndroid,
 							isAcknowledgedAndroid,
 							purchaseToken,
@@ -137,8 +137,9 @@ const DataProvider = ({ children }: ChildrenType) => {
 							const isPurchased =
 								purchaseStateAndroid === PurchaseStateAndroid.PURCHASED;
 							if (isPurchased && !isAcknowledgedAndroid && purchaseToken) {
-								await RNIAP.acknowledgePurchaseAndroid(purchaseToken);
-								storeReceiptInDB(transactionReceipt);
+								RNIAP.acknowledgePurchaseAndroid(purchaseToken).then(() => {
+									storeReceiptInDB(transactionReceipt);
+								});
 							}
 							return isPurchased;
 						}

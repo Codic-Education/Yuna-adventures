@@ -38,7 +38,7 @@ const ItemSelectorScreen = ({
 			await RNIAP.requestPurchase(sku, false);
 		} catch (error) {
 			setIsLoading(false);
-			console.log('HandlePurchaseERROR :', error.code, error.message, error);
+			console.log('HandlePurchaseERROR :', error);
 		}
 	};
 
@@ -108,7 +108,7 @@ const ItemSelectorScreen = ({
 				lastIndex={categories[category].levels.length - 1}
 			/>
 			<>
-				{/*TODO CHANGE TO CUSTOM LOADINGINDICATOR*/}
+				{/*TODO: CHANGE TO CUSTOM LOADINGINDICATOR*/}
 				{isLoading && (
 					<ActivityIndicator
 						size="large"
