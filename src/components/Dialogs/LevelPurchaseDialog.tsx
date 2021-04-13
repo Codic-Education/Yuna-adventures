@@ -79,7 +79,7 @@ const LevelPurchaseDialog = ({
 				</View>
 				<Button
 					style={styles.buyButton}
-					disabled={purchaseState !== PURCHASE_STATE.UNPURCHASED}
+					disabled={purchaseState !== PURCHASE_STATE.UNPURCHASED || !price}
 					onPress={onPressPurchaseButton}
 				>
 					{purchaseState === PURCHASE_STATE.UNPURCHASED ? (

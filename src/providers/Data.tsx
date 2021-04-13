@@ -39,8 +39,6 @@ const DataProvider = ({ children }: ChildrenType) => {
 			state.isConnected && setIsOnline(state.isConnected);
 		});
 		const purchaseUpdatedListener = RNIAP.purchaseUpdatedListener(async (purchase) => {
-			console.log('purchaseUpdatedListener');
-
 			try {
 				if (isAndroid) {
 					if (purchase.purchaseStateAndroid === PurchaseStateAndroid.PURCHASED) {
@@ -56,6 +54,7 @@ const DataProvider = ({ children }: ChildrenType) => {
 							},
 						});
 						await RNIAP.finishTransaction(purchase, false);
+
 						storeReceiptInDB(purchase.transactionReceipt);
 					} else {
 						updateCategories({
@@ -78,7 +77,7 @@ const DataProvider = ({ children }: ChildrenType) => {
 						updateCategories({
 							[purchase.productId]: {
 								purchaseState: PURCHASE_STATE.PURCHASED,
-								isNewPurchased: true,								
+								isNewPurchased: true,
 							},
 						});
 						addToStoredPurchasedLevels({
@@ -87,6 +86,9 @@ const DataProvider = ({ children }: ChildrenType) => {
 							},
 						});
 						await RNIAP.finishTransaction(purchase, false);
+						storeReceiptInDB(
+							JSON.stringify({ ...receiptBody, productId: purchase.productId })
+						);
 					}
 				}
 			} catch (error) {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList } from 'react-native';
+import { ActivityIndicator, FlatList, Platform } from 'react-native';
 import RNIAP from 'react-native-iap';
 import SelectableItem, { SelectableItemWidth } from '../components/SelectableItem';
 import NavigationHeader from '../components/NavigationHeader';
@@ -82,14 +82,6 @@ const ItemSelectorScreen = ({
 				scrollEnabled={false}
 			/>
 			<>
-			{/*TODO CHANGE TO CUSTOM LOADINGINDICATOR*/}
-				{isLoading ? (
-					<ActivityIndicator
-						size="large"
-						color="white"
-						style={styles.activityLoadingStyle}
-					/>
-				) : null}
 				{!(
 					levelData.purchaseState === PURCHASE_STATE.PURCHASED &&
 					!levelData.isNewPurchased
@@ -100,7 +92,7 @@ const ItemSelectorScreen = ({
 						isNewPurchased={!!levelData?.isNewPurchased}
 						onPressPurchaseButton={() => {
 							levelData.productId && handlePurchase(levelData.productId);
-							setIsLoading(true);
+							Platform.OS === 'ios' && setIsLoading(true);
 						}}
 						onPurchaseSuccessAnimationFinish={() => {
 							updateCategories({
@@ -115,6 +107,16 @@ const ItemSelectorScreen = ({
 				state={[levelIndexState, setLevelIndexState]}
 				lastIndex={categories[category].levels.length - 1}
 			/>
+			<>
+				{/*TODO CHANGE TO CUSTOM LOADINGINDICATOR*/}
+				{isLoading && (
+					<ActivityIndicator
+						size="large"
+						color="white"
+						style={styles.activityLoadingStyle}
+					/>
+				)}
+			</>
 		</ScreenBase>
 	);
 };
@@ -152,7 +154,7 @@ const useStyles = createStyle(({ dimensions: { screenHeight } }) => ({
 		backgroundColor: '#0008',
 		height: '100%',
 		width: '100%',
-		zIndex: 10,
+		// zIndex: 10,
 	},
 }));
 
