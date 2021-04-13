@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { FlatList } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, FlatList, Platform } from 'react-native';
 import RNIAP from 'react-native-iap';
 import SelectableItem, { SelectableItemWidth } from '../components/SelectableItem';
 import NavigationHeader from '../components/NavigationHeader';
@@ -27,12 +27,18 @@ const ItemSelectorScreen = ({
 	const [levelIndexState, setLevelIndexState] = useState(levelIndex ? levelIndex - 1 : 0);
 	const { categories, yuna, updateCategories } = useData();
 	const levelData: LevelType = categories[category].levels[levelIndexState];
+	const [isLoading, setIsLoading] = useState(false);
+
+	useEffect(() => {
+		levelData.purchaseState === PURCHASE_STATE.PURCHASED && setIsLoading(false);
+	}, [levelData.purchaseState]);
 
 	const handlePurchase = async (sku: string) => {
 		try {
 			await RNIAP.requestPurchase(sku, false);
 		} catch (error) {
-			console.warn('HandlePurchaseERROR :', error.code, error.message, error);
+			setIsLoading(false);
+			console.log('HandlePurchaseERROR :', error.code, error.message, error);
 		}
 	};
 
@@ -86,6 +92,7 @@ const ItemSelectorScreen = ({
 						isNewPurchased={!!levelData?.isNewPurchased}
 						onPressPurchaseButton={() => {
 							levelData.productId && handlePurchase(levelData.productId);
+							Platform.OS === 'ios' && setIsLoading(true);
 						}}
 						onPurchaseSuccessAnimationFinish={() => {
 							updateCategories({
@@ -95,10 +102,21 @@ const ItemSelectorScreen = ({
 					/>
 				)}
 			</>
+
 			<Paginator
 				state={[levelIndexState, setLevelIndexState]}
 				lastIndex={categories[category].levels.length - 1}
 			/>
+			<>
+				{/*TODO CHANGE TO CUSTOM LOADINGINDICATOR*/}
+				{isLoading && (
+					<ActivityIndicator
+						size="large"
+						color="white"
+						style={styles.activityLoadingStyle}
+					/>
+				)}
+			</>
 		</ScreenBase>
 	);
 };
@@ -131,6 +149,12 @@ const useStyles = createStyle(({ dimensions: { screenHeight } }) => ({
 		marginTop: 'auto',
 		right: 0,
 		bottom: 0,
+	},
+	activityLoadingStyle: {
+		backgroundColor: '#0008',
+		height: '100%',
+		width: '100%',
+		// zIndex: 10,
 	},
 }));
 

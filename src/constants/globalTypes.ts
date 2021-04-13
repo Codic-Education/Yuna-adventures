@@ -27,6 +27,7 @@ export enum PURCHASE_STATE {
 	PURCHASED = 1,
 }
 
+
 export interface LevelType {
 	productId: string;
 	price?: string;

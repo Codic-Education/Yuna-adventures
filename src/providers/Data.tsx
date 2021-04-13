@@ -13,6 +13,7 @@ import asyncStorage from '@react-native-async-storage/async-storage';
 import { Platform } from 'react-native';
 import { storeReceiptInDB } from '../utilities';
 import NetInfo from '@react-native-community/netinfo';
+import { ReceiptValidationStatus } from 'react-native-iap/src/types/apple';
 
 const DataContext = createContext<DataPropsType>({
 	categories: {},
@@ -23,6 +24,7 @@ const DataContext = createContext<DataPropsType>({
 
 const DataProvider = ({ children }: ChildrenType) => {
 	const isAndroid = Platform.OS === 'android';
+	const isIos = Platform.OS === 'ios';
 	const [categories, setCategories] = useState(categoriesObj);
 	const [scenes] = useState(scenesObj);
 	const [yuna] = useState(yunaObj);
@@ -52,6 +54,7 @@ const DataProvider = ({ children }: ChildrenType) => {
 							},
 						});
 						await RNIAP.finishTransaction(purchase, false);
+
 						storeReceiptInDB(purchase.transactionReceipt);
 					} else {
 						updateCategories({
@@ -62,6 +65,30 @@ const DataProvider = ({ children }: ChildrenType) => {
 										: PURCHASE_STATE.UNPURCHASED,
 							},
 						});
+					}
+				} else if (isIos) {
+					const receiptBody = {
+						'receipt-data': purchase.transactionReceipt,
+					};
+					//TODO CHANGE TO FALSE IN VALIDATERECEIPTIOS
+					const receipt = await RNIAP.validateReceiptIos(receiptBody, true);
+
+					if (receipt && receipt.status === ReceiptValidationStatus.SUCCESS) {
+						updateCategories({
+							[purchase.productId]: {
+								purchaseState: PURCHASE_STATE.PURCHASED,
+								isNewPurchased: true,
+							},
+						});
+						addToStoredPurchasedLevels({
+							[purchase.productId]: {
+								purchaseState: PURCHASE_STATE.PURCHASED,
+							},
+						});
+						await RNIAP.finishTransaction(purchase, false);
+						storeReceiptInDB(
+							JSON.stringify({ ...receiptBody, productId: purchase.productId })
+						);
 					}
 				}
 			} catch (error) {
