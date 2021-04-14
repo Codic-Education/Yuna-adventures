@@ -37,9 +37,10 @@ const DataProvider = ({ children }: ChildrenType) => {
 
 	useEffect(() => {
 		const unsubscribeNetInfo = NetInfo.addEventListener((state) => {
-			state.isConnected && setIsOnline(state.isConnected);
+			state.isConnected && setIsOnline && setIsOnline(state.isConnected);
 		});
 		const purchaseUpdatedListener = RNIAP.purchaseUpdatedListener(async (purchase) => {
+			console.log('purchaseUpdatedListener :', purchase.purchaseStateAndroid);
 			try {
 				if (isAndroid) {
 					if (purchase.purchaseStateAndroid === PurchaseStateAndroid.PURCHASED) {
