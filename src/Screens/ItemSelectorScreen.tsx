@@ -11,6 +11,7 @@ import { useData } from '../providers/Data';
 import { getScaledHeight, getScaledWidth } from '../utilities';
 import Paginator from '../components/Paginator';
 import LevelPurchaseDialog from '../components/Dialogs/LevelPurchaseDialog';
+import Sun from '../components/Sun';
 
 const flatListDimensions = {
 	width: 1069,
@@ -65,6 +66,7 @@ const ItemSelectorScreen = ({
 		<ScreenBase>
 			<NavigationHeader variant="home" />
 			<Clouds />
+			<Sun />
 			<FlatList
 				style={styles.flatList}
 				contentContainerStyle={styles.contentContainerStyle}

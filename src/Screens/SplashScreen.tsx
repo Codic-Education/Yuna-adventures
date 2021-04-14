@@ -8,6 +8,7 @@ import { ScreenProps } from '../constants/globalTypes';
 import splashAnimation from '../assets/animations/splashAnimation.json';
 import codicLogo from '../assets/animations/codic-logo.json';
 import bottomClouds from '../assets/animations/clouds-bottom.json';
+import Sun from '../components/Sun';
 
 const SplashScreen = ({ navigation }: ScreenProps<undefined>) => {
 	const styles = useStyles({ logoWidth: splashAnimation.w, codicLogoWidth: codicLogo.w });
@@ -15,6 +16,7 @@ const SplashScreen = ({ navigation }: ScreenProps<undefined>) => {
 	return (
 		<ScreenBase style={styles.SplashScreen}>
 			<Clouds />
+			<Sun />
 			<LottieView
 				style={styles.cloudsBottom}
 				resizeMode="contain"

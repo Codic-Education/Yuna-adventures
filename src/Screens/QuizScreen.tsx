@@ -59,12 +59,15 @@ const QuizScreen = ({
 				autoPlay={progress === 3}
 				loop={false}
 			/>
-			<StarsProgressIndicator progressValue={progress} />
 			<View style={styles.itemsContainer}>
 				{items.map((item, i) => (
 					<View key={i} style={styles.itemWrapper}>
 						<InteractiveItem
 							{...item}
+							animationObject={{
+								...item.animationObject,
+								paused: yunaState !== 'waiting',
+							}}
 							centerBottomPosition={{ bottom: i === 1 ? 102 : 309 }}
 							onClickAnimationObject={{
 								...item.onClickAnimationObject,
@@ -81,6 +84,12 @@ const QuizScreen = ({
 					</View>
 				))}
 			</View>
+			{yunaState === 'informing' || yunaState === 'ready' ? (
+				<View style={styles.overlay} />
+			) : (
+				<></>
+			)}
+			<StarsProgressIndicator progressValue={progress} />
 			<Yuna
 				yunaState={[yunaState, setYunaState]}
 				variant="quiz"
@@ -114,7 +123,7 @@ const QuizScreen = ({
 
 export default QuizScreen;
 
-const useStyles = createStyle({
+const useStyles = createStyle(({ palette: { color0, type } }) => ({
 	itemsContainer: {
 		flex: 1,
 		flexDirection: 'row',
@@ -123,13 +132,21 @@ const useStyles = createStyle({
 		flex: 1,
 		alignItems: 'center',
 	},
+	overlay: {
+		width: '100%',
+		height: '100%',
+		position: 'absolute',
+		top: 0,
+		left: 0,
+		backgroundColor: `${color0[type].toString()}25`,
+	},
 	nextLevelButton: {
 		position: 'absolute',
 		right: 10,
 		bottom: 10,
 	},
 	nextLevelArrow: { width: 70 },
-});
+}));
 
 type ParamsType = {
 	category: string;

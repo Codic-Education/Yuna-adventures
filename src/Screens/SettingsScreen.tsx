@@ -6,15 +6,16 @@ import NavigationHeader from '../components/NavigationHeader';
 import Scene from '../components/Scene';
 import ScreenBase from '../components/ScreenBase';
 import TranslatedText from '../components/TranslatedText';
-import { ScreenProps } from '../constants/globalTypes';
+import { LanguagesCodesType, ScreenProps } from '../constants/globalTypes';
 import { useIntl } from '../providers/Intl';
 import { useSound } from '../providers/BackgroundSound';
 import { createStyle } from '../providers/Theme';
 import { getScaledWidth } from '../utilities';
 import Yuna from '../components/Yuna';
 import scene from '../assets/animations/scene-settings.json';
+import Sun from '../components/Sun';
 
-const languagesFlags = {
+const languagesFlags: LanguagesFlagsType = {
 	en: 'united-kingdom',
 	sv: 'sweden',
 };
@@ -33,6 +34,7 @@ const SettingScreen = ({ navigation }: ScreenProps<undefined>) => {
 		<ScreenBase style={styles.SettingsScreen}>
 			<NavigationHeader variant="back" />
 			<Clouds />
+			<Sun />
 			<Scene lottieFileSrc={scene} filter={styles.sceneFilter} />
 			<View style={styles.settingsBox}>
 				<TranslatedText id="SettingsScreen.title" style={styles.title} />
@@ -111,3 +113,5 @@ const useStyles = createStyle(({ palette: { color0, color1, color3, type } }) =>
 		transform: [{ scale: 1.2 }],
 	},
 }));
+
+type LanguagesFlagsType = { [key in LanguagesCodesType]: string };

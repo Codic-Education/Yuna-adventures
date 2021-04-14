@@ -23,7 +23,12 @@ const HomeStackNavigator = () => {
 			}}
 		>
 			{Object.entries({ ...homeStackScreens }).map(([name, component]) => (
-				<Stack.Screen key={name} name={name} component={component} />
+				<Stack.Screen
+					key={name}
+					name={name}
+					component={component}
+					 options={{ gestureEnabled: false }}
+				/>
 			))}
 		</Stack.Navigator>
 	);
@@ -37,7 +42,7 @@ const AppNavigation = () => {
 		<NavigationContainer
 			ref={navigationRef}
 			onStateChange={async () => {
-				if (
+				if (	
 					!hasSplashScreenSwitched &&
 					navigationRef.current?.getCurrentRoute()?.name === 'HomeScreen'
 				) {
@@ -52,7 +57,7 @@ const AppNavigation = () => {
 				<Stack.Screen
 					name="HomeStackNavigator"
 					component={HomeStackNavigator}
-					options={{ animationEnabled: false }}
+
 				/>
 			</Stack.Navigator>
 		</NavigationContainer>

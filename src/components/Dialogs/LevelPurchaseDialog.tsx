@@ -12,6 +12,7 @@ import creditCard from '../../assets/animations/credit-card.json';
 import keyCheckMark from '../../assets/animations/key-check-mark.json';
 import Button from '../inputs/Button';
 import { PURCHASE_STATE } from '../../constants/globalTypes';
+import { useData } from '../../providers/Data';
 
 const dimensions = {
 	width: 1100,
@@ -26,9 +27,10 @@ const LevelPurchaseDialog = ({
 	isNewPurchased = false,
 }: LevelPurchaseDialogPropsType) => {
 	const unlockAnimationRef = useRef(null);
+	const { isOnline } = useData();
 	const styles = useStyles({
-		lockedLockHeight: lockedLock.h,
-		unlockedLockHeight: unlockedLock.h,
+		lockWidth: lockedLock.w,
+		lockHeight: lockedLock.h,
 		yunaWidth: yuna.w,
 		unlockedLock: purchaseState === PURCHASE_STATE.PURCHASED && isNewPurchased,
 		purchaseState,
@@ -79,7 +81,7 @@ const LevelPurchaseDialog = ({
 				</View>
 				<Button
 					style={styles.buyButton}
-					disabled={purchaseState !== PURCHASE_STATE.UNPURCHASED || !price}
+					disabled={purchaseState !== PURCHASE_STATE.UNPURCHASED || !isOnline}
 					onPress={onPressPurchaseButton}
 				>
 					{purchaseState === PURCHASE_STATE.UNPURCHASED ? (
@@ -115,7 +117,7 @@ const LevelPurchaseDialog = ({
 export default LevelPurchaseDialog;
 
 const useStyles = createStyle(
-	({ palette: { color0, color1, color3, color6, color7, color8, color9, color10, type } }) => ({
+	({ palette: { color0, color1, color3, color6, color7, color8, color10, type } }) => ({
 		DialogBase: {
 			width: '100%',
 			height: '100%',
@@ -137,17 +139,17 @@ const useStyles = createStyle(
 		},
 		lockedLock: {
 			position: 'absolute',
-			top: getScaledHeight(-90),
+			top: getScaledHeight(Platform.OS === 'ios' ? -55 : -85),
 			alignSelf: 'center',
-			height: ({ lockedLockHeight, unlockedLock }) =>
-				unlockedLock ? 0 : getScaledHeight(lockedLockHeight),
+			height: ({ lockHeight, unlockedLock }) =>
+				unlockedLock ? 0 : getScaledHeight(lockHeight),
 		},
 		unlockedLock: {
 			position: 'absolute',
-			top: getScaledHeight(-90),
+			top: getScaledHeight(Platform.OS === 'ios' ? -55 : -85),
 			alignSelf: 'center',
-			height: ({ unlockedLockHeight, unlockedLock }) =>
-				unlockedLock ? getScaledHeight(unlockedLockHeight) : 0,
+			height: ({ lockHeight, unlockedLock }) =>
+				unlockedLock ? getScaledHeight(lockHeight) : 0,
 			zIndex: 100,
 		},
 		title: {
@@ -180,7 +182,6 @@ const useStyles = createStyle(
 			paddingBottom: getScaledWidth(15),
 			borderRadius: 10,
 			maxWidth: getScaledWidth(500),
-			display: 'flex',
 			textAlign: 'center',
 			alignItems: 'center',
 			position: 'absolute',

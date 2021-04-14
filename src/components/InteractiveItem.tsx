@@ -16,8 +16,8 @@ const InteractiveItem = ({
 	autoClickTimeout = false,
 	renderAsClicked = false,
 	style,
-	disabled,
 	onPressStart,
+	disabled,
 }: InteractiveItemPropsType) => {
 	const [isOnClickAnimationActive, setIsOnClickAnimationActive] =
 		isOnClickAnimationActiveState || useState();
@@ -41,6 +41,53 @@ const InteractiveItem = ({
 		position: centerBottomPosition,
 	});
 
+	useEffect(() => {
+		setIsAutoClickTimeoutActive(renderAsClicked ? true : false);
+	}, []);
+
+	useEffect(() => {
+		loadSounds();
+		return () => {
+			unloadSounds();
+		};
+	}, [animationObject.soundSrc, onClickAnimationObject?.soundSrc]);
+
+	useEffect(() => {
+		let unsubscribeAutoClickTimeout: null | NodeJS.Timeout = null;
+		if (isReady) {
+			loadConfigurations();
+			unsubscribeAutoClickTimeout =
+				typeof autoClickTimeout === 'number'
+					? setTimeout(() => {
+							setIsAutoClickTimeoutActive(false);
+							setIsOnClickAnimationActive(true);
+					  }, autoClickTimeout)
+					: null;
+		}
+		return () => {
+			unsubscribeAutoClickTimeout && clearTimeout(unsubscribeAutoClickTimeout);
+		};
+	}, [isReady]);
+
+	useEffect(() => {
+		if (!isAutoClickTimeoutActive) {
+			play();
+		}
+	}, [isOnClickAnimationActive, isAutoClickTimeoutActive, isReady, animationObject.paused]);
+
+	const handleAnimationFinish = (isCancelled: boolean) => {
+		if (!isCancelled) {
+			animationObject.onAnimationFinish && animationObject.onAnimationFinish();
+		}
+	};
+
+	const handleOnClickAnimationFinish = (isCancelled: boolean) => {
+		if (!isCancelled && isOnClickAnimationActive) {
+			onClickAnimationObject?.onAnimationFinish && onClickAnimationObject.onAnimationFinish();
+			setIsOnClickAnimationActive(false);
+		}
+	};
+
 	const loadSounds = async () => {
 		const soundsSrc = [animationObject?.soundSrc, onClickAnimationObject?.soundSrc];
 		const durations = [];
@@ -51,9 +98,20 @@ const InteractiveItem = ({
 			const duration = (await sounds[i].getStatusAsync()).durationMillis;
 			durations.push(duration || 0);
 		}
-		setDurations(durations);
-		setIsReady(true);
+		try {
+			setDurations(durations);
+			setIsReady(true);
+		} catch (error) {
+			console.log(error);
+		}
 	};
+
+	const unloadSounds = () => {
+		for (let i = 0; i < sounds.length; i++) {
+			sounds[i]._loaded && sounds[i].unloadAsync();
+		}
+	};
+
 	const loadConfigurations = () => {
 		!animationObject.disableSoundLoop && sounds[0]._loaded && sounds[0].setIsLoopingAsync(true);
 	};
@@ -69,63 +127,10 @@ const InteractiveItem = ({
 				sounds[1]._loaded && sounds[1]?.stopAsync();
 				sounds[0]._loaded && sounds[0]?.playAsync();
 				animationRef.current?.reset();
-				animationRef.current?.play();
+				!animationObject.paused && animationRef.current?.play();
 			}
 		}
 	};
-
-	const handleAnimationFinish = (isCancelled: boolean) => {
-		if (!isCancelled) {
-			animationObject.onAnimationFinish && animationObject.onAnimationFinish();
-		}
-	};
-
-	const handleOnClickAnimationFinish = (isCancelled: boolean) => {
-		if (!isCancelled && isOnClickAnimationActive) {
-			onClickAnimationObject?.onAnimationFinish && onClickAnimationObject.onAnimationFinish();
-			setIsOnClickAnimationActive(false);
-		}
-	};
-
-	const unloadSounds = () => {
-		for (let i = 0; i < sounds.length; i++) {
-			sounds[i]._loaded && sounds[i].unloadAsync();
-		}
-	};
-
-	useEffect(() => {
-		setIsAutoClickTimeoutActive(renderAsClicked ? true : false);
-	}, []);
-
-	useEffect(() => {
-		loadSounds();
-		return () => {
-			unloadSounds();
-		};
-	}, [animationObject.soundSrc, onClickAnimationObject?.soundSrc]);
-
-	useEffect(() => {
-		let timeOut = null;
-		if (isReady) {
-			loadConfigurations();
-			timeOut =
-				typeof autoClickTimeout === 'number'
-					? setTimeout(() => {
-							setIsAutoClickTimeoutActive(false);
-							setIsOnClickAnimationActive(true);
-					  }, autoClickTimeout)
-					: null;
-		}
-		return () => {
-			timeOut && clearTimeout(timeOut);
-		};
-	}, [isReady]);
-
-	useEffect(() => {
-		if (!isAutoClickTimeoutActive) {
-			play();
-		}
-	}, [isOnClickAnimationActive, isAutoClickTimeoutActive, isReady]);
 
 	return (
 		<Button
@@ -135,15 +140,17 @@ const InteractiveItem = ({
 				style,
 			]}
 			onPress={() => {
-				if (!disabled) {
-					onPressStart && onPressStart();
-					onClickAnimationObject && setIsOnClickAnimationActive(true);
+				onPressStart && onPressStart();
+				onClickAnimationObject && setIsOnClickAnimationActive(true);
+				if (
 					onClickAnimationObject?.onAnimationFinish &&
-						!onClickAnimationObject.animationSrc &&
-						onClickAnimationObject.onAnimationFinish();
+					!onClickAnimationObject.animationSrc
+				) {
+					onClickAnimationObject.onAnimationFinish();
 				}
 			}}
 			activeOpacity={1}
+			disabled={disabled}
 		>
 			<LottieView
 				ref={animationRef}
@@ -208,10 +215,11 @@ export interface InteractiveItemPropsType {
 	};
 	autoClickTimeout?: boolean | number;
 	renderAsClicked?: boolean;
-	disabled?: boolean;
 	onPressStart?: () => void;
+	disabled?: boolean;
 }
 
 interface AnimationObjectExtendedType extends AnimationObjectType {
 	disableAnimationLoop?: boolean;
+	paused?: boolean;
 }
