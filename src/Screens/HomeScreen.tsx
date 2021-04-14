@@ -35,7 +35,7 @@ const HomeScreen = ({ navigation }: ScreenProps<object>) => {
 
 export default HomeScreen;
 
-const useStyles = createStyle(({ palette: { color4, type }, dimensions: { screenWidth } }) => ({
+const useStyles = createStyle(({ palette: { color4, type } }) => ({
 	container: {
 		flex: 1,
 		width: '100%',
