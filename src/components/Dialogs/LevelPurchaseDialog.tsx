@@ -137,17 +137,17 @@ const useStyles = createStyle(
 		},
 		lockedLock: {
 			position: 'absolute',
-			top: getScaledHeight(-55),
+			top: getScaledHeight(Platform.OS === 'ios' ? -55 : -85),
 			alignSelf: 'center',
 			height: ({ lockHeight, unlockedLock }) =>
-				unlockedLock ? 0 : getScaledHeight(lockHeight * 0.9),
+				unlockedLock ? 0 : getScaledHeight(lockHeight),
 		},
 		unlockedLock: {
 			position: 'absolute',
-			top: getScaledHeight(-55),
+			top: getScaledHeight(Platform.OS === 'ios' ? -55 : -85),
 			alignSelf: 'center',
 			height: ({ lockHeight, unlockedLock }) =>
-				unlockedLock ? getScaledHeight(lockHeight * 0.9) : 0,
+				unlockedLock ? getScaledHeight(lockHeight) : 0,
 			zIndex: 100,
 		},
 		title: {
