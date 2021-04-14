@@ -20,6 +20,7 @@ const DataContext = createContext<DataPropsType>({
 	scenes: {},
 	yuna: {},
 	updateCategories: () => {},
+	isOnline: false
 });
 
 const DataProvider = ({ children }: ChildrenType) => {
@@ -193,7 +194,7 @@ const DataProvider = ({ children }: ChildrenType) => {
 	};
 
 	return (
-		<DataContext.Provider value={{ categories, scenes, yuna, updateCategories }}>
+		<DataContext.Provider value={{ categories, scenes, yuna, updateCategories, isOnline }}>
 			{children}
 		</DataContext.Provider>
 	);
@@ -235,4 +236,5 @@ type DataPropsType = {
 	scenes: { [key: string]: any };
 	yuna: YunaVariantsType;
 	updateCategories: (levelsPricesAndPurchaseStates: LevelsPricesAndPurchaseStatesType) => void;
+	isOnline: boolean
 };

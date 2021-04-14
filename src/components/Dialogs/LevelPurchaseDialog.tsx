@@ -12,6 +12,7 @@ import creditCard from '../../assets/animations/credit-card.json';
 import keyCheckMark from '../../assets/animations/key-check-mark.json';
 import Button from '../inputs/Button';
 import { PURCHASE_STATE } from '../../constants/globalTypes';
+import { useData } from '../../providers/Data';
 
 const dimensions = {
 	width: 1100,
@@ -26,6 +27,7 @@ const LevelPurchaseDialog = ({
 	isNewPurchased = false,
 }: LevelPurchaseDialogPropsType) => {
 	const unlockAnimationRef = useRef(null);
+	const { isOnline } = useData();
 	const styles = useStyles({
 		lockWidth: lockedLock.w,
 		lockHeight: lockedLock.h,
@@ -79,7 +81,7 @@ const LevelPurchaseDialog = ({
 				</View>
 				<Button
 					style={styles.buyButton}
-					disabled={purchaseState !== PURCHASE_STATE.UNPURCHASED || !price}
+					disabled={purchaseState !== PURCHASE_STATE.UNPURCHASED || !isOnline}
 					onPress={onPressPurchaseButton}
 				>
 					{purchaseState === PURCHASE_STATE.UNPURCHASED ? (
@@ -180,7 +182,6 @@ const useStyles = createStyle(
 			paddingBottom: getScaledWidth(15),
 			borderRadius: 10,
 			maxWidth: getScaledWidth(500),
-			display: 'flex',
 			textAlign: 'center',
 			alignItems: 'center',
 			position: 'absolute',
