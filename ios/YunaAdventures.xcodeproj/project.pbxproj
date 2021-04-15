@@ -13,35 +13,10 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
 		6E27E0C4260F365D00CE0C4D /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E27E0C3260F365D00CE0C4D /* StoreKit.framework */; };
-		6E3979A326246702003A9C43 /* Yuna-adventures in Resources */ = {isa = PBXBuildFile; fileRef = 6E3979A226246702003A9C43 /* Yuna-adventures */; };
 		6E871A892613569E00500D21 /* Configuration.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 6E871A882613569E00500D21 /* Configuration.storekit */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
 		FCC51EB987CDB747DB52B9E3 /* libPods-YunaAdventures.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B2DF474F3E36A4D11B4FDB11 /* libPods-YunaAdventures.a */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		6E3979AB2624674F003A9C43 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6E3979A52624674E003A9C43 /* RNCNetInfo.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 134814201AA4EA6300B7C361;
-			remoteInfo = RNCNetInfo;
-		};
-		6E3979AD2624674F003A9C43 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6E3979A52624674E003A9C43 /* RNCNetInfo.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = B5027B1B2237B30F00F1AABA;
-			remoteInfo = "RNCNetInfo-tvOS";
-		};
-		6E3979AF2624674F003A9C43 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6E3979A52624674E003A9C43 /* RNCNetInfo.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 3846DAC62403170500B4283E;
-			remoteInfo = "RNCNetInfo-macOS";
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
@@ -54,8 +29,6 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = YunaAdventures/main.m; sourceTree = "<group>"; };
 		206B9926DE523492D9A67AAA /* Pods-YunaAdventures.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YunaAdventures.release.xcconfig"; path = "Target Support Files/Pods-YunaAdventures/Pods-YunaAdventures.release.xcconfig"; sourceTree = "<group>"; };
 		6E27E0C3260F365D00CE0C4D /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
-		6E3979A226246702003A9C43 /* Yuna-adventures */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "Yuna-adventures"; path = ..; sourceTree = "<group>"; };
-		6E3979A52624674E003A9C43 /* RNCNetInfo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNCNetInfo.xcodeproj; path = "../node_modules/@react-native-community/netinfo/macos/RNCNetInfo.xcodeproj"; sourceTree = "<group>"; };
 		6E871A882613569E00500D21 /* Configuration.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Configuration.storekit; sourceTree = "<group>"; };
 		6EB984D5327B0AB4FDB77A88 /* Pods-YunaAdventures.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YunaAdventures.debug.xcconfig"; path = "Target Support Files/Pods-YunaAdventures/Pods-YunaAdventures.debug.xcconfig"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = YunaAdventures/SplashScreen.storyboard; sourceTree = "<group>"; };
@@ -81,8 +54,6 @@
 		13B07FAE1A68108700A75B9A /* YunaAdventures */ = {
 			isa = PBXGroup;
 			children = (
-				6E3979A52624674E003A9C43 /* RNCNetInfo.xcodeproj */,
-				6E3979A226246702003A9C43 /* Yuna-adventures */,
 				BB2F792B24A3F905000567C9 /* Supporting */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -105,16 +76,6 @@
 				B2DF474F3E36A4D11B4FDB11 /* libPods-YunaAdventures.a */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		6E3979A62624674E003A9C43 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				6E3979AC2624674F003A9C43 /* libRNCNetInfo.a */,
-				6E3979AE2624674F003A9C43 /* libRNCNetInfo-tvOS.a */,
-				6E3979B02624674F003A9C43 /* libRNCNetInfo-macOS.a */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -215,12 +176,6 @@
 			mainGroup = 83CBB9F61A601CBA00E9B192;
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 6E3979A62624674E003A9C43 /* Products */;
-					ProjectRef = 6E3979A52624674E003A9C43 /* RNCNetInfo.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				13B07F861A680F5B00A75B9A /* YunaAdventures */,
@@ -228,36 +183,11 @@
 		};
 /* End PBXProject section */
 
-/* Begin PBXReferenceProxy section */
-		6E3979AC2624674F003A9C43 /* libRNCNetInfo.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNCNetInfo.a;
-			remoteRef = 6E3979AB2624674F003A9C43 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		6E3979AE2624674F003A9C43 /* libRNCNetInfo-tvOS.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libRNCNetInfo-tvOS.a";
-			remoteRef = 6E3979AD2624674F003A9C43 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		6E3979B02624674F003A9C43 /* libRNCNetInfo-macOS.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libRNCNetInfo-macOS.a";
-			remoteRef = 6E3979AF2624674F003A9C43 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
-
 /* Begin PBXResourcesBuildPhase section */
 		13B07F8E1A680F5B00A75B9A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6E3979A326246702003A9C43 /* Yuna-adventures in Resources */,
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				6E871A892613569E00500D21 /* Configuration.storekit in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
@@ -378,7 +308,7 @@
 				CODE_SIGN_ENTITLEMENTS = YunaAdventures/yunaadventures.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 33;
 				DEVELOPMENT_TEAM = P9X5BAD73R;
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
@@ -411,7 +341,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = YunaAdventures/yunaadventures.entitlements;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 33;
 				DEVELOPMENT_TEAM = P9X5BAD73R;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				INFOPLIST_FILE = YunaAdventures/Info.plist;
