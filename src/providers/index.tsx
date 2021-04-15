@@ -5,18 +5,21 @@ import Theme from './Theme';
 import DataProvider from './Data';
 import BackgroundSound from './BackgroundSound';
 import SoundsProvider from './Sounds';
+import UtilitiesProvider from './Utilities';
 
 const Index = ({ children }: ChildrenType) => {
 	return (
-		<BackgroundSound>
-			<SoundsProvider>
-				<DataProvider>
-					<Theme>
-						<I18n>{children}</I18n>
-					</Theme>
-				</DataProvider>
-			</SoundsProvider>
-		</BackgroundSound>
+		<UtilitiesProvider>
+			<BackgroundSound>
+				<SoundsProvider>
+					<DataProvider>
+						<Theme>
+							<I18n>{children}</I18n>
+						</Theme>
+					</DataProvider>
+				</SoundsProvider>
+			</BackgroundSound>
+		</UtilitiesProvider>
 	);
 };
 

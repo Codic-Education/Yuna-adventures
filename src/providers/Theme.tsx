@@ -8,7 +8,7 @@ import { useFonts } from 'expo-font';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('screen');
 
-const StyleContext = createContext<(params1?: any, params2?: any) => any>(() => {});
+const StyleContext = createContext<any>(null);
 const ThemeContext = createContext<any>(null);
 
 const ThemeProvider = ({ children }: ChildrenType) => {

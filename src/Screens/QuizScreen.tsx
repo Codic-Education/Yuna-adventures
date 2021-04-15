@@ -31,6 +31,7 @@ const QuizScreen = ({
 	const sceneRef = useRef(null);
 	const scene = scenes[categories[category].levels[levelIndex].quiz.scene];
 	const items = categories[category].levels[levelIndex].items;
+	const isItemsInActive = yunaState === 'informing' || yunaState === 'ready';
 
 	const checkAnswer = (itemIndex: 0 | 1 | 2) => {
 		if (itemIndex === randomIndexes[progress]) {
@@ -66,7 +67,7 @@ const QuizScreen = ({
 							{...item}
 							animationObject={{
 								...item.animationObject,
-								paused: yunaState !== 'waiting',
+								paused: isItemsInActive,
 							}}
 							centerBottomPosition={{ bottom: i === 1 ? 102 : 309 }}
 							onClickAnimationObject={{
@@ -84,11 +85,7 @@ const QuizScreen = ({
 					</View>
 				))}
 			</View>
-			{yunaState === 'informing' || yunaState === 'ready' ? (
-				<View style={styles.overlay} />
-			) : (
-				<></>
-			)}
+			{isItemsInActive ? <View style={styles.overlay} /> : <></>}
 			<StarsProgressIndicator progressValue={progress} />
 			<Yuna
 				yunaState={[yunaState, setYunaState]}

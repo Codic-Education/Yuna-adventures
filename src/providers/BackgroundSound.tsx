@@ -8,11 +8,7 @@ import { parseBoolean } from '../utilities';
 
 const backgroundSoundPlayDelay = 500;
 
-const BackgroundSoundContext = createContext<ContextPropsType>({
-	resumeBackgroundSound: () => {},
-	pauseBackgroundSound: () => {},
-	isBackgroundSoundActive: true,
-});
+const BackgroundSoundContext = createContext<any>(null);
 
 const BackgroundSound = ({ children }: ChildrenType) => {
 	const [backgroundSound, setBackgroundSound] = useState<Sound | null>(null);
@@ -101,7 +97,7 @@ const BackgroundSound = ({ children }: ChildrenType) => {
 
 export default BackgroundSound;
 
-export const useBackgroundSound = () => useContext(BackgroundSoundContext);
+export const useBackgroundSound = () => useContext<ContextPropsType>(BackgroundSoundContext);
 
 interface ContextPropsType {
 	resumeBackgroundSound: () => void;

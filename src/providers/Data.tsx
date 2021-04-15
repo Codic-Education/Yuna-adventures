@@ -12,35 +12,26 @@ import levelsSkus from '../assets/data/categories/levelsSkus';
 import asyncStorage from '@react-native-async-storage/async-storage';
 import { Platform } from 'react-native';
 import { storeReceiptInDB } from '../utilities';
-import NetInfo from '@react-native-community/netinfo';
 import { ReceiptValidationStatus } from 'react-native-iap/src/types/apple';
+import { useUtilities } from './Utilities';
 
-const DataContext = createContext<DataPropsType>({
-	categories: {},
-	scenes: {},
-	yuna: {},
-	updateCategories: () => {},
-	isOnline: false
-});
+const isAndroid = Platform.OS === 'android';
+const isIos = Platform.OS === 'ios';
+
+const DataContext = createContext<any>(null);
 
 const DataProvider = ({ children }: ChildrenType) => {
-	const isAndroid = Platform.OS === 'android';
-	const isIos = Platform.OS === 'ios';
+	const { isOnline } = useUtilities();
 	const [categories, setCategories] = useState(categoriesObj);
 	const [scenes] = useState(scenesObj);
 	const [yuna] = useState(yunaObj);
-	const [isOnline, setIsOnline] = useState(false);
 
 	useEffect(() => {
 		isOnline && initializeIAPConnection();
 	}, [isOnline]);
 
 	useEffect(() => {
-		const unsubscribeNetInfo = NetInfo.addEventListener((state) => {
-			state.isConnected && setIsOnline && setIsOnline(state.isConnected);
-		});
 		const purchaseUpdatedListener = RNIAP.purchaseUpdatedListener(async (purchase) => {
-			console.log('purchaseUpdatedListener :', purchase.purchaseStateAndroid);
 			try {
 				if (isAndroid) {
 					if (purchase.purchaseStateAndroid === PurchaseStateAndroid.PURCHASED) {
@@ -103,7 +94,6 @@ const DataProvider = ({ children }: ChildrenType) => {
 		});
 
 		return () => {
-			unsubscribeNetInfo();
 			purchaseUpdatedListener?.remove();
 			purchaseErrorListener?.remove();
 			RNIAP.endConnection();
@@ -195,7 +185,7 @@ const DataProvider = ({ children }: ChildrenType) => {
 	};
 
 	return (
-		<DataContext.Provider value={{ categories, scenes, yuna, updateCategories, isOnline }}>
+		<DataContext.Provider value={{ categories, scenes, yuna, updateCategories }}>
 			{children}
 		</DataContext.Provider>
 	);
@@ -237,5 +227,4 @@ type DataPropsType = {
 	scenes: { [key: string]: any };
 	yuna: YunaVariantsType;
 	updateCategories: (levelsPricesAndPurchaseStates: LevelsPricesAndPurchaseStatesType) => void;
-	isOnline: boolean
 };

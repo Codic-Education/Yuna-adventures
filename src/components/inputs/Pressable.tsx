@@ -44,6 +44,6 @@ const useStyles = createStyle({
 });
 
 export interface PressablePropsType extends PressableProps, React.RefAttributes<View> {
-	activeOpacity: number;
-	disablePressSound: boolean;
+	activeOpacity?: number;
+	disablePressSound?: boolean;
 }
