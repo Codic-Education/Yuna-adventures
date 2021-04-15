@@ -20,7 +20,7 @@ export default {
 	cityStreet: {
 		animationSrc: require('./city-street.json'),
 	},
-	city1: {
-		animationSrc: require('./city1.json'),
+	cityQuiz: {
+		animationSrc: require('./city-quiz.json'),
 	},
 };

@@ -56,7 +56,7 @@ const vehiclesLevels: Array<LevelType> = [
 			},
 		],
 		quiz: {
-			scene: 'city1',
+			scene: 'cityQuiz',
 		},
 	},
 ];

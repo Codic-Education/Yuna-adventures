@@ -151,6 +151,7 @@ const InteractiveItem = ({
 			}}
 			activeOpacity={0.97}
 			disablePressSound
+			disabled={disabled}
 		>
 			<LottieView
 				ref={animationRef}
