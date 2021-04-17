@@ -1,6 +1,7 @@
 // Dimensions that have been used with illustration & animation design "entireScene"
 import { Dimensions } from 'react-native';
 import { END_POINTS } from '../constants';
+import { LottieSourceType } from '../constants/globalTypes';
 
 const preDimensions = {
 	width: 1900,
@@ -50,4 +51,11 @@ export const storeReceiptInDB = async (receipt: string) => {
 	} catch (error) {
 		console.log(error);
 	}
+};
+
+export const calcDesiredSpeed = (lottieFileSrc: LottieSourceType, duration: number) => {
+	if (duration > 0) {
+		return ((lottieFileSrc.op / lottieFileSrc.fr) * 1000) / duration;
+	}
+	return 1;
 };

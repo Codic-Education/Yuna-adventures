@@ -5,7 +5,7 @@ import { createStyle } from '../providers/Theme';
 import { Audio } from 'expo-av';
 import { Sound } from 'expo-av/build/Audio';
 import { AnimationObjectType } from '../constants/globalTypes';
-import { getScaledHeight, getScaledWidth } from '../utilities';
+import { calcDesiredSpeed, getScaledHeight, getScaledWidth } from '../utilities';
 import { StyleProp, ViewStyle } from 'react-native';
 
 const InteractiveItem = ({
@@ -158,7 +158,7 @@ const InteractiveItem = ({
 				source={animationObject.animationSrc}
 				style={[styles.lottieView, isOnClickAnimationActive && styles.hiddenAnimation]}
 				resizeMode="contain"
-				duration={durations[0]}
+				speed={calcDesiredSpeed(animationObject.animationSrc, durations[0])}
 				loop={animationObject.disableAnimationLoop ? false : true}
 				onAnimationFinish={handleAnimationFinish}
 			/>
@@ -174,7 +174,7 @@ const InteractiveItem = ({
 						]}
 						onAnimationFinish={handleOnClickAnimationFinish}
 						resizeMode="contain"
-						duration={durations[1]}
+						speed={calcDesiredSpeed(onClickAnimationObject?.animationSrc, durations[1])}
 					/>
 				)}
 			</>
