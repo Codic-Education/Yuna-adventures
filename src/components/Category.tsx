@@ -6,7 +6,7 @@ import { createStyle } from '../providers/Theme';
 import TranslatedText from './TranslatedText';
 import { CategoryType } from '../constants/globalTypes';
 import Clouds from './Clouds';
-import { getScaledWidth } from '../utilities';
+import { getScaledHeight, getScaledWidth } from '../utilities';
 
 const Category = ({ style, titleId, thumbnailSrc, onPress, ...props }: Props) => {
 	const styles = useStyles({ buttonWidth: thumbnailSrc.w, buttonHeight: thumbnailSrc.h });
@@ -40,12 +40,14 @@ const useStyles = createStyle(
 		title: {
 			color: color3[type],
 			fontFamily: 'coiny',
-			fontSize: 25,
-			marginTop: 10,
-			marginBottom: 10,
+			fontSize: getScaledWidth(60),
+			marginTop: getScaledHeight(30),
+			marginBottom: getScaledHeight(50),
 		},
 		thumbnail: {
 			width: ({ buttonWidth }) => getScaledWidth(buttonWidth),
+			maxWidth: (screenWidth / 2) * 0.7,
+			maxHeight: (screenWidth / 2) * 0.7,
 			backgroundColor: color2[type],
 			borderWidth: getScaledWidth(16),
 			borderColor: color8[type],

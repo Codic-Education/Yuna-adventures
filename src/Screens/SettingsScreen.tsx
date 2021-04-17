@@ -10,7 +10,7 @@ import { LanguagesCodesType, ScreenProps } from '../constants/globalTypes';
 import { useIntl } from '../providers/Intl';
 import { useBackgroundSound } from '../providers/BackgroundSound';
 import { createStyle } from '../providers/Theme';
-import { getScaledWidth } from '../utilities';
+import { getScaledHeight, getScaledWidth } from '../utilities';
 import Yuna from '../components/Yuna';
 import scene from '../assets/animations/scene-settings.json';
 import Sun from '../components/Sun';
@@ -85,10 +85,10 @@ const useStyles = createStyle(({ palette: { color0, color1, color3, type } }) =>
 	},
 	title: {
 		color: color1[type],
-		fontSize: 30,
+		fontSize: getScaledWidth(70),
 		fontFamily: 'coiny',
 		position: 'absolute',
-		top: 10,
+		top: getScaledHeight(40),
 	},
 	settingsBox: {
 		justifyContent: 'center',
@@ -106,7 +106,7 @@ const useStyles = createStyle(({ palette: { color0, color1, color3, type } }) =>
 	},
 	buttonsContainer: {
 		flexDirection: 'row',
-		marginTop: 10,
+		marginTop: getScaledHeight(20),
 	},
 	iconButton: {
 		marginRight: getScaledWidth(50),
