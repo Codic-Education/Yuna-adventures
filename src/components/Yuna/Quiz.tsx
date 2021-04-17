@@ -6,7 +6,7 @@ import { useIntl } from '../../providers/Intl';
 import { createStyle } from '../../providers/Theme';
 import InteractiveItem from '../InteractiveItem';
 import LottieView from 'lottie-react-native';
-import { getScaledWidth } from '../../utilities';
+import { calcDesiredSpeed, getScaledWidth } from '../../utilities';
 import Button from '../inputs/Button';
 import { Audio } from 'expo-av';
 import wrongAnswerSoundSrc from '../../assets/sounds/wrong-answer.wav';
@@ -138,7 +138,7 @@ const Quiz = ({ progress, itemsData, yunaSetVariant, yunaState }: QuizPropsType)
 				onAnimationFinish={() => setYunaStatus('waiting')}
 				resizeMode="contain"
 				loop={false}
-				duration={wrongAnswerSoundDuration}
+				speed={calcDesiredSpeed(yunaSet.wrongAnswer, wrongAnswerSoundDuration)}
 			/>
 			<LottieView
 				ref={correctAnswerRef}
@@ -155,7 +155,7 @@ const Quiz = ({ progress, itemsData, yunaSetVariant, yunaState }: QuizPropsType)
 				}}
 				resizeMode="contain"
 				loop={false}
-				duration={correctAnswerSoundDuration}
+				speed={calcDesiredSpeed(yunaSet.correctAnswer, correctAnswerSoundDuration)}
 			/>
 			<LottieView
 				ref={completeLevelRef}
