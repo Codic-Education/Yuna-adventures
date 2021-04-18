@@ -22,7 +22,8 @@
 			"adaptiveIcon": {
 				"backgroundColor": "#000000"
 			},
-			"package": "se.codic.yunaadventures"
+			"package": "se.codic.yunaadventures",
+			"permissions": []
 		},
 		"androidNavigationBar": {
 			"visible": "sticky-immersive"
