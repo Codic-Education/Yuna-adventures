@@ -37,9 +37,6 @@ PODS:
     - UMPermissionsInterface
   - EXSecureStore (9.3.0):
     - UMCore
-  - EXSplashScreen (0.8.1):
-    - React-Core
-    - UMCore
   - EXSQLite (8.5.0):
     - UMCore
     - UMFileSystemInterface
@@ -308,7 +305,7 @@ PODS:
     - React-Core
   - RNScreens (2.15.2):
     - React-Core
-  - RNSVG (12.1.0):
+  - RNSVG (12.1.1):
     - React
   - UMAppLoader (1.4.0)
   - UMBarCodeScannerInterface (5.4.0)
@@ -344,7 +341,6 @@ DEPENDENCIES:
   - EXLocation (from `../node_modules/expo-location/ios`)
   - EXPermissions (from `../node_modules/expo-permissions/ios`)
   - EXSecureStore (from `../node_modules/expo-secure-store/ios`)
-  - EXSplashScreen (from `../node_modules/expo-splash-screen/ios`)
   - EXSQLite (from `../node_modules/expo-sqlite/ios`)
   - EXUpdates (from `../node_modules/expo-updates/ios`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
@@ -431,8 +427,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-permissions/ios"
   EXSecureStore:
     :path: "../node_modules/expo-secure-store/ios"
-  EXSplashScreen:
-    :path: "../node_modules/expo-splash-screen/ios"
   EXSQLite:
     :path: "../node_modules/expo-sqlite/ios"
   EXUpdates:
@@ -550,7 +544,6 @@ SPEC CHECKSUMS:
   EXLocation: 5689bbf163581eefb70978130611ec25d027bcf3
   EXPermissions: 55cadfd11547c07a5390ba7eea63bd998a71018d
   EXSecureStore: 7cda998bd7c150b28021cb9c85b0747daa6a5ab5
-  EXSplashScreen: 5bd1d445b1c5fc883fa2f5612633defc48759273
   EXSQLite: 98f4062e567a2facc80aa6a064be88fa1a9476b6
   EXUpdates: 060bc885bc697acaf3b0a4606508ce909d91571d
   FBLazyVector: 3bb422f41b18121b71783a905c10e58606f7dc3e
@@ -586,7 +579,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNIap: b28bd608368dbe17577c91bd46c2d6e070c4174b
   RNScreens: 3d682bcaba69a4f8e55543d90818704f34338db1
-  RNSVG: ce9d996113475209013317e48b05c21ee988d42e
+  RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   UMAppLoader: 515d02d30e29cf05bbe58f77c59f896840cc5895
   UMBarCodeScannerInterface: 77a5bebdc21106979a363bb057c4fbb46aacc171
   UMCameraInterface: 123f7ebc3f6d0915afd369f7133bf29231ed418b
@@ -602,6 +595,6 @@ SPEC CHECKSUMS:
   UMTaskManagerInterface: eee33176282a16e6348aabcbe89ebd363e69f9cb
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
 
-PODFILE CHECKSUM: 05684bc9c55f969d512630b408a0e5866597fa3d
+PODFILE CHECKSUM: e0cc704df95cc0598e08deda94cf9bcbad881e02
 
 COCOAPODS: 1.10.1
