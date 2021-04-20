@@ -6,7 +6,7 @@
   targetRuntime="iOS.CocoaTouch"
   propertyAccessControl="none"
   useAutolayout="YES"
-  launchScreen="NO"
+  launchScreen="YES"
   useTraitCollections="YES"
   useSafeAreas="YES"
   colorMatched="YES"
@@ -28,7 +28,7 @@
           id="EXPO-VIEWCONTROLLER-1"
           sceneMemberID="viewController"
         >
-          <!-- <view
+          <view
             key="view"
             userInteractionEnabled="NO"
             contentMode="scaleToFill"
@@ -77,7 +77,7 @@
               <constraint firstItem="EXPO-SplashScreen" firstAttribute="bottom" secondItem="EXPO-ContainerView" secondAttribute="bottom" id="nbp-HC-eaG"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Rmq-lb-GrQ"/>
-          </view> -->
+          </view>
         </viewController>
         <placeholder placeholderIdentifier="IBFirstResponder" id="EXPO-PLACEHOLDER-1" userLabel="First Responder" sceneMemberID="firstResponder"/>
       </objects>
