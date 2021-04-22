@@ -4,9 +4,10 @@ import Button from './inputs/Button';
 import { createStyle } from '../providers/Theme';
 import { Audio } from 'expo-av';
 import { Sound } from 'expo-av/build/Audio';
-import { AnimationObjectType } from '../constants/globalTypes';
+import { AnimationObjectType, StylePropertyType } from '../constants/globalTypes';
 import { calcDesiredSpeed, getScaledHeight, getScaledWidth } from '../utilities';
 import { StyleProp, ViewStyle } from 'react-native';
+import DraggAbility from './DraggAbility';
 
 const InteractiveItem = ({
 	isOnClickAnimationActiveState,
@@ -18,6 +19,7 @@ const InteractiveItem = ({
 	style,
 	onPressStart,
 	disabled,
+	isDraggable = false,
 }: InteractiveItemPropsType) => {
 	const [isOnClickAnimationActive, setIsOnClickAnimationActive] =
 		isOnClickAnimationActiveState || useState();
@@ -133,52 +135,61 @@ const InteractiveItem = ({
 	};
 
 	return (
-		<Button
+		<DraggAbility
+			disabled={!!!isDraggable}
+			isSticky={typeof isDraggable === 'object' && isDraggable.isSticky}
 			style={[
 				styles.InteractiveItem,
 				centerBottomPosition ? styles.specificPosition : {},
 				style,
 			]}
-			onPress={() => {
-				onPressStart && onPressStart();
-				onClickAnimationObject && setIsOnClickAnimationActive(true);
-				if (
-					onClickAnimationObject?.onAnimationFinish &&
-					!onClickAnimationObject.animationSrc
-				) {
-					onClickAnimationObject.onAnimationFinish();
-				}
-			}}
-			activeOpacity={0.97}
-			disablePressSound
-			disabled={disabled}
 		>
-			<LottieView
-				ref={animationRef}
-				source={animationObject.animationSrc}
-				style={[styles.lottieView, isOnClickAnimationActive && styles.hiddenAnimation]}
-				resizeMode="contain"
-				speed={calcDesiredSpeed(animationObject.animationSrc, durations[0])}
-				loop={animationObject.disableAnimationLoop ? false : true}
-				onAnimationFinish={handleAnimationFinish}
-			/>
-			<>
-				{onClickAnimationObject?.animationSrc && (
-					<LottieView
-						ref={onClickAnimationRef}
-						source={onClickAnimationObject?.animationSrc}
-						loop={false}
-						style={[
-							styles.lottieView,
-							!isOnClickAnimationActive && styles.hiddenAnimation,
-						]}
-						onAnimationFinish={handleOnClickAnimationFinish}
-						resizeMode="contain"
-						speed={calcDesiredSpeed(onClickAnimationObject?.animationSrc, durations[1])}
-					/>
-				)}
-			</>
-		</Button>
+			<Button
+				style={styles.button}
+				onPress={() => {
+					onPressStart && onPressStart();
+					onClickAnimationObject && setIsOnClickAnimationActive(true);
+					if (
+						onClickAnimationObject?.onAnimationFinish &&
+						!onClickAnimationObject.animationSrc
+					) {
+						onClickAnimationObject.onAnimationFinish();
+					}
+				}}
+				activeOpacity={0.97}
+				disablePressSound
+				disabled={disabled}
+			>
+				<LottieView
+					ref={animationRef}
+					source={animationObject.animationSrc}
+					style={[styles.lottieView, isOnClickAnimationActive && styles.hiddenAnimation]}
+					resizeMode="contain"
+					speed={calcDesiredSpeed(animationObject.animationSrc, durations[0])}
+					loop={animationObject.disableAnimationLoop ? false : true}
+					onAnimationFinish={handleAnimationFinish}
+				/>
+				<>
+					{onClickAnimationObject?.animationSrc && (
+						<LottieView
+							ref={onClickAnimationRef}
+							source={onClickAnimationObject?.animationSrc}
+							loop={false}
+							style={[
+								styles.lottieView,
+								!isOnClickAnimationActive && styles.hiddenAnimation,
+							]}
+							onAnimationFinish={handleOnClickAnimationFinish}
+							resizeMode="contain"
+							speed={calcDesiredSpeed(
+								onClickAnimationObject?.animationSrc,
+								durations[1]
+							)}
+						/>
+					)}
+				</>
+			</Button>
+		</DraggAbility>
 	);
 };
 
@@ -188,6 +199,10 @@ const useStyles = createStyle({
 	InteractiveItem: {
 		width: ({ width }) => getScaledWidth(width),
 		aspectRatio: ({ width, height }) => width / height,
+	},
+	button: {
+		width: '100%',
+		height: '100%',
 	},
 	lottieView: {
 		width: '100%',
@@ -209,7 +224,7 @@ export interface InteractiveItemPropsType {
 	isOnClickAnimationActiveState?: [boolean, Dispatch<SetStateAction<boolean>>];
 	animationObject: AnimationObjectExtendedType;
 	onClickAnimationObject?: AnimationObjectType;
-	style?: StyleProp<ViewStyle>;
+	style?: StylePropertyType;
 	centerBottomPosition?: {
 		left?: number;
 		bottom?: number;
@@ -218,6 +233,7 @@ export interface InteractiveItemPropsType {
 	renderAsClicked?: boolean;
 	onPressStart?: () => void;
 	disabled?: boolean;
+	isDraggable?: { isSticky: boolean } | boolean;
 }
 
 interface AnimationObjectExtendedType extends AnimationObjectType {

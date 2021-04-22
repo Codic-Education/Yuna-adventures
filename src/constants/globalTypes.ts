@@ -1,13 +1,13 @@
 import { NavigationProp } from '@react-navigation/native';
 import { ReactElement } from 'react';
-import { ImageStyle, TextStyle, ViewStyle } from 'react-native';
+import { StyleProp, ViewStyle } from 'react-native';
 import { AVPlaybackSource } from 'expo-av/build/AV';
 
 export interface ChildrenType {
 	children: string | ReactElement | Array<ReactElement>;
 }
 
-export type StylePropertyType = ViewStyle | TextStyle | ImageStyle;
+export type StylePropertyType = StyleProp<ViewStyle>;
 
 export type LanguagesCodesType = 'en' | 'sv';
 
@@ -26,7 +26,6 @@ export enum PURCHASE_STATE {
 	PENDING = 0,
 	PURCHASED = 1,
 }
-
 
 export interface LevelType {
 	productId: string;

@@ -31,8 +31,8 @@ const ItemScreen = ({
 			<NavigationHeader />
 			<Clouds />
 			<Scene lottieFileSrc={scene.animationSrc} audioFile={scene?.backgroundSound} autoPlay />
-
 			<InteractiveItem
+				isDraggable={{ isSticky: true }}
 				centerBottomPosition={scene.itemPosition ? scene.itemPosition : defaultItemPosition}
 				animationObject={item.animationObject}
 				onClickAnimationObject={{
