@@ -1,35 +1,29 @@
-import React, { ReactElement } from 'react';
-import { Text, TouchableOpacity, TouchableOpacityProps } from 'react-native';
-import { ChildrenType } from '../../constants/globalTypes';
-import { createStyle } from '../../providers/Theme';
+import React from 'react';
+import { Text } from 'react-native';
+import Pressable, { PressablePropsType } from './Pressable';
 
-interface Props extends TouchableOpacityProps, ChildrenType {
-	style: any;
-}
-
-const Button = ({ children, style, ...props }: Props) => {
-	const styles = useStyles();
-
+const Button = ({ children, style, ...props }: PressablePropsType) => {
 	return (
-		<TouchableOpacity style={{ ...styles.Button, ...style }} {...props}>
-			<Text
-				style={{
-					color: style.color ? style.color : '#000000',
-				}}
-			>
-				{children}
-			</Text>
-		</TouchableOpacity>
+		<Pressable style={style} {...props}>
+			{typeof children === 'string' ? (
+				<Text
+					style={{
+						color: style.color ? style.color : '#000000',
+					}}
+				>
+					{children}
+				</Text>
+			) : (
+				children
+			)}
+		</Pressable>
 	);
 };
 
 export default Button;
 
-const useStyles = createStyle({
-	Button: {
-		padding: 8,
-		paddingRight: 16,
-		paddingLeft: 16,
-		borderRadius: 5,
-	},
-});
+Button.defaultProps = {
+	style: {},
+};
+
+//Note: Don't use opacity to hide this component

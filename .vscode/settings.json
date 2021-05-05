@@ -1,0 +1,14 @@
+{
+	"files.watcherExclude": {
+		"**/node_modules/**/*": true,
+		"**/node_modules/*/**": false
+	},
+	"cSpell.words": [
+		"RNIAP",
+		"Skus",
+		"Yuna",
+		"codic",
+		"coiny"
+	],
+	"jira-plugin.workingProject": ""
+}
