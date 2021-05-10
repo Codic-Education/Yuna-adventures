@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, Dimensions, Platform } from 'react-native';
 import { createStyle } from '../../providers/Theme';
 import { getScaledHeight, getScaledWidth } from '../../utilities';
@@ -13,6 +13,7 @@ import keyCheckMark from '../../assets/animations/key-check-mark.json';
 import Button from '../inputs/Button';
 import { PURCHASE_STATE } from '../../constants/globalTypes';
 import { useUtilities } from '../../providers/Utilities';
+import ParentalDialog from './ParentalDialog';
 
 const dimensions = {
 	width: 1100,
@@ -26,6 +27,7 @@ const LevelPurchaseDialog = ({
 	purchaseState = PURCHASE_STATE.UNPURCHASED,
 	isNewPurchased = false,
 }: LevelPurchaseDialogPropsType) => {
+	const [isAuthorizedToBuy, setIsAuthorizedToBuy] = useState(false);
 	const { isOnline } = useUtilities();
 	const unlockAnimationRef = useRef(null);
 
@@ -58,57 +60,74 @@ const LevelPurchaseDialog = ({
 					loop={false}
 					onAnimationFinish={onPurchaseSuccessAnimationFinish}
 				/>
-				<TranslatedText id="LevelPurchaseDialog.title" style={styles.title} />
-				<View
-					style={{
-						flexDirection: 'row',
-						justifyContent: 'center',
-					}}
-				>
-					{price ? (
-						<>
-							<TranslatedText
-								id="LevelPurchaseDialog.description"
-								style={styles.description}
-							/>
-							<Text style={styles.price}>{price}</Text>
-						</>
-					) : (
-						<TranslatedText
-							id="LevelPurchaseDialog.descriptionWithoutPrice"
-							style={styles.description}
-						/>
-					)}
-				</View>
-				<Button
-					style={styles.buyButton}
-					disabled={purchaseState !== PURCHASE_STATE.UNPURCHASED || !isOnline}
-					onPress={onPressPurchaseButton}
-				>
-					{purchaseState === PURCHASE_STATE.UNPURCHASED ? (
-						<LottieView
-							autoPlay
-							source={key}
-							resizeMode="contain"
-							style={styles.buyButtonIcon}
-						/>
-					) : purchaseState === PURCHASE_STATE.PENDING ? (
-						<LottieView
-							autoPlay
-							source={creditCard}
-							resizeMode="contain"
-							style={styles.buyButtonIcon}
-						/>
-					) : (
-						<LottieView
-							autoPlay
-							loop={false}
-							source={keyCheckMark}
-							resizeMode="contain"
-							style={styles.buyButtonIcon}
-						/>
-					)}
-				</Button>
+				<TranslatedText
+					id={
+						isAuthorizedToBuy
+							? 'LevelPurchaseDialog.title'
+							: 'LevelPurchaseDialog.unAuthorizedToBuyTitle'
+					}
+					style={styles.title}
+				/>
+				{!isAuthorizedToBuy ? (
+					<ParentalDialog
+						onAnswerCorrectly={() => {
+							setIsAuthorizedToBuy(true);
+						}}
+					/>
+				) : (
+					<>
+						<View
+							style={{
+								flexDirection: 'row',
+								justifyContent: 'center',
+							}}
+						>
+							{price ? (
+								<>
+									<TranslatedText
+										id="LevelPurchaseDialog.description"
+										style={styles.description}
+									/>
+									<Text style={styles.price}>{price}</Text>
+								</>
+							) : (
+								<TranslatedText
+									id="LevelPurchaseDialog.descriptionWithoutPrice"
+									style={styles.description}
+								/>
+							)}
+						</View>
+						<Button
+							style={styles.buyButton}
+							disabled={purchaseState !== PURCHASE_STATE.UNPURCHASED || !isOnline}
+							onPress={onPressPurchaseButton}
+						>
+							{purchaseState === PURCHASE_STATE.UNPURCHASED ? (
+								<LottieView
+									autoPlay
+									source={key}
+									resizeMode="contain"
+									style={styles.buyButtonIcon}
+								/>
+							) : purchaseState === PURCHASE_STATE.PENDING ? (
+								<LottieView
+									autoPlay
+									source={creditCard}
+									resizeMode="contain"
+									style={styles.buyButtonIcon}
+								/>
+							) : (
+								<LottieView
+									autoPlay
+									loop={false}
+									source={keyCheckMark}
+									resizeMode="contain"
+									style={styles.buyButtonIcon}
+								/>
+							)}
+						</Button>
+					</>
+				)}
 			</View>
 			<LottieView autoPlay source={yuna} resizeMode="contain" style={styles.yuna} />
 		</View>
