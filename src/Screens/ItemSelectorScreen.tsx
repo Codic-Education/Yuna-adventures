@@ -12,6 +12,7 @@ import { getScaledHeight, getScaledWidth } from '../utilities';
 import Paginator from '../components/Paginator';
 import LevelPurchaseDialog from '../components/Dialogs/LevelPurchaseDialog';
 import Sun from '../components/Sun';
+import ParentalDialog from '../components/Dialogs/ParentalDialog';
 
 const flatListDimensions = {
 	width: 1069,
@@ -110,7 +111,6 @@ const ItemSelectorScreen = ({
 				lastIndex={categories[category].levels.length - 1}
 			/>
 			<>
-				{/*TODO: CHANGE TO CUSTOM LOADINGINDICATOR*/}
 				{isLoading && (
 					<ActivityIndicator
 						size="large"
