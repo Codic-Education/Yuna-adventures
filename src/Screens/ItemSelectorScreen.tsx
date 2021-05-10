@@ -12,6 +12,7 @@ import { getScaledHeight, getScaledWidth } from '../utilities';
 import Paginator from '../components/Paginator';
 import LevelPurchaseDialog from '../components/Dialogs/LevelPurchaseDialog';
 import Sun from '../components/Sun';
+import ParentalDialog from '../components/Dialogs/ParentalDialog';
 
 const flatListDimensions = {
 	width: 1069,
@@ -29,6 +30,7 @@ const ItemSelectorScreen = ({
 	const { categories, yuna, updateCategories } = useData();
 	const levelData: LevelType = categories[category].levels[levelIndexState];
 	const [isLoading, setIsLoading] = useState(false);
+	const [isAuthorizedToBuy, setIsAuthorizedToBuy] = useState(false);
 
 	useEffect(() => {
 		levelData.purchaseState === PURCHASE_STATE.PURCHASED && setIsLoading(false);
@@ -84,6 +86,12 @@ const ItemSelectorScreen = ({
 				scrollEnabled={false}
 			/>
 			<>
+				{!isAuthorizedToBuy &&
+					levelData.purchaseState !== PURCHASE_STATE.PURCHASED &&
+					!levelData.isNewPurchased && (
+						<ParentalDialog setIsAuthorizedToBuy={setIsAuthorizedToBuy} />
+					)}
+
 				{!(
 					levelData.purchaseState === PURCHASE_STATE.PURCHASED &&
 					!levelData.isNewPurchased
@@ -110,7 +118,6 @@ const ItemSelectorScreen = ({
 				lastIndex={categories[category].levels.length - 1}
 			/>
 			<>
-				{/*TODO: CHANGE TO CUSTOM LOADINGINDICATOR*/}
 				{isLoading && (
 					<ActivityIndicator
 						size="large"
