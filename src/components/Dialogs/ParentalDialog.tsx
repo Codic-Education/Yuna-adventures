@@ -50,7 +50,7 @@ const ParentalDialog = ({ onAnswerCorrectly }: ParentalDialogPropsType) => {
 	};
 
 	return (
-		<>
+		<View style={styles.ParentalDialog}>
 			<Text style={styles.TextStyle}>
 				{randomNumber1} + {randomNumber2}
 			</Text>
@@ -69,16 +69,20 @@ const ParentalDialog = ({ onAnswerCorrectly }: ParentalDialogPropsType) => {
 						</View>
 					))}
 			</View>
-		</>
+		</View>
 	);
 };
 
 export default ParentalDialog;
 
 const useStyles = createStyle(({ palette: { color3, color8, type } }) => ({
-	TextStyle: {
+	ParentalDialog: {
 		marginTop: -15,
-		marginBottom: 20,
+		flex: 1,
+		justifyContent: 'space-between',
+		maxHeight: 150,
+	},
+	TextStyle: {
 		backgroundColor: color3[type],
 		borderWidth: 3,
 		borderColor: color8[type],
