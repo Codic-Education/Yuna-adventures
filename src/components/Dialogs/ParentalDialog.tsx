@@ -4,20 +4,20 @@ import { createStyle } from '../../providers/Theme';
 import Button from '../inputs/Button';
 
 const ParentalDialog = ({ setIsAuthorizedToBuy }) => {
-	const [random1, setRandom1] = useState();
-	const [random2, setRandom2] = useState();
-	const [rightAnswer, setRightAnswer] = useState();
-	const [randomAnswer1, setRandomAnswer1] = useState();
-	const [randomAnswer2, setRandomAnswer2] = useState();
-	const [answers, setAnswers] = useState([]);
-	const [value, setValue] = useState(false);
+	const [random1, setRandom1] = useState<Number | any>();
+	const [random2, setRandom2] = useState<Number | any>();
+	const [rightAnswer, setRightAnswer] = useState<Number | any>();
+	const [randomAnswer1, setRandomAnswer1] = useState<Number | any>();
+	const [randomAnswer2, setRandomAnswer2] = useState<Number | any>();
+	const [answers, setAnswers] = useState<Number[]>([]);
+	const [value, setValue] = useState<boolean>(false);
 
 	const styles = useStyles();
 
 	useEffect(() => {
 		setQuestion();
 	}, []);
-	const checkAnswer = (number) => {
+	const checkAnswer = (number: Number) => {
 		console.log('number: ', number);
 		number === rightAnswer ? setValue(true) : setValue(false);
 	};
@@ -47,7 +47,7 @@ const ParentalDialog = ({ setIsAuthorizedToBuy }) => {
 		setIsAuthorizedToBuy(value);
 	}, [value]);
 
-	const shuffleArray = (array) => {
+	const shuffleArray = (array: Number[]) => {
 		for (let i = array.length - 1; i > 0; i--) {
 			const j = Math.floor(Math.random() * i);
 			const temp = array[i];
@@ -58,15 +58,15 @@ const ParentalDialog = ({ setIsAuthorizedToBuy }) => {
 
 	const MathTest = () => {
 		shuffleArray(answers);
-		return answers.map((number, i) => (
+		return answers.map((element, i) => (
 			<View key={i}>
 				<Button
 					style={styles.ButtonStyle}
 					onPressIn={() => {
-						checkAnswer(number);
+						checkAnswer(element);
 					}}
 				>
-					<Text style={styles.ButtonText}>{number}</Text>
+					<Text style={styles.ButtonText}>{element}</Text>
 				</Button>
 			</View>
 		));

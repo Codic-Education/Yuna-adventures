@@ -30,7 +30,7 @@ const ItemSelectorScreen = ({
 	const { categories, yuna, updateCategories } = useData();
 	const levelData: LevelType = categories[category].levels[levelIndexState];
 	const [isLoading, setIsLoading] = useState(false);
-	const [isAuthorizedToBuy, setIsAuthorizedToBuy] = useState(false);
+	const [isAuthorizedToBuy, setIsAuthorizedToBuy] = useState<boolean>(false);
 
 	useEffect(() => {
 		levelData.purchaseState === PURCHASE_STATE.PURCHASED && setIsLoading(false);
