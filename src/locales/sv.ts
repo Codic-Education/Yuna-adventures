@@ -12,7 +12,9 @@ export default {
 	},
 	LevelPurchaseDialog: {
 		title: 'Låst nivå',
+		unAuthorizedToBuyTitle: 'Be dina föräldrar om hjälp',
 		description: 'Denna nivå är låst, lås upp den nu för ',
-		descriptionWithoutPrice: 'Denna nivå är låst, koppla upp till internet för att få mer info.'
+		descriptionWithoutPrice:
+			'Denna nivå är låst, koppla upp till internet för att få mer info.',
 	},
 };

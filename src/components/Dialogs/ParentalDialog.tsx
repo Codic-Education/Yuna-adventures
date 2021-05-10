@@ -1,51 +1,43 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Dispatch, SetStateAction } from 'react';
 import { View, Text } from 'react-native';
 import { createStyle } from '../../providers/Theme';
+import { getScaledWidth } from '../../utilities';
 import Button from '../inputs/Button';
 
-const ParentalDialog = ({ setIsAuthorizedToBuy }) => {
-	const [random1, setRandom1] = useState<Number | any>();
-	const [random2, setRandom2] = useState<Number | any>();
-	const [rightAnswer, setRightAnswer] = useState<Number | any>();
-	const [randomAnswer1, setRandomAnswer1] = useState<Number | any>();
-	const [randomAnswer2, setRandomAnswer2] = useState<Number | any>();
+const ParentalDialog = ({ onAnswerCorrectly }: ParentalDialogPropsType) => {
+	const [randomNumber1, setRandomNumber1] = useState(0);
+	const [randomNumber2, setRandomNumber2] = useState(0);
+	const [rightAnswer, setRightAnswer] = useState(0);
 	const [answers, setAnswers] = useState<Number[]>([]);
-	const [value, setValue] = useState<boolean>(false);
-
 	const styles = useStyles();
 
 	useEffect(() => {
 		setQuestion();
 	}, []);
-	const checkAnswer = (number: Number) => {
-		console.log('number: ', number);
-		number === rightAnswer ? setValue(true) : setValue(false);
-	};
 
 	const setQuestion = () => {
-		setRandom1(Math.round(Math.random() * 21 + 1));
-		setRandom2(Math.round(Math.random() * 41 + 1));
+		const random1 = getRandomNumber();
+		const random2 = getRandomNumber();
+		const correctAnswer = random1 + random2;
+		setRightAnswer(correctAnswer);
+		setRandomNumber1(random1);
+		setRandomNumber2(random2);
+		const option1 = random1 + random2 + getRandomNumber();
+		const option2 = getRandomNumber();
+		setAnswers(shuffleArray([option1, option2, correctAnswer]));
 	};
 
-	useEffect(() => {
-		console.log('random 1: ', random1, 'random 2:  ', random2);
-		setRightAnswer(random1 + random2);
-	}, [random1]);
+	const checkAnswer = (number: Number) => {
+		if (number === rightAnswer) {
+			onAnswerCorrectly();
+		} else {
+			setQuestion();
+		}
+	};
 
-	useEffect(() => {
-		console.log('Right Answer: ', rightAnswer);
-
-		setRandomAnswer1(rightAnswer + rightAnswer);
-		setRandomAnswer2(rightAnswer + 100);
-	}, [rightAnswer]);
-
-	useEffect(() => {
-		setAnswers([randomAnswer1, randomAnswer2, rightAnswer]);
-	}, [randomAnswer2]);
-
-	useEffect(() => {
-		setIsAuthorizedToBuy(value);
-	}, [value]);
+	const getRandomNumber = () => {
+		return Math.round(Math.random() * 100 + 1);
+	};
 
 	const shuffleArray = (array: Number[]) => {
 		for (let i = array.length - 1; i > 0; i--) {
@@ -54,83 +46,72 @@ const ParentalDialog = ({ setIsAuthorizedToBuy }) => {
 			array[i] = array[j];
 			array[j] = temp;
 		}
-	};
-
-	const MathTest = () => {
-		shuffleArray(answers);
-		return answers.map((element, i) => (
-			<View key={i}>
-				<Button
-					style={styles.ButtonStyle}
-					onPressIn={() => {
-						checkAnswer(element);
-					}}
-				>
-					<Text style={styles.ButtonText}>{element}</Text>
-				</Button>
-			</View>
-		));
+		return array;
 	};
 
 	return (
-		<View style={styles.DialogBase}>
-			<View style={styles.ContainerStyle}>
-				<Text style={styles.TextStyle}>
-					{random1} + {random2}
-				</Text>
-				<View style={styles.MathComponentStyle}>
-					<MathTest />
-				</View>
-
-				<View>{value && <Text>Grattis</Text>}</View>
+		<>
+			<Text style={styles.TextStyle}>
+				{randomNumber1} + {randomNumber2}
+			</Text>
+			<View style={styles.MathComponentStyle}>
+				{Boolean(rightAnswer) &&
+					answers.map((element, i) => (
+						<View key={i}>
+							<Button
+								style={styles.ButtonStyle}
+								onPressIn={() => {
+									checkAnswer(element);
+								}}
+							>
+								<Text style={styles.ButtonText}>{element}</Text>
+							</Button>
+						</View>
+					))}
 			</View>
-		</View>
+		</>
 	);
 };
 
 export default ParentalDialog;
 
-const useStyles = createStyle(({ palette: { color0, type } }) => ({
-	DialogBase: {
-		width: '100%',
-		height: '100%',
-		backgroundColor: `${color0[type].toString()}aa`,
-		justifyContent: 'center',
-		alignItems: 'center',
-		position: 'absolute',
-		zIndex: 150000,
-	},
-	ContainerStyle: {
-		width: '60%',
-		height: '70%',
-		alignItems: 'center',
-		justifyContent: 'center',
-		backgroundColor: 'white',
-		padding: 20,
-		borderRadius: 10,
-		borderWidth: 10,
-		borderColor: '#4E184B',
-	},
+const useStyles = createStyle(({ palette: { color3, color8, type } }) => ({
 	TextStyle: {
-		marginVertical: 40,
+		marginTop: -15,
+		marginBottom: 20,
+		backgroundColor: color3[type],
 		borderWidth: 3,
-		borderColor: '#eee',
-		paddingVertical: 10,
+		borderColor: color8[type],
+		paddingVertical: 5,
 		paddingHorizontal: 30,
-		borderRadius: 5,
-		fontSize: 25,
+		borderRadius: getScaledWidth(15),
+		fontSize: getScaledWidth(65),
 		fontFamily: 'coiny',
+		color: color8[type],
+		textAlign: 'center',
+		alignSelf: 'center',
 	},
 	ButtonStyle: {
-		padding: 15,
+		paddingHorizontal: 15,
+		paddingVertical: 5,
 		marginHorizontal: 20,
-		backgroundColor: '#4E184B',
-		borderRadius: 5,
+		minWidth: 75,
+		backgroundColor: color8[type],
+		borderRadius: getScaledWidth(15),
 	},
-	ButtonText: { color: 'white', fontFamily: 'coiny' },
+	ButtonText: {
+		color: color3[type],
+		fontFamily: 'coiny',
+		fontSize: getScaledWidth(50),
+		textAlign: 'center',
+	},
 	MathComponentStyle: {
 		flexDirection: 'row',
 		justifyContent: 'center',
 		alignContent: 'space-between',
 	},
 }));
+
+type ParentalDialogPropsType = {
+	onAnswerCorrectly: () => void;
+};
