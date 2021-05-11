@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Dispatch, SetStateAction } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
 import { createStyle } from '../../providers/Theme';
 import { getScaledWidth } from '../../utilities';
@@ -24,7 +24,12 @@ const ParentalDialog = ({ onAnswerCorrectly }: ParentalDialogPropsType) => {
 		setRandomNumber2(random2);
 		const option1 = random1 + random2 + getRandomNumber();
 		const option2 = getRandomNumber();
-		setAnswers(shuffleArray([option1, option2, correctAnswer]));
+		const option3 = getRandomNumber();
+		const option4 = getRandomNumber();
+		const option5 = getRandomNumber();
+		const option6 = getRandomNumber();
+
+		setAnswers(shuffleArray([option1, option2, correctAnswer, option3, option4, option5]));
 	};
 
 	const checkAnswer = (number: Number) => {
@@ -95,6 +100,15 @@ const useStyles = createStyle(({ palette: { color3, color8, type } }) => ({
 		textAlign: 'center',
 		alignSelf: 'center',
 	},
+	MathComponentStyle: {
+		flexDirection: 'row',
+		flexWrap: 'wrap',
+		justifyContent: 'center',
+		alignContent: 'space-between',
+		//maxWidth: getScaledWidth(900),
+		alignSelf: 'center',
+		display: 'flex',
+	},
 	ButtonStyle: {
 		paddingHorizontal: 15,
 		paddingVertical: 5,
@@ -102,17 +116,16 @@ const useStyles = createStyle(({ palette: { color3, color8, type } }) => ({
 		minWidth: 75,
 		backgroundColor: color8[type],
 		borderRadius: getScaledWidth(15),
+		marginBottom: 5,
+		flex: 1,
+		flexBasis: (100 % 10) + '%',
+		//display: 'flex',
 	},
 	ButtonText: {
 		color: color3[type],
 		fontFamily: 'coiny',
 		fontSize: getScaledWidth(50),
 		textAlign: 'center',
-	},
-	MathComponentStyle: {
-		flexDirection: 'row',
-		justifyContent: 'center',
-		alignContent: 'space-between',
 	},
 }));
 
