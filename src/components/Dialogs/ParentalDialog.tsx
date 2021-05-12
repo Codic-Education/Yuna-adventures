@@ -1,7 +1,7 @@
-import React, { useEffect, useState, Dispatch, SetStateAction } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
 import { createStyle } from '../../providers/Theme';
-import { getScaledWidth } from '../../utilities';
+import { getScaledHeight, getScaledWidth } from '../../utilities';
 import Button from '../inputs/Button';
 
 const ParentalDialog = ({ onAnswerCorrectly }: ParentalDialogPropsType) => {
@@ -24,7 +24,11 @@ const ParentalDialog = ({ onAnswerCorrectly }: ParentalDialogPropsType) => {
 		setRandomNumber2(random2);
 		const option1 = random1 + random2 + getRandomNumber();
 		const option2 = getRandomNumber();
-		setAnswers(shuffleArray([option1, option2, correctAnswer]));
+		const option3 = getRandomNumber();
+		const option4 = getRandomNumber();
+		const option5 = getRandomNumber();
+
+		setAnswers(shuffleArray([option1, option2, correctAnswer, option3, option4, option5]));
 	};
 
 	const checkAnswer = (number: Number) => {
@@ -57,8 +61,9 @@ const ParentalDialog = ({ onAnswerCorrectly }: ParentalDialogPropsType) => {
 			<View style={styles.MathComponentStyle}>
 				{Boolean(rightAnswer) &&
 					answers.map((element, i) => (
-						<View key={i}>
+						<View style={styles.ButtonWrapper}>
 							<Button
+								key={i}
 								style={styles.ButtonStyle}
 								onPressIn={() => {
 									checkAnswer(element);
@@ -78,9 +83,7 @@ export default ParentalDialog;
 const useStyles = createStyle(({ palette: { color3, color8, type } }) => ({
 	ParentalDialog: {
 		marginTop: -15,
-		flex: 1,
 		justifyContent: 'space-between',
-		maxHeight: 150,
 	},
 	TextStyle: {
 		backgroundColor: color3[type],
@@ -94,12 +97,25 @@ const useStyles = createStyle(({ palette: { color3, color8, type } }) => ({
 		color: color8[type],
 		textAlign: 'center',
 		alignSelf: 'center',
+		marginBottom: 10,
+	},
+	MathComponentStyle: {
+		flexDirection: 'row',
+		flexWrap: 'wrap',
+		maxWidth: getScaledWidth(600),
+		alignSelf: 'center',
+	},
+	ButtonWrapper: {
+		flexDirection: 'row',
+		flexBasis: 100 / 3 + '%',
+		justifyContent: 'center',
+		alignContent: 'center',
+		marginTop: getScaledHeight(35),
 	},
 	ButtonStyle: {
 		paddingHorizontal: 15,
 		paddingVertical: 5,
-		marginHorizontal: 20,
-		minWidth: 75,
+		minWidth: getScaledWidth(160),
 		backgroundColor: color8[type],
 		borderRadius: getScaledWidth(15),
 	},
@@ -108,11 +124,6 @@ const useStyles = createStyle(({ palette: { color3, color8, type } }) => ({
 		fontFamily: 'coiny',
 		fontSize: getScaledWidth(50),
 		textAlign: 'center',
-	},
-	MathComponentStyle: {
-		flexDirection: 'row',
-		justifyContent: 'center',
-		alignContent: 'space-between',
 	},
 }));
 

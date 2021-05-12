@@ -45,7 +45,12 @@ const LevelPurchaseDialog = ({
 
 	return (
 		<View style={styles.DialogBase}>
-			<View style={styles.LevelPurchaseDialog}>
+			<View
+				style={[
+					styles.LevelPurchaseDialog,
+					isAuthorizedToBuy ? styles.authorized : styles.unauthorized,
+				]}
+			>
 				<LottieView
 					autoPlay
 					source={lockedLock}
@@ -148,7 +153,6 @@ const useStyles = createStyle(
 		},
 		LevelPurchaseDialog: {
 			width: getScaledWidth(dimensions.width),
-			height: getScaledHeight(dimensions.height),
 			backgroundColor: color3[type],
 			borderWidth: getScaledWidth(15),
 			borderRadius: 20,
@@ -157,6 +161,13 @@ const useStyles = createStyle(
 			borderColor: color1[type],
 			position: 'relative',
 		},
+		authorized: {
+			height: getScaledHeight(dimensions.height),
+		},
+		unauthorized: {
+			marginTop: getScaledHeight(100),
+		},
+
 		lockedLock: {
 			position: 'absolute',
 			top: getScaledHeight(Platform.OS === 'ios' ? -55 : -85),
